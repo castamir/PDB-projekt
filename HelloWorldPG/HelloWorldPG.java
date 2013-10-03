@@ -23,7 +23,7 @@ public class HelloWorldPG {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        System.out.println("Pavel says 'Hello World!' Hello to you!"); // Display the string. NOVA CAST KOMENTARE. DALSI CAST
+        System.out.println("Pavel says 'Hello World!' Hello to you! ISSUE"); // Display the string. NOVA CAST KOMENTARE. DALSI CAST
     }
     
 }
