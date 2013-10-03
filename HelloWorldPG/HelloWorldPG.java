@@ -19,6 +19,10 @@ public class HelloWorldPG {
     public HelloWorldPG() {
     }
     
+    public void testMethod() {
+
+    }
+    
     /**
      * @param args the command line arguments
      */
