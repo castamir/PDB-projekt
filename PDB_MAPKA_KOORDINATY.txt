@@ -1,11 +1,11 @@
-Pшedpoklбdбm, ћe souшadnэ systйm zaинnб v LEVЙM DOLNНM rohu.
-Formбt:
-<NБZEV BUDOVY>
-<HROMADA BODЩ>
+п»їPЕ™edpoklГЎdГЎm, Еѕe souЕ™adnГЅ systГ©m zaДЌГ­nГЎ v LEVГ‰M DOLNГЌM rohu.
+FormГЎt:
+<NГЃZEV BUDOVY>
+<HROMADA BODЕ®>
 
 bod ve tvaru [x,y]
 ------------------------------------------------------------
-SLUЋBY U BAZЙNU
+SLUЕЅBY U BAZГ‰NU
 [1,1]
 [1,2]
 [5,2]
@@ -15,7 +15,7 @@ SLUЋBY U BAZЙNU
 [1,8]
 [5,8]
 
-BAZЙN
+BAZГ‰N
 [1,4]
 [4,4]
 [4,7]
@@ -33,7 +33,7 @@ BAR+DISKO
 [14,19]
 [8,19]
 
-TENISOVЙ KURTY
+TENISOVГ‰ KURTY
 [8,10]
 [14,10]
 [14,15]
@@ -45,13 +45,13 @@ WELLNESS
 [16,19]
 [19,19]
 
-HLНDБNН DМTН
+HLГЌDГЃNГЌ DДљTГЌ
 [16,8]
 [19,8]
 [16,10]
 [19,10]
 
-GOLFOVЙ HШIЉTМ
+GOLFOVГ‰ HЕIЕ TДљ
 [10,1]
 [19,1]
 [19,7]
