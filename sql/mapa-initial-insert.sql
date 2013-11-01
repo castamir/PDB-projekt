@@ -14,7 +14,7 @@ INSERT INTO mapa VALUES (
 	'Služby u bazénu',
 	SDO_GEOMETRY(2003, NULL, NULL, -- 2D polygon
 		SDO_ELEM_INFO_ARRAY(1, 1003, 1), -- exterior polygon (counterclockwise)
-		SDO_ORDINATE_ARRAY(1,1, 7,1, 7,9, 1,9, 1,8, 5,8, 5,2, 1,2)
+		SDO_ORDINATE_ARRAY(1,1, 7,1, 7,9, 1,9, 1,8, 5,8, 5,2, 1,2, 1,1)
 	)
 );
 
@@ -63,7 +63,7 @@ INSERT INTO mapa VALUES (
 	'Golfové hřiště',
 	SDO_GEOMETRY(2003, NULL, NULL, -- 2D polygon
 		SDO_ELEM_INFO_ARRAY(1, 1003, 1), -- exterior polygon (counterclockwise)
-		SDO_ORDINATE_ARRAY(10,1, 19,1, 19,7, 13,7, 13,5, 10,5)
+		SDO_ORDINATE_ARRAY(10,1, 19,1, 19,7, 13,7, 13,5, 10,5, 10,1)
 	)
 );
 
@@ -71,7 +71,7 @@ INSERT INTO mapa VALUES (
 COMMIT;
 
 -- kontrola validity (na zacatku "valid" muze byt cislo chyby, vizte http://www.ora-code.com/)
-SELECT nazev, SDO_GEOM.VALIDATE_GEOMETRY_WITH_CONTEXT(geometrie, 5) valid -- 5=presnost
+SELECT nazev, SDO_GEOM.VALIDATE_GEOMETRY_WITH_CONTEXT(geometrie, 1) valid -- 1=presnost
 FROM mapa;
 
 quit
