@@ -26,5 +26,3 @@ FROM mapa;
 -- bez udani presnosti (presne dle nastaveni v metadatech)
 SELECT m.nazev, m.geometrie.ST_IsValid()
 FROM mapa m;
-
-quit
