@@ -139,7 +139,19 @@ INSERT INTO mapa VALUES (
         )
 	)
 );
---787,225
+
+INSERT INTO mapa VALUES (
+	'Ostravsky',
+	SDO_GEOMETRY(2003, NULL, NULL, -- 2D polygon
+		SDO_ELEM_INFO_ARRAY(1, 1003, 1), -- exterior polygon (clockwise)
+		SDO_ORDINATE_ARRAY(
+        787,225, 812,225, 825,212, 837,225, 837,250, 825,262, 837,275, 837,287, 850,287, 862,275, 875,275,
+        937,325, 950,325, 950,362, 962,375, 975,375, 987,412, 975,425, 937,425, 912,450, 887,425, 862,412,
+        837,412, 837,387, 800,350, 750,325, 750,287, 762,262, 787,237, 787,225
+        )
+	)
+);
+--912,450
 COMMIT;
 
 -- kontrola validity (na zacatku "valid" muze byt cislo chyby, vizte http://www.ora-code.com/)
