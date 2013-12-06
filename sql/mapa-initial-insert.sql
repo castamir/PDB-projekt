@@ -82,6 +82,41 @@ INSERT INTO mapa VALUES (
 	)
 );
 
+INSERT INTO mapa VALUES (
+	'Ustecky',
+	SDO_GEOMETRY(2003, NULL, NULL, -- 2D polygon
+		SDO_ELEM_INFO_ARRAY(1, 1003, 1), -- exterior polygon (clockwise)
+		SDO_ORDINATE_ARRAY(
+        150,112, 162,100, 187,100, 200,75, 237,75, 237,62, 287,62, 300,50, 325,50, 350,37, 362,37, 350,25, 
+        350,0, 362,0, 400,12, 400,37, 412,37, 412,50, 362,87, 362,112, 375,120, 362,150, 350,162, 300,162,
+        225,187, 200,200, 187,200, 187,137, 175,137, 150,112
+        )
+	)
+);
+
+INSERT INTO mapa VALUES (
+	'Liberecky',
+	SDO_GEOMETRY(2003, NULL, NULL, -- 2D polygon
+		SDO_ELEM_INFO_ARRAY(1, 1003, 1), -- exterior polygon (clockwise)
+		SDO_ORDINATE_ARRAY(
+        412,50, 450,50, 450,25, 487,25, 500,50, 500,62, 512,75, 537,87, 537,150, 475,150, 437,125, 425,125,
+        412,137, 387,137, 375,120, 362,112, 362,87, 412,50
+        )
+	)
+);
+
+INSERT INTO mapa VALUES (
+	'Kralovehradecky',
+	SDO_GEOMETRY(2003, NULL, NULL, -- 2D polygon
+		SDO_ELEM_INFO_ARRAY(1, 1003, 1), -- exterior polygon (clockwise)
+		SDO_ORDINATE_ARRAY(
+        537,87, 562,100, 575,100, 575,112, 587,112, 600,125, 637,125, 650,150, 625,175, 625,187, 637,187, 
+        675,250, 650,250, 625,275, 562,237, 500,237, 487,225, 487,200, 462,187, 450,175, 475,150, 537,150,
+        537,87
+        )
+	)
+);
+
 COMMIT;
 
 -- kontrola validity (na zacatku "valid" muze byt cislo chyby, vizte http://www.ora-code.com/)
