@@ -33,7 +33,7 @@ public class Application extends JPanel {
 
     private static final long serialVersionUID = 1L;
     private static final short maxX = 1000;
-    private static final short maxY = 700;
+    private static final short maxY = 800;
     private static final short windowZoom = 1;
 
     public Application() {

@@ -117,6 +117,17 @@ INSERT INTO mapa VALUES (
 	)
 );
 
+INSERT INTO mapa VALUES (
+	'Pardubicky',
+	SDO_GEOMETRY(2003, NULL, NULL, -- 2D polygon
+		SDO_ELEM_INFO_ARRAY(1, 1003, 1), -- exterior polygon (clockwise)
+		SDO_ORDINATE_ARRAY(
+        675,250, 687,250, 712,225, 675,325, 687,350, 687,375, 625,375, 562,337, 550,337, 500,300, 500,275,
+        475,250, 500,237, 562,237, 625,275, 650,250, 675,250
+        )
+	)
+);
+--712,225, 
 COMMIT;
 
 -- kontrola validity (na zacatku "valid" muze byt cislo chyby, vizte http://www.ora-code.com/)
