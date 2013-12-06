@@ -127,7 +127,19 @@ INSERT INTO mapa VALUES (
         )
 	)
 );
---712,225, 
+
+INSERT INTO mapa VALUES (
+	'Olomoucky',
+	SDO_GEOMETRY(2003, NULL, NULL, -- 2D polygon
+		SDO_ELEM_INFO_ARRAY(1, 1003, 1), -- exterior polygon (clockwise)
+		SDO_ORDINATE_ARRAY(
+        712,225, 712,200, 700,187, 712,175, 787,225, 787,237, 762,262, 750,287, 750,325, 800,350, 837,387,
+        837,412, 775,437, 762,437, 725,450, 700,412, 687,425, 675,412, 675,387, 687,375, 687,350, 675,325, 
+        712,225
+        )
+	)
+);
+--787,225
 COMMIT;
 
 -- kontrola validity (na zacatku "valid" muze byt cislo chyby, vizte http://www.ora-code.com/)
