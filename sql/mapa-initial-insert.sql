@@ -151,7 +151,18 @@ INSERT INTO mapa VALUES (
         )
 	)
 );
---912,450
+
+INSERT INTO mapa VALUES (
+	'Zlinsky',
+	SDO_GEOMETRY(2003, NULL, NULL, -- 2D polygon
+		SDO_ELEM_INFO_ARRAY(1, 1003, 1), -- exterior polygon (clockwise)
+		SDO_ORDINATE_ARRAY(
+        912,450, 900,462, 887,462, 875,475, 875,487, 850,525, 837,525, 825,537, 825,550, 800,550, 750,525,
+        725,500, 712,500, 712,487, 725,450, 762,437, 775,437, 837,412, 862,412, 887,425, 912,450     
+        )
+	)
+);
+--800,550
 COMMIT;
 
 -- kontrola validity (na zacatku "valid" muze byt cislo chyby, vizte http://www.ora-code.com/)
