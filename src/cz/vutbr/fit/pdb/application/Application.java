@@ -32,9 +32,9 @@ import javax.swing.JPanel;
 public class Application extends JPanel {
 
     private static final long serialVersionUID = 1L;
-    private static final short maxX = 150;
-    private static final short maxY = 150;
-    private static final short windowZoom = 2;
+    private static final short maxX = 450;
+    private static final short maxY = 450;
+    private static final short windowZoom = 1;
 
     public Application() {
     }
@@ -76,6 +76,8 @@ public class Application extends JPanel {
     public void paint(Graphics g) {
         List<Shape> shapes = new ArrayList<>();
         Graphics2D g2D = (Graphics2D) g;
+        int i = 0;
+        Color[] colors = {Color.GRAY, Color.YELLOW, Color.BLUE};
         try {
             loadShapesFromDb(shapes);
         } catch (Exception e) {
@@ -83,10 +85,14 @@ public class Application extends JPanel {
         }
         for (Iterator<Shape> iterator = shapes.iterator(); iterator.hasNext();) {
             Shape shape = iterator.next();
-            g2D.setPaint(Color.GRAY);
+            g2D.setPaint(colors[i%3]);
             g2D.fill(shape);
             g2D.setPaint(Color.BLACK);
             g2D.draw(shape);
+            i++;
+            if(i==3){
+                i=0;
+            }
         }
     }
 
