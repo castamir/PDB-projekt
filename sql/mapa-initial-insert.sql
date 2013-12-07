@@ -197,6 +197,18 @@ INSERT INTO mapa VALUES (
         )
 	)
 );
+
+INSERT INTO mapa VALUES (
+	'Plzensky',
+	SDO_GEOMETRY(2003, NULL, NULL, -- 2D polygon
+		SDO_ELEM_INFO_ARRAY(1, 1003, 1), -- exterior polygon (clockwise)
+		SDO_ORDINATE_ARRAY(
+        175,464, 100,362, 75,350, 37,250, 75,225, 87,237, 100,225, 112,225, 125,237, 150,212, 162,212, 175,225,
+        187,200, 200,200, 200,212, 250,250, 250,287, 225,287, 225,325, 237,337, 237,350, 225,387, 212,412,
+        175,464
+        )
+	)
+);
 --175,464
 COMMIT;
 
