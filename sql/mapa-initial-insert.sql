@@ -174,6 +174,17 @@ INSERT INTO mapa VALUES (
         )
 	)
 );
+
+INSERT INTO mapa VALUES (
+	'Jihlavsky',
+	SDO_GEOMETRY(2003, NULL, NULL, -- 2D polygon
+		SDO_ELEM_INFO_ARRAY(1, 1003, 1), -- exterior polygon (clockwise)
+		SDO_ORDINATE_ARRAY(
+        475,512, 487,500, 475,487, 487,462, 450,450, 387,400, 400,362, 412,350, 450,337, 450,325, 487,300,
+        500,300, 550,337, 562,337, 625,375, 612,400, 612,425, 600,437, 600,462, 575,487, 550,487, 475,512
+        )
+	)
+);
 --475,512
 COMMIT;
 
