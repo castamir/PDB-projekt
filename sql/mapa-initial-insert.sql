@@ -185,7 +185,19 @@ INSERT INTO mapa VALUES (
         )
 	)
 );
---475,512
+
+INSERT INTO mapa VALUES (
+	'Budejovicky',
+	SDO_GEOMETRY(2003, NULL, NULL, -- 2D polygon
+		SDO_ELEM_INFO_ARRAY(1, 1003, 1), -- exterior polygon (clockwise)
+		SDO_ORDINATE_ARRAY(
+        475,512, 450,487, 437,502, 425,502, 412,489, 400,502, 400,526, 387,539, 362,539, 350,562, 337,562,
+        312,552, 287,575, 237,539, 225,514, 175,464, 212,412, 225,387, 237,350, 237,337, 262,350, 275,337,
+        300,350, 350,350, 362,362, 387,337, 400,362, 387,400, 450,450, 487,462, 475,487, 487,500, 475,512
+        )
+	)
+);
+--175,464
 COMMIT;
 
 -- kontrola validity (na zacatku "valid" muze byt cislo chyby, vizte http://www.ora-code.com/)
