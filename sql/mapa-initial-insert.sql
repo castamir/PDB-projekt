@@ -209,7 +209,33 @@ INSERT INTO mapa VALUES (
         )
 	)
 );
---175,464
+
+INSERT INTO mapa VALUES (
+	'Stredocesky',
+	SDO_GEOMETRY(2003, NULL, NULL, -- 2D polygon
+		SDO_ELEM_INFO_ARRAY(1, 1003, 1, 75, 2003, 1), -- polygon with hole, second threesome (start index, type, i)
+		SDO_ORDINATE_ARRAY(
+        200,200, 225,187, 300,162, 350,162, 362,150, 375,120, 387,137, 412,137, 425,125, 437,125, 475,150,
+        450,175, 462,187, 487,200, 487,225, 500,237, 475,250, 500,275, 500,300, 487,300, 450,325, 450,337,
+        412,350, 400,362, 387,337, 362,362, 350,350, 300,350, 275,337, 262,350, 237,337, 225,325, 225,287,
+        250,287, 250,250, 200,212, 200,200,
+        
+        --362,200, 387,225, 387,250, 350,250, 337,262, 325,237, 325,212, 337,212, 350,200, 362,200
+        --Counterclockwise
+        362,200, 350,200, 337,212, 325,212, 325,237, 337,262, 350,250, 387,250, 387,225, 362,200
+        )
+	)
+);
+
+INSERT INTO mapa VALUES (
+	'Hl. m. Praha',
+	SDO_GEOMETRY(2003, NULL, NULL, -- 2D polygon
+		SDO_ELEM_INFO_ARRAY(1, 1003, 1), -- polygon with hole, second threesome (start index, type, i)
+		SDO_ORDINATE_ARRAY(
+        362,200, 387,225, 387,250, 350,250, 337,262, 325,237, 325,212, 337,212, 350,200, 362,200
+        )
+	)
+);
 COMMIT;
 
 -- kontrola validity (na zacatku "valid" muze byt cislo chyby, vizte http://www.ora-code.com/)
