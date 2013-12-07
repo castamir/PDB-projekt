@@ -77,7 +77,7 @@ public class Application extends JPanel {
         List<Shape> shapes = new ArrayList<>();
         Graphics2D g2D = (Graphics2D) g;
         int i = 0;
-        Color[] colors = {Color.GRAY, Color.YELLOW, Color.BLUE};
+        Color[] colors = {Color.GRAY, Color.YELLOW, Color.BLUE, Color.RED, Color.GREEN};
         try {
             loadShapesFromDb(shapes);
         } catch (Exception e) {
@@ -85,12 +85,12 @@ public class Application extends JPanel {
         }
         for (Iterator<Shape> iterator = shapes.iterator(); iterator.hasNext();) {
             Shape shape = iterator.next();
-            g2D.setPaint(colors[i%3]);
+            g2D.setPaint(colors[i%5]);
             g2D.fill(shape);
             g2D.setPaint(Color.BLACK);
             g2D.draw(shape);
             i++;
-            if(i==3){
+            if(i==5){
                 i=0;
             }
         }
