@@ -20,6 +20,11 @@ import oracle.jdbc.pool.OracleDataSource;
 
 import oracle.spatial.geometry.JGeometry;
 import java.awt.Shape;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -35,6 +40,9 @@ public class Application extends JPanel {
     private static final short maxX = 1000;
     private static final short maxY = 650;
     private static final short windowZoom = 1;
+    
+    //public List<Shape> shapes;
+    //public HashMap<String, Shape> myShapes;
 
     public Application() {
     }
@@ -51,9 +59,12 @@ public class Application extends JPanel {
         return shape;
     }
 
-    public void loadShapesFromDb(List<Shape> shapes) throws SQLException, Exception {
-        if (shapes == null) {
+    public void loadShapesFromDb(HashMap<String, Shape> myShapes) throws SQLException, Exception {
+        /*if (shapes == null) {
             shapes = new ArrayList<>();
+        }*/
+        if(myShapes == null) {
+            myShapes = new HashMap<String, Shape>();
         }
         
         Loader loader = new Loader();
@@ -63,28 +74,42 @@ public class Application extends JPanel {
         try (Connection conn = ods.getConnection(); Statement stmt = conn.createStatement(); ResultSet resultSet = stmt.executeQuery("select nazev, geometrie from mapa")) {
             while (resultSet.next()) {
                 byte[] image = resultSet.getBytes("geometrie");
+                String name = new String(resultSet.getBytes("nazev"), "UTF-8");
+                //System.out.println(name);
                 JGeometry jGeometry = JGeometry.load(image);
                 Shape shape = jGeometry2Shape(jGeometry);
-                if (shape != null) {
+                /*if (shape != null) {
                     shapes.add(shape);
+                }*/
+                if(shape != null) {
+                    myShapes.put(name, shape);
                 }
             }
         }
     }
 
+    
     @Override
     public void paint(Graphics g) {
-        List<Shape> shapes = new ArrayList<>();
+        //shapes = new ArrayList<>();
+        HashMap<String, Shape> myShapes = new HashMap<String, Shape>();
         Graphics2D g2D = (Graphics2D) g;
+        Shape shape;
         int i = 0;
         Color[] colors = {Color.GRAY, Color.YELLOW, Color.BLUE, Color.RED, Color.GREEN, Color.ORANGE, Color.PINK};
         try {
-            loadShapesFromDb(shapes);
+            loadShapesFromDb(myShapes);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        for (Iterator<Shape> iterator = shapes.iterator(); iterator.hasNext();) {
-            Shape shape = iterator.next();
+        //Set<Entry<String, Shape>> grabset = myShapes.entrySet();
+        //Iterator<Map.Entry<String,Shape>> iterator = grabset.iterator();
+        Iterator<String> iterator = myShapes.keySet().iterator();
+        while( iterator.hasNext()) {
+            String key = iterator.next();
+            //Map.Entry<String,Shape> key = (Map.Entry<String,Shape>)iterator.next();
+            //shape = key.getValue();
+            shape = myShapes.get(key);
             g2D.setPaint(colors[i%7]);
             g2D.fill(shape);
             g2D.setPaint(Color.BLACK);
@@ -95,7 +120,7 @@ public class Application extends JPanel {
             }
         }
     }
-
+    
     public static void main(String[] args) {
         JFrame frame = new JFrame();
         frame.getContentPane().add(new Application());
