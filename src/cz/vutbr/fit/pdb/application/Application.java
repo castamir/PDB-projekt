@@ -42,9 +42,10 @@ public class Application extends JPanel {
     private static final short windowZoom = 1;
     
     //public List<Shape> shapes;
-    //public HashMap<String, Shape> myShapes;
+    public HashMap<String, Shape> myShapes;
 
     public Application() {
+        myShapes = new HashMap<String, Shape>();
     }
 
     public Shape jGeometry2Shape(JGeometry jGeometry) {
@@ -62,10 +63,10 @@ public class Application extends JPanel {
     public void loadShapesFromDb(HashMap<String, Shape> myShapes) throws SQLException, Exception {
         /*if (shapes == null) {
             shapes = new ArrayList<>();
-        }*/
+        }*//*
         if(myShapes == null) {
             myShapes = new HashMap<String, Shape>();
-        }
+        }*/
         
         Loader loader = new Loader();
         ServiceLocator serviceLocator = new ServiceLocator(loader.getProperties());
@@ -92,7 +93,7 @@ public class Application extends JPanel {
     @Override
     public void paint(Graphics g) {
         //shapes = new ArrayList<>();
-        HashMap<String, Shape> myShapes = new HashMap<String, Shape>();
+        //HashMap<String, Shape> myShapes = new HashMap<String, Shape>();
         Graphics2D g2D = (Graphics2D) g;
         Shape shape;
         int i = 0;
