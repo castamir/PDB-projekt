@@ -92,8 +92,7 @@ public class HotelCompoundPanel extends JPanel implements MouseListener
         a.scale(zoom, zoom);
         List<Shape> shapes = new ArrayList<>();
         Graphics2D g2D = (Graphics2D) g;
-        g2D.setTransform(a);
-        super.paint(g2D);
+        //super.paint(g2D);
         try {
             loadShapesFromDb(shapes);
         } catch (Exception e) {
@@ -101,6 +100,7 @@ public class HotelCompoundPanel extends JPanel implements MouseListener
         }
         for (Iterator<Shape> iterator = shapes.iterator(); iterator.hasNext();) {
             Shape shape = iterator.next();
+            g2D.setTransform(a);
             g2D.setPaint(Color.GRAY);
             g2D.fill(shape);
             g2D.setPaint(Color.BLACK);
