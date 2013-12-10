@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package cz.vutbr.fit.pdb.application;
+package cz.vutbr.fit.pdb.gui;
 
 import cz.vutbr.fit.pdb.Loader;
 import cz.vutbr.fit.pdb.ServiceLocator;
