@@ -41,7 +41,7 @@ import javax.swing.JPanel;
 public class HotelCompoundPanel extends JPanel implements MouseListener
 {
     private static final long serialVersionUID = 1L;
-    private double zoom = 1.0;
+    //private double zoom = 1.0;
     
     private List<Shape> shapes;
 
@@ -86,12 +86,12 @@ public class HotelCompoundPanel extends JPanel implements MouseListener
     public void paint(Graphics g) {
         //g.clearRect(0, 0, getWidth(), getHeight());
         super.paint(g);
-        AffineTransform a = new AffineTransform();
+        /*AffineTransform a = new AffineTransform();
         AffineTransform a2 = new AffineTransform();
         a2.setToIdentity();
-        a2.translate(0, 50);
+        a2.translate(getParent().getWidth() - this.getWidth(), getParent().getHeight() - this.getHeight());
         a.concatenate(a2);
-        a.scale(zoom, zoom);
+        a.scale(zoom, zoom);*/
         
         Graphics2D g2D = (Graphics2D) g;
         //super.paint(g2D);
@@ -108,7 +108,7 @@ public class HotelCompoundPanel extends JPanel implements MouseListener
         
         for (Iterator<Shape> iterator = shapes.iterator(); iterator.hasNext();) {
             Shape shape = iterator.next();
-            g2D.setTransform(a);
+            //g2D.setTransform(a);
             g2D.setPaint(Color.GRAY);
             g2D.fill(shape);
             g2D.setPaint(Color.BLACK);
@@ -136,7 +136,6 @@ public class HotelCompoundPanel extends JPanel implements MouseListener
     @Override
     public void mouseClicked(MouseEvent e) {
         System.out.println("Mouse clicked at ("+e.getX()+","+e.getY()+")");
-        
         try {
             this.objectAtPoint(e.getX(), e.getY());
         }
@@ -165,9 +164,9 @@ public class HotelCompoundPanel extends JPanel implements MouseListener
     public void mouseExited(MouseEvent e) {
        
     }
-    
+    /*
     public void setZoom(double zoomFactor) {
         zoom = zoomFactor;
         repaint();
-    }
+    }*/
 }

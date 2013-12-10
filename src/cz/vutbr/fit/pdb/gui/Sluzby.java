@@ -38,7 +38,6 @@ public class Sluzby extends javax.swing.JPanel {
         detail_dne_table = new javax.swing.JTable();
         date_field = new cz.vutbr.fit.pdb.utils.ObservingTextField();
         kalendar = new javax.swing.JLabel();
-        jSlider1 = new javax.swing.JSlider();
 
         setMaximumSize(new java.awt.Dimension(911, 665));
 
@@ -52,7 +51,7 @@ public class Sluzby extends javax.swing.JPanel {
         );
         hotelCompoundPanel1Layout.setVerticalGroup(
             hotelCompoundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 543, Short.MAX_VALUE)
+            .addGap(0, 608, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout zoom_panelLayout = new javax.swing.GroupLayout(zoom_panel);
@@ -150,26 +149,13 @@ public class Sluzby extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jSlider1.setMajorTickSpacing(10);
-        jSlider1.setPaintLabels(true);
-        jSlider1.setPaintTicks(true);
-        jSlider1.setSnapToTicks(true);
-        jSlider1.setValue(100);
-        jSlider1.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                jSlider1StateChanged(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panel_sluzby, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(panel_sluzby, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(wrapper, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -182,8 +168,6 @@ public class Sluzby extends javax.swing.JPanel {
                     .addComponent(wrapper, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(panel_sluzby, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -203,14 +187,6 @@ public class Sluzby extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_date_fieldActionPerformed
 
-    private void jSlider1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSlider1StateChanged
-        JSlider source = (JSlider)evt.getSource();
-        if (!source.getValueIsAdjusting()) {
-            double zoom = (double)(source.getValue()/100.0);
-            hotelCompoundPanel1.setZoom(zoom);
-        }
-    }//GEN-LAST:event_jSlider1StateChanged
-
      private Locale getLocale(String loc) {
         if (loc != null && loc.length() > 0) {
             return new Locale(loc);
@@ -224,7 +200,6 @@ public class Sluzby extends javax.swing.JPanel {
     private javax.swing.JTable detail_dne_table;
     private cz.vutbr.fit.pdb.gui.HotelCompoundPanel hotelCompoundPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSlider jSlider1;
     private javax.swing.JLabel kalendar;
     private javax.swing.JLabel nazev_skuzby;
     private javax.swing.JPanel panel_sluzby;
