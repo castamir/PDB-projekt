@@ -17,11 +17,8 @@ import java.util.List;
 import oracle.jdbc.pool.OracleDataSource;
 import oracle.spatial.geometry.JGeometry;
 import java.awt.Shape;
-<<<<<<< HEAD
-=======
 import java.awt.geom.AffineTransform;
 import javax.swing.JFrame;
->>>>>>> 0937fc2d6b85d1c77bc576c643f1a47fcf1e5114
 import javax.swing.JPanel;
 
 /**
@@ -38,7 +35,7 @@ public class HotelCompoundPanel extends JPanel implements MouseListener {
     public HotelCompoundPanel() {
         this.addMouseListener(this);
     }
-    
+
     public Shape jGeometry2Shape(JGeometry jGeometry) {
         Shape shape;
         switch (jGeometry.getType()) {
@@ -142,7 +139,7 @@ public class HotelCompoundPanel extends JPanel implements MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {
     }
-    
+
     public void setZoom(double zoomFactor) {
         zoom = zoomFactor;
         repaint();
