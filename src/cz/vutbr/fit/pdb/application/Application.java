@@ -2,6 +2,7 @@ package cz.vutbr.fit.pdb.application;
 
 import cz.vutbr.fit.pdb.Loader;
 import cz.vutbr.fit.pdb.ServiceLocator;
+import cz.vutbr.fit.pdb.gui.MainWindow;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -133,7 +134,7 @@ public class Application extends JPanel {
     }
     
     public static void main(String[] args) {
-        JFrame frame = new JFrame();
+        /*JFrame frame = new JFrame();
         Application myApp = new Application();
         
         Sluzby sluzby = new Sluzby();
@@ -141,6 +142,8 @@ public class Application extends JPanel {
         frame.getContentPane().add(sluzby);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(maxX * windowZoom, maxY * windowZoom);
-        frame.setVisible(true);
+        frame.setVisible(true);*/
+        MainWindow mainWin = new MainWindow();
+        mainWin.setVisible(true);
     }
 }

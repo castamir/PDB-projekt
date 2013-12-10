@@ -71,7 +71,7 @@ public class Sluzby extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(detail_dne_table);
 
-        date_field.setText("dd.mm.yy");
+        date_field.setText("dd/mm/yy");
         date_field.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 date_fieldActionPerformed(evt);
@@ -99,7 +99,7 @@ public class Sluzby extends javax.swing.JPanel {
                                 .addComponent(den_label)
                                 .addGap(1, 1, 1)
                                 .addComponent(date_field, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGap(18, 18, 18)
                                 .addComponent(kalendar))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -110,13 +110,13 @@ public class Sluzby extends javax.swing.JPanel {
             .addGroup(wrapperLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(nazev_skuzby)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(wrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(kalendar)
                     .addGroup(wrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(date_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(den_label)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(den_label))
+                    .addComponent(kalendar))
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 557, Short.MAX_VALUE)
                 .addContainerGap())
         );
