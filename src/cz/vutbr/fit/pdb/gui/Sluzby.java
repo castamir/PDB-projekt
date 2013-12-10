@@ -72,6 +72,11 @@ public class Sluzby extends javax.swing.JPanel {
         jScrollPane1.setViewportView(detail_dne_table);
 
         date_field.setText("dd.mm.yy");
+        date_field.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                date_fieldActionPerformed(evt);
+            }
+        });
 
         kalendar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Calender Month.png"))); // NOI18N
         kalendar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -147,6 +152,10 @@ public class Sluzby extends javax.swing.JPanel {
         dp.setSelectedDate(selectedDate);
         dp.start(date_field);
     }//GEN-LAST:event_kalendarMouseClicked
+
+    private void date_fieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_date_fieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_date_fieldActionPerformed
 
      private Locale getLocale(String loc) {
         if (loc != null && loc.length() > 0) {
