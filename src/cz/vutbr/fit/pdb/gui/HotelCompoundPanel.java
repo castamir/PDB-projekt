@@ -2,7 +2,7 @@ package cz.vutbr.fit.pdb.gui;
 
 import cz.vutbr.fit.pdb.application.ServiceLocator;
 import java.awt.Color;
-import java.awt.Component;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.*;
@@ -10,9 +10,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 import oracle.jdbc.pool.OracleDataSource;
 import oracle.spatial.geometry.JGeometry;
 import java.awt.Shape;
@@ -28,8 +27,8 @@ public class HotelCompoundPanel extends JPanel implements MouseListener {
 
     private static final long serialVersionUID = 1L;
     //private double zoom = 1.0;
-    private List<Shape> shapes;
     private Sluzby parentPanel;
+    private Map<String, Shape> shapes;
 
     public HotelCompoundPanel() {
         this.addMouseListener(this);
@@ -47,10 +46,11 @@ public class HotelCompoundPanel extends JPanel implements MouseListener {
         return shape;
     }
 
-    public void loadShapesFromDb(List<Shape> shapes) throws SQLException, Exception {
+    public void loadShapesFromDb() throws SQLException, Exception {
         if (shapes == null) {
-            shapes = new ArrayList<>();
+            shapes = new HashMap<>();
         }
+
 
         ServiceLocator serviceLocator = new ServiceLocator();
 
@@ -61,7 +61,8 @@ public class HotelCompoundPanel extends JPanel implements MouseListener {
                 JGeometry jGeometry = JGeometry.load(image);
                 Shape shape = jGeometry2Shape(jGeometry);
                 if (shape != null) {
-                    shapes.add(shape);
+                    shapes.put(resultSet.getString("nazev"), shape);
+                    //shapes.add(shape);
                 }
             }
         }
@@ -81,23 +82,23 @@ public class HotelCompoundPanel extends JPanel implements MouseListener {
         Graphics2D g2D = (Graphics2D) g;
         //super.paint(g2D);
 
-        if (shapes == null) {
-            shapes = new ArrayList<>();
-
-            try {
-                loadShapesFromDb(shapes);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        try {
+            loadShapesFromDb();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        for (Iterator<Shape> iterator = shapes.iterator(); iterator.hasNext();) {
-            Shape shape = iterator.next();
+
+        for (Map.Entry<String, Shape> entry : shapes.entrySet()) {
+            //Shape shape = iterator.next();
             //g2D.setTransform(a);
             g2D.setPaint(Color.GRAY);
-            g2D.fill(shape);
+            g2D.fill(entry.getValue());
             g2D.setPaint(Color.BLACK);
-            g2D.draw(shape);
+            g2D.draw(entry.getValue());
+            g2D.setColor(Color.lightGray);
+            g2D.setFont(new Font("Verdana", Font.BOLD, 11));
+            g2D.drawString(entry.getKey(), (int) entry.getValue().getBounds2D().getMinX() + 5, (int) entry.getValue().getBounds2D().getMaxY() - 5);
         }
     }
 
