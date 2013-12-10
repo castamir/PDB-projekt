@@ -3,6 +3,7 @@ package cz.vutbr.fit.pdb.gui;
 import cz.vutbr.fit.pdb.config.Loader;
 import cz.vutbr.fit.pdb.ServiceLocator;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.*;
@@ -16,6 +17,11 @@ import java.util.List;
 import oracle.jdbc.pool.OracleDataSource;
 import oracle.spatial.geometry.JGeometry;
 import java.awt.Shape;
+<<<<<<< HEAD
+=======
+import java.awt.geom.AffineTransform;
+import javax.swing.JFrame;
+>>>>>>> 0937fc2d6b85d1c77bc576c643f1a47fcf1e5114
 import javax.swing.JPanel;
 
 /**
@@ -27,11 +33,12 @@ import javax.swing.JPanel;
 public class HotelCompoundPanel extends JPanel implements MouseListener {
 
     private static final long serialVersionUID = 1L;
+    private double zoom = 1.0;
 
     public HotelCompoundPanel() {
         this.addMouseListener(this);
     }
-
+    
     public Shape jGeometry2Shape(JGeometry jGeometry) {
         Shape shape;
         switch (jGeometry.getType()) {
@@ -67,8 +74,18 @@ public class HotelCompoundPanel extends JPanel implements MouseListener {
 
     @Override
     public void paint(Graphics g) {
+        //g.clearRect(0, 0, getWidth(), getHeight());
+        super.paint(g);
+        AffineTransform a = new AffineTransform();
+        AffineTransform a2 = new AffineTransform();
+        a2.setToIdentity();
+        a2.translate(0, 50);
+        a.concatenate(a2);
+        a.scale(zoom, zoom);
         List<Shape> shapes = new ArrayList<>();
         Graphics2D g2D = (Graphics2D) g;
+        g2D.setTransform(a);
+        super.paint(g2D);
         try {
             loadShapesFromDb(shapes);
         } catch (Exception e) {
@@ -124,5 +141,10 @@ public class HotelCompoundPanel extends JPanel implements MouseListener {
 
     @Override
     public void mouseExited(MouseEvent e) {
+    }
+    
+    public void setZoom(double zoomFactor) {
+        zoom = zoomFactor;
+        repaint();
     }
 }
