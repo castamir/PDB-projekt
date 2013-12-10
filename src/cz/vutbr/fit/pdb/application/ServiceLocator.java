@@ -1,5 +1,6 @@
-package cz.vutbr.fit.pdb;
+package cz.vutbr.fit.pdb.application;
 
+import cz.vutbr.fit.pdb.config.Loader;
 import java.sql.SQLException;
 import java.util.Properties;
 import oracle.jdbc.pool.OracleDataSource;
@@ -14,8 +15,9 @@ public class ServiceLocator {
 
     private Properties properties;
 
-    public ServiceLocator(Properties properties) {
-        this.properties = properties;
+    public ServiceLocator() {
+        Loader loader = new Loader();
+        this.properties = loader.getProperties();
     }
 
     public OracleDataSource getConnection() throws SQLException {

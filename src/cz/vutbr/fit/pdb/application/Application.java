@@ -1,7 +1,5 @@
 package cz.vutbr.fit.pdb.application;
 
-import cz.vutbr.fit.pdb.config.Loader;
-import cz.vutbr.fit.pdb.ServiceLocator;
 import cz.vutbr.fit.pdb.gui.MainWindow;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -56,8 +54,7 @@ public class Application extends JPanel {
          myShapes = new HashMap<String, Shape>();
          }*/
 
-        Loader loader = new Loader();
-        ServiceLocator serviceLocator = new ServiceLocator(loader.getProperties());
+        ServiceLocator serviceLocator = new ServiceLocator();
 
         OracleDataSource ods = serviceLocator.getConnection();
         try (Connection conn = ods.getConnection(); Statement stmt = conn.createStatement(); ResultSet resultSet = stmt.executeQuery("select nazev, geometrie from mapa")) {

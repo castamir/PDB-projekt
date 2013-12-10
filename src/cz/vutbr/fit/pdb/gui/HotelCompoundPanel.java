@@ -1,9 +1,8 @@
 package cz.vutbr.fit.pdb.gui;
 
 import cz.vutbr.fit.pdb.config.Loader;
-import cz.vutbr.fit.pdb.ServiceLocator;
+import cz.vutbr.fit.pdb.application.ServiceLocator;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.*;
@@ -18,7 +17,6 @@ import oracle.jdbc.pool.OracleDataSource;
 import oracle.spatial.geometry.JGeometry;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 /**
@@ -55,8 +53,7 @@ public class HotelCompoundPanel extends JPanel implements MouseListener {
             shapes = new ArrayList<>();
         }
 
-        Loader loader = new Loader();
-        ServiceLocator serviceLocator = new ServiceLocator(loader.getProperties());
+        ServiceLocator serviceLocator = new ServiceLocator();
 
         OracleDataSource ods = serviceLocator.getConnection();
         try (Connection conn = ods.getConnection(); Statement stmt = conn.createStatement(); ResultSet resultSet = stmt.executeQuery("select nazev, geometrie from areal")) {
@@ -106,8 +103,7 @@ public class HotelCompoundPanel extends JPanel implements MouseListener {
     }
 
     private void objectAtPoint(int x, int y) throws SQLException, Exception {
-        Loader loader = new Loader();
-        ServiceLocator serviceLocator = new ServiceLocator(loader.getProperties());
+        ServiceLocator serviceLocator = new ServiceLocator();
 
         OracleDataSource ods = serviceLocator.getConnection();
         try (Connection conn = ods.getConnection(); Statement stmt = conn.createStatement(); ResultSet resultSet = stmt.executeQuery("select nazev from areal where SDO_RELATE(geometrie, SDO_GEOMETRY(2001, NULL, SDO_POINT_TYPE(" + x + "," + y + ",NULL), NULL, NULL), 'mask=contains') = 'TRUE'")) {
