@@ -42,6 +42,8 @@ public class HotelCompoundPanel extends JPanel implements MouseListener
 {
     private static final long serialVersionUID = 1L;
     private double zoom = 1.0;
+    
+    private List<Shape> shapes;
 
     public HotelCompoundPanel() {
         this.addMouseListener(this);
@@ -90,14 +92,20 @@ public class HotelCompoundPanel extends JPanel implements MouseListener
         a2.translate(0, 50);
         a.concatenate(a2);
         a.scale(zoom, zoom);
-        List<Shape> shapes = new ArrayList<>();
+        
         Graphics2D g2D = (Graphics2D) g;
         //super.paint(g2D);
-        try {
-            loadShapesFromDb(shapes);
-        } catch (Exception e) {
-            e.printStackTrace();
+        
+        if (shapes == null) {
+            shapes = new ArrayList<>();
+
+            try {
+                loadShapesFromDb(shapes);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+        
         for (Iterator<Shape> iterator = shapes.iterator(); iterator.hasNext();) {
             Shape shape = iterator.next();
             g2D.setTransform(a);
