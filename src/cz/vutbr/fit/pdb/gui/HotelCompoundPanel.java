@@ -1,6 +1,5 @@
 package cz.vutbr.fit.pdb.gui;
 
-import cz.vutbr.fit.pdb.config.Loader;
 import cz.vutbr.fit.pdb.application.ServiceLocator;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -16,7 +15,6 @@ import java.util.List;
 import oracle.jdbc.pool.OracleDataSource;
 import oracle.spatial.geometry.JGeometry;
 import java.awt.Shape;
-import java.awt.geom.AffineTransform;
 import javax.swing.JPanel;
 
 /**
