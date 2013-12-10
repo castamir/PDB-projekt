@@ -74,10 +74,10 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="den_label" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
                                   <Component id="date_field" min="-2" pref="100" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="kalendar_ikona" min="-2" max="-2" attributes="0"/>
+                                  <Component id="kalendar_tl" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <Component id="jScrollPane1" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
@@ -97,10 +97,10 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="den_label" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="date_field" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="kalendar_ikona" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="kalendar_tl" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="jScrollPane1" pref="505" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" pref="502" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -114,12 +114,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="den_label">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Den"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JFormattedTextField" name="date_field">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="datum"/>
+            <Property name="text" type="java.lang.String" value="Den:"/>
           </Properties>
         </Component>
         <Container class="javax.swing.JScrollPane" name="jScrollPane1">
@@ -164,10 +159,18 @@
             </Component>
           </SubComponents>
         </Container>
-        <Component class="javax.swing.JLabel" name="kalendar_ikona">
+        <Component class="cz.vutbr.fit.pdb.utils.ObservingTextField" name="date_field">
           <Properties>
-            <Property name="text" type="java.lang.String" value="IKONA"/>
+            <Property name="text" type="java.lang.String" value="dd.mm.yy"/>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="kalendar_tl">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Kalend&#xe1;&#x159;"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="kalendar_tlActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

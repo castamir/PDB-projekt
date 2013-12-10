@@ -1,5 +1,9 @@
 package cz.vutbr.fit.pdb.gui;
 
+import cz.vutbr.fit.pdb.utils.DatePicker;
+import java.util.Date;
+import java.util.Locale;
+
 /**
  *
  * @author Doma
@@ -26,10 +30,10 @@ public class Sluzby extends javax.swing.JPanel {
         wrapper = new javax.swing.JPanel();
         nazev_skuzby = new javax.swing.JLabel();
         den_label = new javax.swing.JLabel();
-        date_field = new javax.swing.JFormattedTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         detail_dne_table = new javax.swing.JTable();
-        kalendar_ikona = new javax.swing.JLabel();
+        date_field = new cz.vutbr.fit.pdb.utils.ObservingTextField();
+        kalendar_tl = new javax.swing.JButton();
 
         panel_sluzby.setBorder(javax.swing.BorderFactory.createTitledBorder("Vyberte službu"));
 
@@ -46,9 +50,7 @@ public class Sluzby extends javax.swing.JPanel {
 
         nazev_skuzby.setText("Nazev sluzby");
 
-        den_label.setText("Den");
-
-        date_field.setText("datum");
+        den_label.setText("Den:");
 
         detail_dne_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -69,7 +71,14 @@ public class Sluzby extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(detail_dne_table);
 
-        kalendar_ikona.setText("IKONA");
+        date_field.setText("dd.mm.yy");
+
+        kalendar_tl.setText("Kalendář");
+        kalendar_tl.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                kalendar_tlActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout wrapperLayout = new javax.swing.GroupLayout(wrapper);
         wrapper.setLayout(wrapperLayout);
@@ -83,10 +92,10 @@ public class Sluzby extends javax.swing.JPanel {
                         .addGroup(wrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(wrapperLayout.createSequentialGroup()
                                 .addComponent(den_label)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGap(1, 1, 1)
                                 .addComponent(date_field, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(kalendar_ikona))
+                                .addComponent(kalendar_tl))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -100,9 +109,9 @@ public class Sluzby extends javax.swing.JPanel {
                 .addGroup(wrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(den_label)
                     .addComponent(date_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(kalendar_ikona))
+                    .addComponent(kalendar_tl))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 505, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 502, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -128,12 +137,22 @@ public class Sluzby extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void kalendar_tlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kalendar_tlActionPerformed
+        //String lang = null;
+        final Locale locale = getLocale();
+        DatePicker dp = new DatePicker(date_field, locale);
+        // previously selected date
+        Date selectedDate = dp.parseDate(date_field.getText());
+        dp.setSelectedDate(selectedDate);
+        dp.start(date_field);
+    }//GEN-LAST:event_kalendar_tlActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JFormattedTextField date_field;
+    private cz.vutbr.fit.pdb.utils.ObservingTextField date_field;
     private javax.swing.JLabel den_label;
     private javax.swing.JTable detail_dne_table;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel kalendar_ikona;
+    private javax.swing.JButton kalendar_tl;
     private javax.swing.JLabel nazev_skuzby;
     private javax.swing.JPanel panel_sluzby;
     private javax.swing.JPanel wrapper;

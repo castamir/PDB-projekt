@@ -1,4 +1,4 @@
-package cz.vutbr.fit.pdb.application;
+package cz.vutbr.fit.pdb.utils;
 
 
 import java.awt.BorderLayout;

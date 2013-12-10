@@ -1,4 +1,4 @@
-package cz.vutbr.fit.pdb.application;
+package cz.vutbr.fit.pdb.utils;
 
 import java.util.Calendar;
 import java.util.Observable;
