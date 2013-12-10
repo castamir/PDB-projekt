@@ -33,7 +33,7 @@ public class Sluzby extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         detail_dne_table = new javax.swing.JTable();
         date_field = new cz.vutbr.fit.pdb.utils.ObservingTextField();
-        kalendar_tl = new javax.swing.JButton();
+        kalendar = new javax.swing.JLabel();
 
         panel_sluzby.setBorder(javax.swing.BorderFactory.createTitledBorder("Vyberte službu"));
 
@@ -73,10 +73,10 @@ public class Sluzby extends javax.swing.JPanel {
 
         date_field.setText("dd.mm.yy");
 
-        kalendar_tl.setText("Kalendář");
-        kalendar_tl.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                kalendar_tlActionPerformed(evt);
+        kalendar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Calender Month.png"))); // NOI18N
+        kalendar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                kalendarMouseClicked(evt);
             }
         });
 
@@ -95,7 +95,7 @@ public class Sluzby extends javax.swing.JPanel {
                                 .addGap(1, 1, 1)
                                 .addComponent(date_field, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(kalendar_tl))
+                                .addComponent(kalendar))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -105,13 +105,14 @@ public class Sluzby extends javax.swing.JPanel {
             .addGroup(wrapperLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(nazev_skuzby)
+                .addGap(18, 18, 18)
+                .addGroup(wrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(kalendar)
+                    .addGroup(wrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(date_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(den_label)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(wrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(den_label)
-                    .addComponent(date_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(kalendar_tl))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 502, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 557, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -137,22 +138,29 @@ public class Sluzby extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void kalendar_tlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kalendar_tlActionPerformed
-        //String lang = null;
-        final Locale locale = getLocale();
+    private void kalendarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_kalendarMouseClicked
+        String lang = null;
+        final Locale locale = getLocale(lang);
         DatePicker dp = new DatePicker(date_field, locale);
         // previously selected date
         Date selectedDate = dp.parseDate(date_field.getText());
         dp.setSelectedDate(selectedDate);
         dp.start(date_field);
-    }//GEN-LAST:event_kalendar_tlActionPerformed
+    }//GEN-LAST:event_kalendarMouseClicked
 
+     private Locale getLocale(String loc) {
+        if (loc != null && loc.length() > 0) {
+            return new Locale(loc);
+        } else {
+            return Locale.US;
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private cz.vutbr.fit.pdb.utils.ObservingTextField date_field;
     private javax.swing.JLabel den_label;
     private javax.swing.JTable detail_dne_table;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JButton kalendar_tl;
+    private javax.swing.JLabel kalendar;
     private javax.swing.JLabel nazev_skuzby;
     private javax.swing.JPanel panel_sluzby;
     private javax.swing.JPanel wrapper;
