@@ -137,7 +137,8 @@ public class Application extends JPanel {
         Application myApp = new Application();
         
         Sluzby sluzby = new Sluzby();
-        frame.getContentPane().add(sluzby);
+        //frame.getContentPane().add(sluzby);
+        frame.getContentPane().add(new NewPanel());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(maxX * windowZoom, maxY * windowZoom);
         frame.setVisible(true);
