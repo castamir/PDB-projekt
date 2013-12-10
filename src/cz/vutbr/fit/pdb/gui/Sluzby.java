@@ -27,6 +27,7 @@ public class Sluzby extends javax.swing.JPanel {
     private void initComponents() {
 
         panel_sluzby = new javax.swing.JPanel();
+        hotelCompoundPanel1 = new cz.vutbr.fit.pdb.gui.HotelCompoundPanel();
         wrapper = new javax.swing.JPanel();
         nazev_skuzby = new javax.swing.JLabel();
         den_label = new javax.swing.JLabel();
@@ -37,15 +38,26 @@ public class Sluzby extends javax.swing.JPanel {
 
         panel_sluzby.setBorder(javax.swing.BorderFactory.createTitledBorder("Vyberte službu"));
 
+        javax.swing.GroupLayout hotelCompoundPanel1Layout = new javax.swing.GroupLayout(hotelCompoundPanel1);
+        hotelCompoundPanel1.setLayout(hotelCompoundPanel1Layout);
+        hotelCompoundPanel1Layout.setHorizontalGroup(
+            hotelCompoundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 401, Short.MAX_VALUE)
+        );
+        hotelCompoundPanel1Layout.setVerticalGroup(
+            hotelCompoundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 611, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout panel_sluzbyLayout = new javax.swing.GroupLayout(panel_sluzby);
         panel_sluzby.setLayout(panel_sluzbyLayout);
         panel_sluzbyLayout.setHorizontalGroup(
             panel_sluzbyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 350, Short.MAX_VALUE)
+            .addComponent(hotelCompoundPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         panel_sluzbyLayout.setVerticalGroup(
             panel_sluzbyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 611, Short.MAX_VALUE)
+            .addComponent(hotelCompoundPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         nazev_skuzby.setText("Nazev sluzby");
@@ -140,7 +152,7 @@ public class Sluzby extends javax.swing.JPanel {
                     .addComponent(wrapper, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(panel_sluzby, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 9, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -170,6 +182,7 @@ public class Sluzby extends javax.swing.JPanel {
     private cz.vutbr.fit.pdb.utils.ObservingTextField date_field;
     private javax.swing.JLabel den_label;
     private javax.swing.JTable detail_dne_table;
+    private cz.vutbr.fit.pdb.gui.HotelCompoundPanel hotelCompoundPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel kalendar;
     private javax.swing.JLabel nazev_skuzby;

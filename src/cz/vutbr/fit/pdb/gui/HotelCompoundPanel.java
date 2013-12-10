@@ -39,9 +39,6 @@ import javax.swing.JPanel;
 public class HotelCompoundPanel extends JPanel implements MouseListener
 {
     private static final long serialVersionUID = 1L;
-    private static final short maxX = 1000;
-    private static final short maxY = 900;
-    private static final short windowZoom = 1;
 
     public HotelCompoundPanel() {
         this.addMouseListener(this);
