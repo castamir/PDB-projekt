@@ -17,6 +17,9 @@ INSERT INTO USER_SDO_GEOM_METADATA VALUES (
 	NULL
 );
 
+DROP INDEX areal_geometrie_sidx;
+CREATE INDEX areal_geometrie_sidx ON areal(geometrie) indextype is MDSYS.SPATIAL_INDEX;
+
 COMMIT;
 
 -- kontrola validity (na zacatku "valid" muze byt cislo chyby, vizte http://www.ora-code.com/)
