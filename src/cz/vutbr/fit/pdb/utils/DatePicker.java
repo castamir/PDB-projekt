@@ -1,6 +1,5 @@
 package cz.vutbr.fit.pdb.utils;
 
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -44,7 +43,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.event.MouseInputListener;
 
-public class DatePicker extends Observable implements Runnable, WindowFocusListener {
+public final class DatePicker extends Observable implements Runnable, WindowFocusListener {
 
     protected static Font plain = new Font("Arial", Font.PLAIN, 10);
     protected static Font bold = new Font("Arial", Font.BOLD, 10);
@@ -82,42 +81,46 @@ public class DatePicker extends Observable implements Runnable, WindowFocusListe
             setForeground(Color.GRAY);
         }
 
+        @Override
         public void mouseClicked(MouseEvent e) {
             // JOptionPane.showMessageDialog(this,getText());
             parent.dayPicked(Integer.parseInt(getText()));
         }
 
+        @Override
         public void mousePressed(MouseEvent e) {
         }
 
+        @Override
         public void mouseReleased(MouseEvent e) {
         }
         private Border oldBorder;
 
+        @Override
         public void mouseEntered(MouseEvent e) {
             oldBorder = this.getBorder();
-            Border b = BorderFactory
-                    .createBevelBorder(javax.swing.border.BevelBorder.RAISED);
+            Border b;
+            //b = BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED);
             b = BorderFactory.createEtchedBorder();
             this.setBorder(b);
         }
 
+        @Override
         public void mouseExited(MouseEvent e) {
             this.setBorder(oldBorder);
         }
 
+        @Override
         public void mouseDragged(MouseEvent e) {
         }
 
+        @Override
         public void mouseMoved(MouseEvent e) {
         }
     }
 
     public static class MonthPanel extends JPanel {
 
-        /**
-         *
-         */
         private static final long serialVersionUID = 1L;
         private DatePicker parent;
 
@@ -188,11 +191,8 @@ public class DatePicker extends Observable implements Runnable, WindowFocusListe
         }
     }
 
-    public static class NavigatePanel extends JPanel implements ActionListener {
+    public static final class NavigatePanel extends JPanel implements ActionListener {
 
-        /**
-         *
-         */
         private static final long serialVersionUID = 1L;
         private DatePicker parent;
         private JButton premon;
@@ -205,18 +205,19 @@ public class DatePicker extends Observable implements Runnable, WindowFocusListe
             InputStream is = null;
 
             try {
-                is = new BufferedInputStream(DatePicker.class.getClassLoader()
-                        .getResourceAsStream(fileName));
+                is = new BufferedInputStream(DatePicker.class.getClassLoader().getResourceAsStream(fileName));
                 byte[] b = new byte[is.available()];
                 is.read(b);
                 return b;
             } catch (IOException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 return null;
             } finally {
-                try {
-                    is.close();
-                } catch (IOException e) {
+                if (is != null) {
+                    try {
+                        is.close();
+                    } catch (IOException e) {
+                    }
                 }
             }
         }
@@ -225,7 +226,8 @@ public class DatePicker extends Observable implements Runnable, WindowFocusListe
             this.parent = parent;
             setLayout(new BorderLayout());
             Dimension d = new Dimension(20, 20);
-            Box box = new Box(BoxLayout.X_AXIS);
+            Box xbox;
+            xbox = new Box(BoxLayout.X_AXIS);
             preyear = new JButton();
             preyear.setToolTipText(parent.getString("pre.year",
                     "Previous year."));
@@ -233,9 +235,9 @@ public class DatePicker extends Observable implements Runnable, WindowFocusListe
             preyear.setIcon(icon);
             preyear.addActionListener(this);
             preyear.setPreferredSize(d);
-            box.add(preyear);
+            xbox.add(preyear);
 
-            box.add(Box.createHorizontalStrut(3));
+            xbox.add(Box.createHorizontalStrut(3));
 
             premon = new JButton();
             premon
@@ -245,20 +247,20 @@ public class DatePicker extends Observable implements Runnable, WindowFocusListe
             premon.setIcon(icon);
             premon.addActionListener(this);
             premon.setPreferredSize(d);
-            box.add(premon);
+            xbox.add(premon);
 
-            add(box, BorderLayout.WEST);
+            add(xbox, BorderLayout.WEST);
 
-            box = new Box(BoxLayout.X_AXIS);
+            xbox = new Box(BoxLayout.X_AXIS);
             nextmon = new JButton();
             nextmon.setToolTipText(parent.getString("next.mon", "Next month."));
             icon = new ImageIcon(getImage("nextmon.gif"), ">");
             nextmon.setIcon(icon);
             nextmon.setPreferredSize(d);
             nextmon.addActionListener(this);
-            box.add(nextmon);
+            xbox.add(nextmon);
 
-            box.add(Box.createHorizontalStrut(3));
+            xbox.add(Box.createHorizontalStrut(3));
 
             nextyear = new JButton();
             nextyear
@@ -267,9 +269,9 @@ public class DatePicker extends Observable implements Runnable, WindowFocusListe
             nextyear.setIcon(icon);
             nextyear.setPreferredSize(d);
             nextyear.addActionListener(this);
-            box.add(nextyear);
+            xbox.add(nextyear);
 
-            add(box, BorderLayout.EAST);
+            add(xbox, BorderLayout.EAST);
             setCurrentMonth(parent.calendar);
             //setLabel(parent.calendar);
         }
@@ -341,6 +343,7 @@ public class DatePicker extends Observable implements Runnable, WindowFocusListe
 
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             Object src = e.getSource();
             Calendar c = new GregorianCalendar();
@@ -439,6 +442,7 @@ public class DatePicker extends Observable implements Runnable, WindowFocusListe
         SwingUtilities.invokeLater(this);
     }
 
+    @Override
     public void run() {
         screen.pack();
         screen.setVisible(true);
@@ -497,7 +501,7 @@ public class DatePicker extends Observable implements Runnable, WindowFocusListe
         return this.locale == null ? Locale.US : locale;
     }
 
-    public void register(Observer observer) {
+    public final void register(Observer observer) {
         if (observer != null) {
             this.addObserver(observer);
         }
@@ -580,9 +584,11 @@ public class DatePicker extends Observable implements Runnable, WindowFocusListe
         return closeOnSelect;
     }
 
+    @Override
     public void windowGainedFocus(WindowEvent e) {
     }
 
+    @Override
     public void windowLostFocus(WindowEvent e) {
         screen.toFront();
     }
