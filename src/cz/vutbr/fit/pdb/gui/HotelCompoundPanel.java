@@ -1,33 +1,21 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package cz.vutbr.fit.pdb.gui;
 
-import cz.vutbr.fit.pdb.Loader;
+import cz.vutbr.fit.pdb.config.Loader;
 import cz.vutbr.fit.pdb.ServiceLocator;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.*;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-
 import oracle.jdbc.pool.OracleDataSource;
-
 import oracle.spatial.geometry.JGeometry;
 import java.awt.Shape;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 /**
@@ -36,8 +24,8 @@ import javax.swing.JPanel;
  * @author Mikulica Tomáš
  * @author Gajdoš Pavel
  */
-public class HotelCompoundPanel extends JPanel implements MouseListener
-{
+public class HotelCompoundPanel extends JPanel implements MouseListener {
+
     private static final long serialVersionUID = 1L;
 
     public HotelCompoundPanel() {
@@ -60,10 +48,10 @@ public class HotelCompoundPanel extends JPanel implements MouseListener
         if (shapes == null) {
             shapes = new ArrayList<>();
         }
-        
+
         Loader loader = new Loader();
         ServiceLocator serviceLocator = new ServiceLocator(loader.getProperties());
-        
+
         OracleDataSource ods = serviceLocator.getConnection();
         try (Connection conn = ods.getConnection(); Statement stmt = conn.createStatement(); ResultSet resultSet = stmt.executeQuery("select nazev, geometrie from areal")) {
             while (resultSet.next()) {
@@ -94,54 +82,47 @@ public class HotelCompoundPanel extends JPanel implements MouseListener
             g2D.draw(shape);
         }
     }
-    
-    
-    private void objectAtPoint(int x, int y) throws SQLException, Exception
-    {
+
+    private void objectAtPoint(int x, int y) throws SQLException, Exception {
         Loader loader = new Loader();
         ServiceLocator serviceLocator = new ServiceLocator(loader.getProperties());
-        
+
         OracleDataSource ods = serviceLocator.getConnection();
-        try (Connection conn = ods.getConnection(); Statement stmt = conn.createStatement(); ResultSet resultSet = stmt.executeQuery("select nazev from areal where SDO_RELATE(geometrie, SDO_GEOMETRY(2001, NULL, SDO_POINT_TYPE("+x+","+y+",NULL), NULL, NULL), 'mask=contains') = 'TRUE'")) {
-            while (resultSet.next()) {                
+        try (Connection conn = ods.getConnection(); Statement stmt = conn.createStatement(); ResultSet resultSet = stmt.executeQuery("select nazev from areal where SDO_RELATE(geometrie, SDO_GEOMETRY(2001, NULL, SDO_POINT_TYPE(" + x + "," + y + ",NULL), NULL, NULL), 'mask=contains') = 'TRUE'")) {
+            while (resultSet.next()) {
                 System.out.println(resultSet.getString("nazev"));
             }
         }
-        
+
     }
-    
+
 
     /* MouseListener methods */
     @Override
     public void mouseClicked(MouseEvent e) {
-        System.out.println("Mouse clicked at ("+e.getX()+","+e.getY()+")");
-        
+        System.out.println("Mouse clicked at (" + e.getX() + "," + e.getY() + ")");
+
         try {
             this.objectAtPoint(e.getX(), e.getY());
-        }
-        catch (Exception exc) {
+        } catch (Exception exc) {
             exc.printStackTrace();
         }
     }
-    
+
     // povinna implementace metod
     @Override
     public void mouseEntered(MouseEvent e) {
-    
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-    
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-    
     }
-    
+
     @Override
     public void mouseExited(MouseEvent e) {
-       
     }
 }

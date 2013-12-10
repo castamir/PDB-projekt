@@ -1,6 +1,6 @@
 package cz.vutbr.fit.pdb.application;
 
-import cz.vutbr.fit.pdb.Loader;
+import cz.vutbr.fit.pdb.config.Loader;
 import cz.vutbr.fit.pdb.ServiceLocator;
 import cz.vutbr.fit.pdb.gui.MainWindow;
 import java.awt.Color;
