@@ -78,10 +78,10 @@ public class HotelCompoundPanel extends JPanel implements MouseListener {
         a2.translate(0, 50);
         a.concatenate(a2);
         a.scale(zoom, zoom);
-        
+
         Graphics2D g2D = (Graphics2D) g;
         //super.paint(g2D);
-        
+
         if (shapes == null) {
             shapes = new ArrayList<>();
 
@@ -91,7 +91,7 @@ public class HotelCompoundPanel extends JPanel implements MouseListener {
                 e.printStackTrace();
             }
         }
-        
+
         for (Iterator<Shape> iterator = shapes.iterator(); iterator.hasNext();) {
             Shape shape = iterator.next();
             g2D.setTransform(a);
