@@ -43,7 +43,7 @@ public class HotelCompoundPanel extends JPanel implements MouseListener
     public HotelCompoundPanel() {
         this.addMouseListener(this);
     }
-
+    
     public Shape jGeometry2Shape(JGeometry jGeometry) {
         Shape shape;
         switch (jGeometry.getType()) {
