@@ -2,7 +2,9 @@ package cz.vutbr.fit.pdb.application;
 
 import cz.vutbr.fit.pdb.Loader;
 import cz.vutbr.fit.pdb.ServiceLocator;
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
@@ -21,10 +23,12 @@ import oracle.jdbc.pool.OracleDataSource;
 import oracle.spatial.geometry.JGeometry;
 import java.awt.Shape;
 import java.util.HashMap;
-import java.util.Hashtable;
+/*import java.util.Hashtable;
 import java.util.Map;
-import java.util.Map.Entry;
+import java.util.Map.Entry;*/
 import java.util.Set;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -122,9 +126,14 @@ public class Application extends JPanel {
         }
     }
     
+    public void paintComponent(Graphics g){
+        
+    }
+    
     public static void main(String[] args) {
         JFrame frame = new JFrame();
-        frame.getContentPane().add(new Application());
+        Application myApp = new Application();
+        frame.getContentPane().add(myApp);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(maxX * windowZoom, maxY * windowZoom);
         frame.setVisible(true);
