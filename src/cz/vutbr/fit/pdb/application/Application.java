@@ -2,7 +2,9 @@ package cz.vutbr.fit.pdb.application;
 
 import cz.vutbr.fit.pdb.Loader;
 import cz.vutbr.fit.pdb.ServiceLocator;
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
@@ -20,8 +22,17 @@ import oracle.jdbc.pool.OracleDataSource;
 
 import oracle.spatial.geometry.JGeometry;
 import java.awt.Shape;
+import java.util.HashMap;
+/*import java.util.Hashtable;
+import java.util.Map;
+import java.util.Map.Entry;*/
+import java.util.Set;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import cz.vutbr.fit.pdb.gui.Sluzby;
 
 /**
  *
@@ -35,8 +46,12 @@ public class Application extends JPanel {
     private static final short maxX = 1000;
     private static final short maxY = 650;
     private static final short windowZoom = 1;
+    
+    //public List<Shape> shapes;
+    public HashMap<String, Shape> myShapes;
 
     public Application() {
+        myShapes = new HashMap<String, Shape>();
     }
 
     public Shape jGeometry2Shape(JGeometry jGeometry) {
@@ -51,10 +66,13 @@ public class Application extends JPanel {
         return shape;
     }
 
-    public void loadShapesFromDb(List<Shape> shapes) throws SQLException, Exception {
-        if (shapes == null) {
+    public void loadShapesFromDb(HashMap<String, Shape> myShapes) throws SQLException, Exception {
+        /*if (shapes == null) {
             shapes = new ArrayList<>();
-        }
+        }*//*
+        if(myShapes == null) {
+            myShapes = new HashMap<String, Shape>();
+        }*/
         
         Loader loader = new Loader();
         ServiceLocator serviceLocator = new ServiceLocator(loader.getProperties());
@@ -63,28 +81,42 @@ public class Application extends JPanel {
         try (Connection conn = ods.getConnection(); Statement stmt = conn.createStatement(); ResultSet resultSet = stmt.executeQuery("select nazev, geometrie from mapa")) {
             while (resultSet.next()) {
                 byte[] image = resultSet.getBytes("geometrie");
+                String name = new String(resultSet.getBytes("nazev"), "UTF-8");
+                //System.out.println(name);
                 JGeometry jGeometry = JGeometry.load(image);
                 Shape shape = jGeometry2Shape(jGeometry);
-                if (shape != null) {
+                /*if (shape != null) {
                     shapes.add(shape);
+                }*/
+                if(shape != null) {
+                    myShapes.put(name, shape);
                 }
             }
         }
     }
 
+    
     @Override
     public void paint(Graphics g) {
-        List<Shape> shapes = new ArrayList<>();
+        //shapes = new ArrayList<>();
+        //HashMap<String, Shape> myShapes = new HashMap<String, Shape>();
         Graphics2D g2D = (Graphics2D) g;
+        Shape shape;
         int i = 0;
         Color[] colors = {Color.GRAY, Color.YELLOW, Color.BLUE, Color.RED, Color.GREEN, Color.ORANGE, Color.PINK};
         try {
-            loadShapesFromDb(shapes);
+            loadShapesFromDb(myShapes);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        for (Iterator<Shape> iterator = shapes.iterator(); iterator.hasNext();) {
-            Shape shape = iterator.next();
+        //Set<Entry<String, Shape>> grabset = myShapes.entrySet();
+        //Iterator<Map.Entry<String,Shape>> iterator = grabset.iterator();
+        Iterator<String> iterator = myShapes.keySet().iterator();
+        while( iterator.hasNext()) {
+            String key = iterator.next();
+            //Map.Entry<String,Shape> key = (Map.Entry<String,Shape>)iterator.next();
+            //shape = key.getValue();
+            shape = myShapes.get(key);
             g2D.setPaint(colors[i%7]);
             g2D.fill(shape);
             g2D.setPaint(Color.BLACK);
@@ -95,10 +127,17 @@ public class Application extends JPanel {
             }
         }
     }
-
+    
+    public void paintComponent(Graphics g){
+        
+    }
+    
     public static void main(String[] args) {
         JFrame frame = new JFrame();
-        frame.getContentPane().add(new Application());
+        Application myApp = new Application();
+        
+        Sluzby sluzby = new Sluzby();
+        frame.getContentPane().add(sluzby);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(maxX * windowZoom, maxY * windowZoom);
         frame.setVisible(true);
