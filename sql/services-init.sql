@@ -24,11 +24,13 @@ CREATE TABLE sluzby_rezervace (
 	id NUMBER,
 	sluzba VARCHAR(32),
 	zakaznik VARCHAR(32),
+	zacatek DATE,
+	konec DATE,
 	CONSTRAINT pk_id
 	PRIMARY KEY (id),
 	CONSTRAINT fk_sluzba
 	FOREIGN KEY (sluzba)
 	REFERENCES sluzby(nazev)
-) AS VALIDTIME;
+);
 
 COMMIT;

@@ -2,3 +2,4 @@
 *config.local.properties
 /build/
 /dist/
+nbproject/genfiles.properties
