@@ -1,21 +1,15 @@
 package cz.vutbr.fit.pdb.gui;
 
-import cz.vutbr.fit.pdb.application.ServiceLocator;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.*;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Map;
-import java.util.HashMap;
-import oracle.jdbc.pool.OracleDataSource;
-import oracle.spatial.geometry.JGeometry;
 import java.awt.Shape;
 import javax.swing.JPanel;
+
+import cz.vutbr.fit.pdb.models.ArealModel;
 
 /**
  *
@@ -29,43 +23,12 @@ public class HotelCompoundPanel extends JPanel implements MouseListener {
     //private double zoom = 1.0;
     private Sluzby parentPanel;
     private Map<String, Shape> shapes;
+    
+    private ArealModel arealModel;
 
     public HotelCompoundPanel() {
         this.addMouseListener(this);
-    }
-
-    public Shape jGeometry2Shape(JGeometry jGeometry) {
-        Shape shape;
-        switch (jGeometry.getType()) {
-            case JGeometry.GTYPE_POLYGON:
-                shape = jGeometry.createShape();
-                break;
-            default:
-                return null; // TODO: throw exception
-        }
-        return shape;
-    }
-
-    public void loadShapesFromDb() throws SQLException, Exception {
-        if (shapes == null) {
-            shapes = new HashMap<>();
-        }
-
-
-        ServiceLocator serviceLocator = new ServiceLocator();
-
-        OracleDataSource ods = serviceLocator.getConnection();
-        try (Connection conn = ods.getConnection(); Statement stmt = conn.createStatement(); ResultSet resultSet = stmt.executeQuery("select nazev, geometrie from areal")) {
-            while (resultSet.next()) {
-                byte[] image = resultSet.getBytes("geometrie");
-                JGeometry jGeometry = JGeometry.load(image);
-                Shape shape = jGeometry2Shape(jGeometry);
-                if (shape != null) {
-                    shapes.put(resultSet.getString("nazev"), shape);
-                    //shapes.add(shape);
-                }
-            }
-        }
+        arealModel = new ArealModel();
     }
 
     @Override
@@ -82,10 +45,12 @@ public class HotelCompoundPanel extends JPanel implements MouseListener {
         Graphics2D g2D = (Graphics2D) g;
         //super.paint(g2D);
 
-        try {
-            loadShapesFromDb();
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (shapes == null) {
+            try {
+                shapes = arealModel.loadShapes();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
 
@@ -102,19 +67,6 @@ public class HotelCompoundPanel extends JPanel implements MouseListener {
         }
     }
 
-    private void objectAtPoint(int x, int y) throws SQLException, Exception {
-        ServiceLocator serviceLocator = new ServiceLocator();
-
-        OracleDataSource ods = serviceLocator.getConnection();
-        try (Connection conn = ods.getConnection(); Statement stmt = conn.createStatement(); ResultSet resultSet = stmt.executeQuery("select nazev from areal where SDO_RELATE(geometrie, SDO_GEOMETRY(2001, NULL, SDO_POINT_TYPE(" + x + "," + y + ",NULL), NULL, NULL), 'mask=contains') = 'TRUE'")) {
-            while (resultSet.next()) {
-                System.out.println(resultSet.getString("nazev"));
-                parentPanel.updateTitle(resultSet.getString("nazev"));
-            }
-        }
-
-    }
-
     public void setParentPanel(Sluzby panel) {
         parentPanel = panel;
     }
@@ -126,9 +78,12 @@ public class HotelCompoundPanel extends JPanel implements MouseListener {
         System.out.println("Mouse clicked at (" + e.getX() + "," + e.getY() + ")");
 
         try {
-            this.objectAtPoint(e.getX(), e.getY());
-        } catch (Exception ext) {
-            ext.printStackTrace();
+            String buildingName = arealModel.getBuildingAtPoint(e.getX(), e.getY());
+
+            System.out.println(buildingName);
+            parentPanel.updateTitle(buildingName);    
+        } catch (Exception exc) {
+            exc.printStackTrace();
         }
     }
 
