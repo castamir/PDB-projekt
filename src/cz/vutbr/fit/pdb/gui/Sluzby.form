@@ -234,7 +234,7 @@
             <Property name="text" type="java.lang.String" value="dd/mm/yy"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="date_fieldActionPerformed"/>
+            <EventHandler event="caretUpdate" listener="javax.swing.event.CaretListener" parameters="javax.swing.event.CaretEvent" handler="date_fieldCaretUpdate"/>
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="kalendar">

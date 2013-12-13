@@ -24,6 +24,12 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
+
+
+// GET DATE & TIME IN ANY FORMAT
+import java.util.Calendar;
+import java.text.SimpleDateFormat;
+
 /**
  *
  * @author Doma
@@ -39,12 +45,19 @@ public class Sluzby extends javax.swing.JPanel {
         
         modelSluzby = new SluzbyModel();
         modelZakaznik = new ZakaznikModel();
+        date_field.setText(now());
         
         try {            
             initTable();
         } catch (Exception ex) {
             Logger.getLogger(Sluzby.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public static String now() {
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(cal.getTime());
     }
 
     private void comboBoxAction(ActionEvent evt) {
@@ -133,12 +146,16 @@ public class Sluzby extends javax.swing.JPanel {
 
     public void updateTitle(String name) {
         nazev_sluzby.setText(name);
+        updateTable(name, date_field.getText());
+    }
+
+    public void updateTable(String serviceName, String formatedDate) {
         model = (DefaultTableModel) detail_dne_table.getModel();
         model.getDataVector().removeAllElements();
 
         try {
-            System.out.print(name);
-            List<Map<String, Object>> myRow = modelSluzby.getRezervace(name, "2013-12-13");
+            System.out.print(serviceName);
+            List<Map<String, Object>> myRow = modelSluzby.getRezervace(serviceName, formatedDate);
             //Ziskani modelu tabulky
             Iterator<Map<String, Object>> it = myRow.iterator();
 
@@ -249,9 +266,9 @@ public class Sluzby extends javax.swing.JPanel {
         jScrollPane1.setViewportView(detail_dne_table);
 
         date_field.setText("dd/mm/yy");
-        date_field.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                date_fieldActionPerformed(evt);
+        date_field.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                date_fieldCaretUpdate(evt);
             }
         });
 
@@ -362,10 +379,6 @@ public class Sluzby extends javax.swing.JPanel {
         dp.start(date_field);
     }//GEN-LAST:event_kalendarMouseClicked
 
-    private void date_fieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_date_fieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_date_fieldActionPerformed
-
     private void detail_dne_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_detail_dne_tableMouseClicked
         //int row = detail_dne_table.rowAtPoint(evt.getPoint());
         //int col = detail_dne_table.columnAtPoint(evt.getPoint());
@@ -388,6 +401,13 @@ public class Sluzby extends javax.swing.JPanel {
             model.removeRow(detail_dne_table.getSelectedRow());
         }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void date_fieldCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_date_fieldCaretUpdate
+        String formatedDate = date_field.getText();
+        if (formatedDate.length() > 0) {
+            updateTable(nazev_sluzby.getText(), formatedDate);
+        }
+    }//GEN-LAST:event_date_fieldCaretUpdate
     private String item;
     
     private SluzbyModel modelSluzby;
