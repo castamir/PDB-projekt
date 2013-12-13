@@ -1,19 +1,6 @@
 package cz.vutbr.fit.pdb.application;
 
 import cz.vutbr.fit.pdb.gui.MainWindow;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Iterator;
-import oracle.jdbc.pool.OracleDataSource;
-import oracle.spatial.geometry.JGeometry;
-import java.awt.Shape;
-import java.util.HashMap;
-import javax.swing.JPanel;
 
 /**
  *
