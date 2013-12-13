@@ -80,7 +80,7 @@ public class Sluzby extends javax.swing.JPanel {
         this.initComboBoxItems();
         
         comboBox = new JComboBox();
-        comboBox.setModel(getComboBoxItems(items));
+        comboBox.setModel(getComboBoxItems(comboBoxItems));
         comboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -166,7 +166,11 @@ public class Sluzby extends javax.swing.JPanel {
                 if (value.get("id") != null) {
                     stav = "rezervovano";
                 }
-                model.addRow(new Object[]{hodina, stav, (String) comboBox.getItemAt(2)});
+                
+                int comboBoxItemId = 0;
+                if (value.get("id") != null) { comboBoxItemId = customer_databaseIdToComboBoxId.get(value.get("id")); }
+                
+                model.addRow(new Object[]{hodina, stav, (String) comboBox.getItemAt(comboBoxItemId)});
             }
 
         } catch (SQLException ex) {
