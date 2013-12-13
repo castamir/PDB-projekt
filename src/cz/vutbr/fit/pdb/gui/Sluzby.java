@@ -51,7 +51,6 @@ public class Sluzby extends javax.swing.JPanel {
         
         try {            
             initTable();
-            modelSluzby.novaRezervace(3, "Wellness", "2013-12-15", 14, "neco");
         } catch (Exception ex) {
             Logger.getLogger(Sluzby.class.getName()).log(Level.SEVERE, null, ex);
         }
