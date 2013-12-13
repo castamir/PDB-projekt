@@ -2,7 +2,9 @@ DROP TABLE areal;
 
 CREATE TABLE areal (
 	nazev VARCHAR(32),
-	geometrie SDO_GEOMETRY
+	geometrie SDO_GEOMETRY,
+	CONSTRAINT pk_nazev
+	PRIMARY KEY (nazev)
 );
 
 -- nazvy tabulky a sloupce musi byt velkymi pismeny
