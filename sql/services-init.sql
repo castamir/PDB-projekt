@@ -76,5 +76,16 @@ INSERT INTO zakaznik (jmeno) VALUES ('Mira');
 INSERT INTO zakaznik (jmeno) VALUES ('Tom');
 INSERT INTO zakaznik (jmeno) VALUES ('Pavel');
 
+INSERT INTO sluzby (nazev, objekt, dostupnost_od, dostupnost_do)
+VALUES ('Tennisové kurty', 'Tenisové kurty', 8, 18);
+
+INSERT INTO sluzby_rezervace (sluzba, zakaznik, den, hodina)
+VALUES ('Tennisové kurty', 2, TO_DATE('2013-12-13', 'yyyy-mm-dd'), 9);
+
+INSERT INTO sluzby_rezervace (sluzba, zakaznik, den, hodina)
+VALUES ('Tennisové kurty', 1, '14.12.13', 12);
+
 select * from zakaznik;
 select * from areal;
+select * from sluzby;
+select * from sluzby_rezervace;
