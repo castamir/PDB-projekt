@@ -1,12 +1,18 @@
 package cz.vutbr.fit.pdb.gui;
 
+import cz.vutbr.fit.pdb.models.SluzbyModel;
 import cz.vutbr.fit.pdb.utils.DatePicker;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultCellEditor;
@@ -30,7 +36,11 @@ public class Sluzby extends javax.swing.JPanel {
     public Sluzby() {
         initComponents();
         hotelCompoundPanel1.setParentPanel(this);
-        initTable();
+        try {
+            initTable();
+        } catch (Exception ex) {
+            Logger.getLogger(Sluzby.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void comboBoxAction(ActionEvent evt) {
@@ -47,7 +57,10 @@ public class Sluzby extends javax.swing.JPanel {
         return new DefaultComboBoxModel(toUpdate);
     }
     
-    private void initTable(){
+    private void initTable() throws Exception{
+        modelSluzby = new SluzbyModel();
+        List<Map<String,Object>> myRow = modelSluzby.getRezervace("Tennisové kurty","2013-10-13");
+
         TableColumn tc = this.detail_dne_table.getColumnModel().getColumn(2);
         comboBox = new JComboBox();
         comboBox.setModel(getComboBoxItems(comboBoxItems));
@@ -67,8 +80,9 @@ public class Sluzby extends javax.swing.JPanel {
         
         //Ziskani modelu tabulky
         model = (DefaultTableModel)detail_dne_table.getModel();
-        
-        //model.addRow(new Object[]{"Lala","Lala",(String)comboBox.getItemAt(2)});
+        Iterator<Map<String,Object>> it = myRow.iterator();
+        //hodina.toString();
+        //model.addRow(new Object[]{hodina.toString(),"Lala",(String)comboBox.getItemAt(2)});
         
     }
     
@@ -327,6 +341,7 @@ public class Sluzby extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private String item;
+    private SluzbyModel modelSluzby;
     private String[] tmp = {null,"asdasdasd","2","3","4","5"};
     private String[] comboBoxItems = {"asdas","asdas","asddsa"};
     private JComboBox comboBox;
