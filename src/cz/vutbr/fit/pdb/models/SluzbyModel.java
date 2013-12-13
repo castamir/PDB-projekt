@@ -1,12 +1,9 @@
 
 package cz.vutbr.fit.pdb.models;
 
-import cz.vutbr.fit.pdb.models.BaseModel;
-
 import java.sql.Connection;
 
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -29,6 +26,12 @@ import oracle.jdbc.pool.OracleDataSource;
  * @author Gajdoš Pavel
  */
 public class SluzbyModel extends BaseModel {
+    
+    private ZakaznikModel zakaznikModel;
+    
+    public SluzbyModel() {
+        zakaznikModel = new ZakaznikModel();
+    }
     
     public Map<String,Object> getSluzba(String jmeno) throws SQLException, Exception {
         
@@ -93,7 +96,7 @@ public class SluzbyModel extends BaseModel {
                     Map<String,Object> row = result.get(resultSet.getInt("hodina")-(int)sluzbaInfo.get("dostupnost_od"));
 
                     row.put("id", resultSet.getInt("id"));
-                    row.put("zakaznik", resultSet.getInt("zakaznik"));
+                    row.put("zakaznik", zakaznikModel.get(resultSet.getInt("zakaznik")));
                 }
             }
         }
