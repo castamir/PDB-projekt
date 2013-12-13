@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.HashMap;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 
 import oracle.jdbc.pool.OracleDataSource;
         
@@ -80,8 +81,11 @@ public class SluzbyModel extends BaseModel {
              PreparedStatement stmt = conn.prepareStatement("SELECT * FROM sluzby_rezervace WHERE sluzba = ? AND den = ?");
             ) 
         {
+            SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+            Date d = new Date(date.parse(datum).getTime());
+            
             stmt.setString(1, sluzba);
-            stmt.setString(2, datum);
+            stmt.setDate(2, d);
             
             try (ResultSet resultSet = stmt.executeQuery()) {
                 while (resultSet.next()) {
