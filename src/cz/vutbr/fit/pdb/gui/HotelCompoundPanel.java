@@ -127,8 +127,8 @@ public class HotelCompoundPanel extends JPanel implements MouseListener {
 
         try {
             this.objectAtPoint(e.getX(), e.getY());
-        } catch (Exception exc) {
-            exc.printStackTrace();
+        } catch (Exception ext) {
+            ext.printStackTrace();
         }
     }
 
