@@ -47,8 +47,11 @@ public class Sluzby extends javax.swing.JPanel {
         modelZakaznik = new ZakaznikModel();
         date_field.setText(now());
         
+        
+        
         try {            
             initTable();
+            modelSluzby.novaRezervace(3, "Wellness", "2013-12-15", 14, "neco");
         } catch (Exception ex) {
             Logger.getLogger(Sluzby.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -171,7 +174,7 @@ public class Sluzby extends javax.swing.JPanel {
                 int comboBoxItemId = 0;
                 if (value.get("id") != null) { comboBoxItemId = customer_databaseIdToComboBoxId.get(zakaznik.get("id")); }
                 
-                model.addRow(new Object[]{hodina, stav, (String) comboBox.getItemAt(comboBoxItemId)});
+                model.addRow(new Object[]{hodina, stav, (String) comboBox.getItemAt(comboBoxItemId), value.get("poznamka")});
             }
 
         } catch (SQLException ex) {
