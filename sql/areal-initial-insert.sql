@@ -45,7 +45,7 @@ INSERT INTO areal VALUES (
 	'Wellness',
 	SDO_GEOMETRY(2003, NULL, NULL, -- 2D polygon
 		SDO_ELEM_INFO_ARRAY(1, 1003, 3), -- exterior rectangle (left-up, right-bottom)
-		SDO_ORDINATE_ARRAY(320,20, 380,180)
+		SDO_ORDINATE_ARRAY(300,20, 380,180)
 	)
 );
 
@@ -53,7 +53,7 @@ INSERT INTO areal VALUES (
 	'Hlídání dìtí',
 	SDO_GEOMETRY(2003, NULL, NULL, -- 2D polygon
 		SDO_ELEM_INFO_ARRAY(1, 1003, 3), -- exterior rectangle (left-up, right-bottom)
-		SDO_ORDINATE_ARRAY(320,200, 380,240)
+		SDO_ORDINATE_ARRAY(300,200, 380,240)
 	)
 );
 
