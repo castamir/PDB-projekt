@@ -1,11 +1,15 @@
 package cz.vutbr.fit.pdb.gui;
 
 import cz.vutbr.fit.pdb.models.SluzbyModel;
+import cz.vutbr.fit.pdb.models.ZakaznikModel;
+
 import cz.vutbr.fit.pdb.utils.DatePicker;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -25,14 +29,18 @@ import javax.swing.table.TableColumn;
  * @author Doma
  */
 public class Sluzby extends javax.swing.JPanel {
-
+  
     /**
      * Creates new form Sluzby
      */
     public Sluzby() {
         initComponents();
         hotelCompoundPanel1.setParentPanel(this);
-        try {
+        
+        modelSluzby = new SluzbyModel();
+        modelZakaznik = new ZakaznikModel();
+        
+        try {            
             initTable();
         } catch (Exception ex) {
             Logger.getLogger(Sluzby.class.getName()).log(Level.SEVERE, null, ex);
@@ -55,8 +63,11 @@ public class Sluzby extends javax.swing.JPanel {
     private void initTable() throws Exception {
 
         TableColumn tc = this.detail_dne_table.getColumnModel().getColumn(2);
+        
+        this.initComboBoxItems();
+        
         comboBox = new JComboBox();
-        comboBox.setModel(getComboBoxItems(comboBoxItems));
+        comboBox.setModel(getComboBoxItems(items));
         comboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -74,6 +85,30 @@ public class Sluzby extends javax.swing.JPanel {
         //hodina.toString();
         //model.addRow(new Object[]{hodina.toString(),"Lala",(String)comboBox.getItemAt(2)});
 
+    }
+    
+    private void initComboBoxItems() {
+        customer_comboBoxIdToDatabaseId = new HashMap<>();
+        customer_databaseIdToComboBoxId = new HashMap<>();
+        
+        try {
+            int i=0;
+            Map<Integer,String> list = modelZakaznik.getList();
+            
+            String[] items = new String[list.size()+1];
+            items[i++] = "";
+            for (Map.Entry<Integer, String> entry : list.entrySet()) {
+                items[i] = entry.getValue();
+                customer_comboBoxIdToDatabaseId.put(i, entry.getKey());
+                customer_databaseIdToComboBoxId.put(entry.getKey(), i);
+                i++;
+            }
+            
+            comboBoxItems = items;
+        }
+        catch (SQLException e) {
+            comboBoxItems = new String[]{"chyba při načítání.."};
+        }
     }
 
     private void updateTable(Object o) {
@@ -100,7 +135,7 @@ public class Sluzby extends javax.swing.JPanel {
         nazev_sluzby.setText(name);
         model = (DefaultTableModel) detail_dne_table.getModel();
         model.getDataVector().removeAllElements();
-        modelSluzby = new SluzbyModel();
+
         try {
             System.out.print(name);
             List<Map<String, Object>> myRow = modelSluzby.getRezervace(name, "2013-12-13");
@@ -354,10 +389,16 @@ public class Sluzby extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jButton2ActionPerformed
     private String item;
+    
     private SluzbyModel modelSluzby;
+    private ZakaznikModel modelZakaznik;
+    
+    private Map<Integer,Integer> customer_comboBoxIdToDatabaseId;
+    private Map<Integer,Integer> customer_databaseIdToComboBoxId;
+    
     private String[] tmp = {null, "asdasdasd", "2", "3", "4", "5"};
-    private String[] comboBoxItems = {"asdas", "asdas", "asddsa"};
     private JComboBox comboBox;
+    private String[] comboBoxItems;
     private DefaultTableModel model;
     private Object[][] defaultValue;
     // Variables declaration - do not modify//GEN-BEGIN:variables
