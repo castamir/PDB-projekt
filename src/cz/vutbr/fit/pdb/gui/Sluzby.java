@@ -79,6 +79,7 @@ public class Sluzby extends javax.swing.JPanel {
         model.getDataVector().removeAllElements();
         //Updatneme kombobox
         comboBox.setModel(getComboBoxItems(tmp));
+        //Pridame zaznam do tabulky
         //model.addRow(new Object[]{"ads","asd",(String)comboBox.getItemAt(2),date_field.getText()});
         //Překreslíme tabulku
         model.fireTableDataChanged();
