@@ -119,7 +119,6 @@ public class Sluzby extends javax.swing.JPanel {
         model.getDataVector().removeAllElements();
         modelSluzby = new SluzbyModel();
         try {
-            System.out.print(serviceName);
             List<Map<String, Object>> myRow = modelSluzby.getRezervace(serviceName, formatedDate);
             //Ziskani modelu tabulky
             Iterator<Map<String, Object>> it = myRow.iterator();
