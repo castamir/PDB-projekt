@@ -3,10 +3,14 @@ package cz.vutbr.fit.pdb.gui;
 import cz.vutbr.fit.pdb.utils.DatePicker;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import javax.swing.ComboBoxEditor;
+import javax.swing.ComboBoxModel;
 import javax.swing.DefaultCellEditor;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -31,42 +35,53 @@ public class Sluzby extends javax.swing.JPanel {
 
     private void comboBoxAction(ActionEvent evt) {
         JComboBox cb = (JComboBox)evt.getSource();
-        String item = (String)cb.getSelectedItem();
+        item = (String)cb.getSelectedItem();
         int tmp = (int)cb.getSelectedIndex();
-        if(item != null) {
+        //if(item != null ||tmp != -1) {
             System.out.println(item);
-        }
+        //}
     }
+    
+    
+    private ComboBoxModel getComboBoxItems(String[] toUpdate) {
+        return new DefaultComboBoxModel(toUpdate);
+    }
+    
     private void initTable(){
         TableColumn tc = this.detail_dne_table.getColumnModel().getColumn(2);
-        //Set up the editor for the sport cells.
         comboBox = new JComboBox();
+        comboBox.setModel(getComboBoxItems(comboBoxItems));
         comboBox.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent ae) {
                 comboBoxAction(ae);
             }
         });
-        comboBox.addItem("Snowboarding");
-        comboBox.addItem("Rowing");
-        comboBox.addItem("Knitting");
-        comboBox.addItem("Speed reading");
-        comboBox.addItem("Pool");
-        comboBox.addItem("None of the above");
         tc.setCellEditor(new DefaultCellEditor(comboBox));
  
         //Popisky
         DefaultTableCellRenderer renderer =
                 new DefaultTableCellRenderer();
-        renderer.setToolTipText("Click for combo box");
+        renderer.setToolTipText("Vyberte jméno");
         tc.setCellRenderer(renderer);
         
+        //Ziskani modelu tabulky
         model = (DefaultTableModel)detail_dne_table.getModel();
-        /*model.getDataVector().removeAllElements();*/
         
         //model.addRow(new Object[]{"Lala","Lala",(String)comboBox.getItemAt(2)});
         
+    }
+    
+    
+    private void updateTable(Object o) {
+        model = (DefaultTableModel)detail_dne_table.getModel();
+        //Odstraníme všechny řádky
+        model.getDataVector().removeAllElements();
+        //Updatneme kombobox
+        comboBox.setModel(getComboBoxItems(tmp));
+        //model.addRow(new Object[]{"ads","asd",(String)comboBox.getItemAt(2),date_field.getText()});
+        //Překreslíme tabulku
+        model.fireTableDataChanged();
     }
     
     private Locale getLocale(String loc) {
@@ -151,11 +166,11 @@ public class Sluzby extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Hodina", "Dostupnost", "Možnosti"
+                "Hodina", "Dostupnost", "Možnosti", "Poznámka"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, true
+                false, false, true, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -288,27 +303,31 @@ public class Sluzby extends javax.swing.JPanel {
     }//GEN-LAST:event_date_fieldActionPerformed
 
     private void detail_dne_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_detail_dne_tableMouseClicked
-        // TODO add your handling code here:
-        row = detail_dne_table.rowAtPoint(evt.getPoint());
-        int col = detail_dne_table.columnAtPoint(evt.getPoint());
+        //int row = detail_dne_table.rowAtPoint(evt.getPoint());
+        //int col = detail_dne_table.columnAtPoint(evt.getPoint());
         //System.out.println("row: "+row+" col: "+col);
     }//GEN-LAST:event_detail_dne_tableMouseClicked
 
     private void ulozitZmena_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ulozitZmena_buttonActionPerformed
-        System.out.println("Klik");
+        //System.out.println("Klik");
+        updateTable(new Object());
     }//GEN-LAST:event_ulozitZmena_buttonActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        model.addRow(new Object[]{"Lala","Lala",(String)comboBox.getItemAt(2)});
+        model.addRow(new Object[]{"Lala","Lala",(String)comboBox.getItemAt(2),"Defaultni poznamka"});
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-        model.removeRow(row);
+        int numRows = detail_dne_table.getSelectedRows().length;
+        for(int i=0; i<numRows ; i++ ) {
+            model.removeRow(detail_dne_table.getSelectedRow());
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private int row; 
+    private String item;
+    private String[] tmp = {null,"asdasdasd","2","3","4","5"};
+    private String[] comboBoxItems = {"asdas","asdas","asddsa"};
     private JComboBox comboBox;
     private DefaultTableModel model;
     private Object [][] defaultValue;
