@@ -1,3 +1,4 @@
+DROP TABLE sluzby_rezervace;
 DROP TABLE sluzby;
 
 CREATE TABLE sluzby (
@@ -5,15 +6,14 @@ CREATE TABLE sluzby (
 	objekt VARCHAR(32),
 	dostupnost_od NUMBER,
 	dostupnost_do NUMBER,
-	CONSTRAINT pk_nazev
+	CONSTRAINT pk_sluzby_nazev
 	PRIMARY KEY (nazev),
-	CONSTRAINT fk_objekt
+	CONSTRAINT fk_sluzby_objekt
 	FOREIGN KEY (objekt)
 	REFERENCES areal (nazev)
 );
 
 
-DROP TABLE sluzby_rezervace;
 DROP SEQUENCE sluzby_rezervace_seq;
 
 CREATE SEQUENCE sluzby_rezervace_seq
@@ -26,9 +26,9 @@ CREATE TABLE sluzby_rezervace (
 	zakaznik VARCHAR(32),
 	zacatek DATE,
 	konec DATE,
-	CONSTRAINT pk_id
+	CONSTRAINT pk_sluzby_rezervace_id
 	PRIMARY KEY (id),
-	CONSTRAINT fk_sluzba
+	CONSTRAINT fk_sluzby_rezervace_sluzba
 	FOREIGN KEY (sluzba)
 	REFERENCES sluzby(nazev)
 );
