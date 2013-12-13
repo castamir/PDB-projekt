@@ -69,7 +69,7 @@ public class SluzbyModel extends BaseModel {
         }
         
         // init den pro sluzbu
-        for (int i=(int)sluzbaInfo.get("dostupnost_od"); i <= (int)sluzbaInfo.get("dostupnost_do"); i++) {
+        for (int i=(int)sluzbaInfo.get("dostupnost_od"); i < (int)sluzbaInfo.get("dostupnost_do"); i++) {
             Map<String,Object> hodina = new HashMap<String,Object>();
             hodina.put("hodina",i);
             hodina.put("den", datum);
