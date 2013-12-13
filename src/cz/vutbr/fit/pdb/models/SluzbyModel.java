@@ -42,12 +42,12 @@ public class SluzbyModel extends BaseModel {
 
             try (ResultSet rs = stmt.executeQuery())
             {
-                rs.next();
-                
-                row.put("nazev",jmeno);
-                row.put("objekt",rs.getString("objekt"));
-                row.put("dostupnost_od", rs.getInt("dostupnost_od"));
-                row.put("dostupnost_do", rs.getInt("dostupnost_do"));
+                if (rs.next()) {
+                    row.put("nazev",jmeno);
+                    row.put("objekt",rs.getString("objekt"));
+                    row.put("dostupnost_od", rs.getInt("dostupnost_od"));
+                    row.put("dostupnost_do", rs.getInt("dostupnost_do"));
+                }
             }
         }
         
