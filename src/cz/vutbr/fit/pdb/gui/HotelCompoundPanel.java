@@ -92,13 +92,10 @@ public class HotelCompoundPanel extends JPanel implements MouseListener {
     /* MouseListener methods */
     @Override
     public void mouseClicked(MouseEvent e) {
-        System.out.println("Mouse clicked at (" + e.getX() + "," + e.getY() + ")");
-
         String buildingName = null;
         
         try {
             buildingName = arealModel.getBuildingAtPoint(e.getX(), e.getY());
-            System.out.println(buildingName);
         } catch (Exception exc) {
             exc.printStackTrace();
         }
