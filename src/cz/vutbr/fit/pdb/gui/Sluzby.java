@@ -162,13 +162,15 @@ public class Sluzby extends javax.swing.JPanel {
             while (it.hasNext()) {
                 Map<String, Object> value = it.next();
                 String hodina = value.get("hodina").toString();
+                Map<String,Object> zakaznik = (Map<String,Object>)value.get("zakaznik");
+                
                 String stav = "";
                 if (value.get("id") != null) {
                     stav = "rezervovano";
                 }
                 
                 int comboBoxItemId = 0;
-                if (value.get("id") != null) { comboBoxItemId = customer_databaseIdToComboBoxId.get(value.get("id")); }
+                if (value.get("id") != null) { comboBoxItemId = customer_databaseIdToComboBoxId.get(zakaznik.get("id")); }
                 
                 model.addRow(new Object[]{hodina, stav, (String) comboBox.getItemAt(comboBoxItemId)});
             }
