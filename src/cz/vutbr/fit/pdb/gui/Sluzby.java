@@ -37,9 +37,9 @@ public class Sluzby extends javax.swing.JPanel {
         JComboBox cb = (JComboBox)evt.getSource();
         item = (String)cb.getSelectedItem();
         int tmp = (int)cb.getSelectedIndex();
-        if(item != null ||tmp != -1) {
+        //if(item != null ||tmp != -1) {
             System.out.println(item);
-        }
+        //}
     }
     
     
@@ -326,7 +326,7 @@ public class Sluzby extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private String item;
-    private String[] tmp = {"asdasdasd","2","3","4","5"};
+    private String[] tmp = {null,"asdasdasd","2","3","4","5"};
     private String[] comboBoxItems = {"asdas","asdas","asddsa"};
     private JComboBox comboBox;
     private DefaultTableModel model;
