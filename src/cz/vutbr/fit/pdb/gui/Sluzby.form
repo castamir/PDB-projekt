@@ -115,7 +115,7 @@
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="nazev_skuzby" alignment="0" max="32767" attributes="0"/>
+                      <Component id="nazev_sluzby" alignment="0" max="32767" attributes="0"/>
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
@@ -145,7 +145,7 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="nazev_skuzby" min="-2" max="-2" attributes="0"/>
+                  <Component id="nazev_sluzby" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -168,7 +168,7 @@
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JLabel" name="nazev_skuzby">
+        <Component class="javax.swing.JLabel" name="nazev_sluzby">
           <Properties>
             <Property name="text" type="java.lang.String" value="Nazev sluzby"/>
           </Properties>

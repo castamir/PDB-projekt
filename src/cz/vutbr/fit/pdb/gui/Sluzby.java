@@ -78,7 +78,7 @@ public class Sluzby extends javax.swing.JPanel {
     }
 
     public void updateTitle(String name) {
-        nazev_skuzby.setText(name);
+        nazev_sluzby.setText(name);
     }
 
     /**
@@ -93,7 +93,7 @@ public class Sluzby extends javax.swing.JPanel {
         zoom_panel = new javax.swing.JPanel();
         hotelCompoundPanel1 = new cz.vutbr.fit.pdb.gui.HotelCompoundPanel();
         wrapper = new javax.swing.JPanel();
-        nazev_skuzby = new javax.swing.JLabel();
+        nazev_sluzby = new javax.swing.JLabel();
         den_label = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         detail_dne_table = new javax.swing.JTable();
@@ -142,7 +142,7 @@ public class Sluzby extends javax.swing.JPanel {
 
         wrapper.setBorder(javax.swing.BorderFactory.createTitledBorder("Rezervace"));
 
-        nazev_skuzby.setText("Nazev sluzby");
+        nazev_sluzby.setText("Nazev sluzby");
 
         den_label.setText("Den:");
 
@@ -211,7 +211,7 @@ public class Sluzby extends javax.swing.JPanel {
             .addGroup(wrapperLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(wrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(nazev_skuzby, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(nazev_sluzby, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(wrapperLayout.createSequentialGroup()
                         .addGroup(wrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(wrapperLayout.createSequentialGroup()
@@ -234,7 +234,7 @@ public class Sluzby extends javax.swing.JPanel {
             wrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(wrapperLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(nazev_skuzby)
+                .addComponent(nazev_sluzby)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(wrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(wrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -321,7 +321,7 @@ public class Sluzby extends javax.swing.JPanel {
     private javax.swing.JButton jButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel kalendar;
-    private javax.swing.JLabel nazev_skuzby;
+    private javax.swing.JLabel nazev_sluzby;
     private javax.swing.JPanel panel_sluzby;
     private javax.swing.JButton ulozitZmena_button;
     private javax.swing.JPanel wrapper;
