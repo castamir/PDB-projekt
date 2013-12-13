@@ -104,9 +104,17 @@ public class Sluzby extends javax.swing.JPanel {
                 {null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3"
+                "Hodina", "Dostupnost", "Možnosti"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(detail_dne_table);
 
         date_field.setText("dd/mm/yy");
