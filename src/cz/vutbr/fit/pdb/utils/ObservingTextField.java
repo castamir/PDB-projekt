@@ -14,7 +14,6 @@ public class ObservingTextField extends JTextField implements Observer {
     public void update(Observable o, Object arg) {
         Calendar calendar = (Calendar) arg;
         DatePicker dp = (DatePicker) o;
-        //   System.out.println("picked=" + dp.formatDate(calendar));
         setText(reformatDate(calendar));
     }
 
