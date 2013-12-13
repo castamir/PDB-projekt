@@ -101,10 +101,10 @@ public class HotelCompoundPanel extends JPanel implements MouseListener {
         }
         
         if (buildingName != null) {
-            selectedBuilding = buildingName;
             
             if (!Arrays.asList(excludeBuildings).contains(buildingName)) {
                 parentPanel.updateTitle(buildingName);    
+                selectedBuilding = buildingName;
             }
             
             this.repaint();
