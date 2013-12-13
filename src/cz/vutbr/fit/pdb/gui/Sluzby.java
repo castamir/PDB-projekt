@@ -5,7 +5,6 @@ import cz.vutbr.fit.pdb.utils.DatePicker;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -13,16 +12,13 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
-import javax.swing.table.TableModel;
 
 /**
  *
@@ -44,22 +40,19 @@ public class Sluzby extends javax.swing.JPanel {
     }
 
     private void comboBoxAction(ActionEvent evt) {
-        JComboBox cb = (JComboBox)evt.getSource();
-        item = (String)cb.getSelectedItem();
-        int tmp = (int)cb.getSelectedIndex();
+        JComboBox cb = (JComboBox) evt.getSource();
+        item = (String) cb.getSelectedItem();
+        int tmp = (int) cb.getSelectedIndex();
         //if(item != null ||tmp != -1) {
-            System.out.println(item);
+        System.out.println(item);
         //}
     }
-    
-    
+
     private ComboBoxModel getComboBoxItems(String[] toUpdate) {
         return new DefaultComboBoxModel(toUpdate);
     }
-    
-    private void initTable() throws Exception{
-        modelSluzby = new SluzbyModel();
-        List<Map<String,Object>> myRow = modelSluzby.getRezervace("Tennisové kurty","2013-10-13");
+
+    private void initTable() throws Exception {
 
         TableColumn tc = this.detail_dne_table.getColumnModel().getColumn(2);
         comboBox = new JComboBox();
@@ -71,24 +64,20 @@ public class Sluzby extends javax.swing.JPanel {
             }
         });
         tc.setCellEditor(new DefaultCellEditor(comboBox));
- 
+
         //Popisky
         DefaultTableCellRenderer renderer =
                 new DefaultTableCellRenderer();
         renderer.setToolTipText("Vyberte jméno");
         tc.setCellRenderer(renderer);
-        
-        //Ziskani modelu tabulky
-        model = (DefaultTableModel)detail_dne_table.getModel();
-        Iterator<Map<String,Object>> it = myRow.iterator();
+
         //hodina.toString();
         //model.addRow(new Object[]{hodina.toString(),"Lala",(String)comboBox.getItemAt(2)});
-        
+
     }
-    
-    
+
     private void updateTable(Object o) {
-        model = (DefaultTableModel)detail_dne_table.getModel();
+        model = (DefaultTableModel) detail_dne_table.getModel();
         //Odstraníme všechny řádky
         model.getDataVector().removeAllElements();
         //Updatneme kombobox
@@ -98,7 +87,7 @@ public class Sluzby extends javax.swing.JPanel {
         //Překreslíme tabulku
         model.fireTableDataChanged();
     }
-    
+
     private Locale getLocale(String loc) {
         if (loc != null && loc.length() > 0) {
             return new Locale(loc);
@@ -109,6 +98,31 @@ public class Sluzby extends javax.swing.JPanel {
 
     public void updateTitle(String name) {
         nazev_sluzby.setText(name);
+        model = (DefaultTableModel) detail_dne_table.getModel();
+        model.getDataVector().removeAllElements();
+        modelSluzby = new SluzbyModel();
+        try {
+            System.out.print(name);
+            List<Map<String, Object>> myRow = modelSluzby.getRezervace(name, "2013-12-13");
+            //Ziskani modelu tabulky
+            Iterator<Map<String, Object>> it = myRow.iterator();
+
+            while (it.hasNext()) {
+                Map<String, Object> value = it.next();
+                String hodina = value.get("hodina").toString();
+                String stav = "";
+                if (value.get("id") != null) {
+                    stav = "rezervovano";
+                }
+                model.addRow(new Object[]{hodina, stav, (String) comboBox.getItemAt(2)});
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Sluzby.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(Sluzby.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        model.fireTableDataChanged();
     }
 
     /**
@@ -330,23 +344,22 @@ public class Sluzby extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        model.addRow(new Object[]{"Lala","Lala",(String)comboBox.getItemAt(2),"Defaultni poznamka"});
+        model.addRow(new Object[]{"Lala", "Lala", (String) comboBox.getItemAt(2), "Defaultni poznamka"});
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         int numRows = detail_dne_table.getSelectedRows().length;
-        for(int i=0; i<numRows ; i++ ) {
+        for (int i = 0; i < numRows; i++) {
             model.removeRow(detail_dne_table.getSelectedRow());
         }
     }//GEN-LAST:event_jButton2ActionPerformed
-
     private String item;
     private SluzbyModel modelSluzby;
-    private String[] tmp = {null,"asdasdasd","2","3","4","5"};
-    private String[] comboBoxItems = {"asdas","asdas","asddsa"};
+    private String[] tmp = {null, "asdasdasd", "2", "3", "4", "5"};
+    private String[] comboBoxItems = {"asdas", "asdas", "asddsa"};
     private JComboBox comboBox;
     private DefaultTableModel model;
-    private Object [][] defaultValue;
+    private Object[][] defaultValue;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private cz.vutbr.fit.pdb.utils.ObservingTextField date_field;
     private javax.swing.JLabel den_label;
