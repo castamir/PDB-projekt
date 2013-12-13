@@ -75,13 +75,16 @@ INSERT INTO zakaznik (jmeno) VALUES ('Tom');
 INSERT INTO zakaznik (jmeno) VALUES ('Pavel');
 
 INSERT INTO sluzby (nazev, objekt, dostupnost_od, dostupnost_do)
-VALUES ('Tennisové kurty', 'Tenisové kurty', 8, 18);
+VALUES ('Tenisové kurty', 'Tenisové kurty', 8, 18);
 
 INSERT INTO sluzby_rezervace (sluzba, zakaznik, den, hodina)
-VALUES ('Tennisové kurty', 2, TO_DATE('2013-12-13', 'yyyy-mm-dd'), '11');
+VALUES ('Tenisové kurty', 2, TO_DATE('2013-12-13', 'yyyy-mm-dd'), '11');
 
 INSERT INTO sluzby_rezervace (sluzba, zakaznik, den, hodina)
-VALUES ('Tennisové kurty', 1, '14.12.13', 12);
+VALUES ('Tenisové kurty', 1, '14.12.13', 12);
+
+INSERT INTO sluzby_rezervace (sluzba, zakaznik, den, hodina)
+VALUES ('Tenisové kurty', 3, '13.12.13', 14);
 
 COMMIT;
 
