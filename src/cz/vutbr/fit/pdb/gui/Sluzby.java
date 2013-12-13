@@ -10,7 +10,9 @@ import javax.swing.DefaultCellEditor;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -30,7 +32,10 @@ public class Sluzby extends javax.swing.JPanel {
     private void comboBoxAction(ActionEvent evt) {
         JComboBox cb = (JComboBox)evt.getSource();
         String item = (String)cb.getSelectedItem();
-        System.out.println(item);
+        int tmp = (int)cb.getSelectedIndex();
+        if(item != null) {
+            System.out.println(item);
+        }
     }
     private void initTable(){
         TableColumn tc = this.detail_dne_table.getColumnModel().getColumn(2);
@@ -51,11 +56,17 @@ public class Sluzby extends javax.swing.JPanel {
         comboBox.addItem("None of the above");
         tc.setCellEditor(new DefaultCellEditor(comboBox));
  
-        //Set up tool tips for the sport cells.
+        //Popisky
         DefaultTableCellRenderer renderer =
                 new DefaultTableCellRenderer();
         renderer.setToolTipText("Click for combo box");
         tc.setCellRenderer(renderer);
+        
+        model = (DefaultTableModel)detail_dne_table.getModel();
+        /*model.getDataVector().removeAllElements();*/
+        
+        //model.addRow(new Object[]{"Lala","Lala",(String)comboBox.getItemAt(2)});
+        
     }
     
     private Locale getLocale(String loc) {
@@ -88,10 +99,9 @@ public class Sluzby extends javax.swing.JPanel {
         detail_dne_table = new javax.swing.JTable();
         date_field = new cz.vutbr.fit.pdb.utils.ObservingTextField();
         kalendar = new javax.swing.JLabel();
-        Rezevace_kontejner = new javax.swing.JPanel();
+        ulozitZmena_button = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox();
-        jComboBox2 = new javax.swing.JComboBox();
+        jButton2 = new javax.swing.JButton();
 
         setMaximumSize(new java.awt.Dimension(911, 665));
 
@@ -130,22 +140,15 @@ public class Sluzby extends javax.swing.JPanel {
             .addComponent(zoom_panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
+        wrapper.setBorder(javax.swing.BorderFactory.createTitledBorder("Rezervace"));
+
         nazev_skuzby.setText("Nazev sluzby");
 
         den_label.setText("Den:");
 
         detail_dne_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
                 "Hodina", "Dostupnost", "Možnosti"
@@ -180,47 +183,36 @@ public class Sluzby extends javax.swing.JPanel {
             }
         });
 
-        Rezevace_kontejner.setBorder(javax.swing.BorderFactory.createTitledBorder("Rezervace"));
+        ulozitZmena_button.setText("Uložit změny");
+        ulozitZmena_button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ulozitZmena_buttonActionPerformed(evt);
+            }
+        });
 
-        jButton1.setText("jButton1");
+        jButton1.setText("Add_test");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        javax.swing.GroupLayout Rezevace_kontejnerLayout = new javax.swing.GroupLayout(Rezevace_kontejner);
-        Rezevace_kontejner.setLayout(Rezevace_kontejnerLayout);
-        Rezevace_kontejnerLayout.setHorizontalGroup(
-            Rezevace_kontejnerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(Rezevace_kontejnerLayout.createSequentialGroup()
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
-        Rezevace_kontejnerLayout.setVerticalGroup(
-            Rezevace_kontejnerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(Rezevace_kontejnerLayout.createSequentialGroup()
-                .addGap(42, 42, 42)
-                .addGroup(Rezevace_kontejnerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(44, Short.MAX_VALUE))
-        );
+        jButton2.setText("Remove_test");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout wrapperLayout = new javax.swing.GroupLayout(wrapper);
         wrapper.setLayout(wrapperLayout);
         wrapperLayout.setHorizontalGroup(
             wrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, wrapperLayout.createSequentialGroup()
+            .addGroup(wrapperLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(wrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(Rezevace_kontejner, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(nazev_skuzby, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, wrapperLayout.createSequentialGroup()
+                .addGroup(wrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(nazev_skuzby, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(wrapperLayout.createSequentialGroup()
                         .addGroup(wrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(wrapperLayout.createSequentialGroup()
                                 .addComponent(den_label)
@@ -228,7 +220,13 @@ public class Sluzby extends javax.swing.JPanel {
                                 .addComponent(date_field, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(kalendar))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(wrapperLayout.createSequentialGroup()
+                                .addComponent(ulozitZmena_button)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton2)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -245,8 +243,11 @@ public class Sluzby extends javax.swing.JPanel {
                     .addComponent(kalendar))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Rezevace_kontejner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(wrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ulozitZmena_button)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -265,12 +266,10 @@ public class Sluzby extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(wrapper, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(panel_sluzby, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 12, Short.MAX_VALUE)))
-                .addContainerGap())
+                    .addComponent(panel_sluzby, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -290,25 +289,41 @@ public class Sluzby extends javax.swing.JPanel {
 
     private void detail_dne_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_detail_dne_tableMouseClicked
         // TODO add your handling code here:
-        int row = detail_dne_table.rowAtPoint(evt.getPoint());
+        row = detail_dne_table.rowAtPoint(evt.getPoint());
         int col = detail_dne_table.columnAtPoint(evt.getPoint());
         //System.out.println("row: "+row+" col: "+col);
     }//GEN-LAST:event_detail_dne_tableMouseClicked
 
+    private void ulozitZmena_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ulozitZmena_buttonActionPerformed
+        System.out.println("Klik");
+    }//GEN-LAST:event_ulozitZmena_buttonActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        model.addRow(new Object[]{"Lala","Lala",(String)comboBox.getItemAt(2)});
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        model.removeRow(row);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private int row; 
     private JComboBox comboBox;
+    private DefaultTableModel model;
+    private Object [][] defaultValue;
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel Rezevace_kontejner;
     private cz.vutbr.fit.pdb.utils.ObservingTextField date_field;
     private javax.swing.JLabel den_label;
     private javax.swing.JTable detail_dne_table;
     private cz.vutbr.fit.pdb.gui.HotelCompoundPanel hotelCompoundPanel1;
     private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JComboBox jComboBox2;
+    private javax.swing.JButton jButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel kalendar;
     private javax.swing.JLabel nazev_skuzby;
     private javax.swing.JPanel panel_sluzby;
+    private javax.swing.JButton ulozitZmena_button;
     private javax.swing.JPanel wrapper;
     private javax.swing.JPanel zoom_panel;
     // End of variables declaration//GEN-END:variables
