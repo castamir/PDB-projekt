@@ -3,7 +3,7 @@ DROP TABLE areal;
 CREATE TABLE areal (
 	nazev VARCHAR(32),
 	geometrie SDO_GEOMETRY,
-	CONSTRAINT pk_nazev
+	CONSTRAINT pk_areal_nazev
 	PRIMARY KEY (nazev)
 );
 
@@ -19,7 +19,7 @@ INSERT INTO USER_SDO_GEOM_METADATA VALUES (
 	NULL
 );
 
-DROP INDEX areal_geometrie_sidx;
+/*DROP INDEX areal_geometrie_sidx;*/
 CREATE INDEX areal_geometrie_sidx ON areal(geometrie) indextype is MDSYS.SPATIAL_INDEX;
 
 COMMIT;
