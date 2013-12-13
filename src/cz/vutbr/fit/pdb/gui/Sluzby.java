@@ -1,8 +1,16 @@
 package cz.vutbr.fit.pdb.gui;
 
 import cz.vutbr.fit.pdb.utils.DatePicker;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Date;
 import java.util.Locale;
+import javax.swing.ComboBoxEditor;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableColumn;
 
 /**
  *
@@ -16,8 +24,40 @@ public class Sluzby extends javax.swing.JPanel {
     public Sluzby() {
         initComponents();
         hotelCompoundPanel1.setParentPanel(this);
+        initTable();
     }
 
+    private void comboBoxAction(ActionEvent evt) {
+        JComboBox cb = (JComboBox)evt.getSource();
+        String item = (String)cb.getSelectedItem();
+        System.out.println(item);
+    }
+    private void initTable(){
+        TableColumn tc = this.detail_dne_table.getColumnModel().getColumn(2);
+        //Set up the editor for the sport cells.
+        comboBox = new JComboBox();
+        comboBox.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                comboBoxAction(ae);
+            }
+        });
+        comboBox.addItem("Snowboarding");
+        comboBox.addItem("Rowing");
+        comboBox.addItem("Knitting");
+        comboBox.addItem("Speed reading");
+        comboBox.addItem("Pool");
+        comboBox.addItem("None of the above");
+        tc.setCellEditor(new DefaultCellEditor(comboBox));
+ 
+        //Set up tool tips for the sport cells.
+        DefaultTableCellRenderer renderer =
+                new DefaultTableCellRenderer();
+        renderer.setToolTipText("Click for combo box");
+        tc.setCellRenderer(renderer);
+    }
+    
     private Locale getLocale(String loc) {
         if (loc != null && loc.length() > 0) {
             return new Locale(loc);
@@ -48,6 +88,10 @@ public class Sluzby extends javax.swing.JPanel {
         detail_dne_table = new javax.swing.JTable();
         date_field = new cz.vutbr.fit.pdb.utils.ObservingTextField();
         kalendar = new javax.swing.JLabel();
+        Rezevace_kontejner = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
+        jComboBox1 = new javax.swing.JComboBox();
+        jComboBox2 = new javax.swing.JComboBox();
 
         setMaximumSize(new java.awt.Dimension(911, 665));
 
@@ -115,6 +159,11 @@ public class Sluzby extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        detail_dne_table.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                detail_dne_tableMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(detail_dne_table);
 
         date_field.setText("dd/mm/yy");
@@ -131,15 +180,47 @@ public class Sluzby extends javax.swing.JPanel {
             }
         });
 
+        Rezevace_kontejner.setBorder(javax.swing.BorderFactory.createTitledBorder("Rezervace"));
+
+        jButton1.setText("jButton1");
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        javax.swing.GroupLayout Rezevace_kontejnerLayout = new javax.swing.GroupLayout(Rezevace_kontejner);
+        Rezevace_kontejner.setLayout(Rezevace_kontejnerLayout);
+        Rezevace_kontejnerLayout.setHorizontalGroup(
+            Rezevace_kontejnerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(Rezevace_kontejnerLayout.createSequentialGroup()
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        Rezevace_kontejnerLayout.setVerticalGroup(
+            Rezevace_kontejnerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(Rezevace_kontejnerLayout.createSequentialGroup()
+                .addGap(42, 42, 42)
+                .addGroup(Rezevace_kontejnerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(44, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout wrapperLayout = new javax.swing.GroupLayout(wrapper);
         wrapper.setLayout(wrapperLayout);
         wrapperLayout.setHorizontalGroup(
             wrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(wrapperLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, wrapperLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(wrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(nazev_skuzby, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(wrapperLayout.createSequentialGroup()
+                .addGroup(wrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(Rezevace_kontejner, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(nazev_skuzby, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, wrapperLayout.createSequentialGroup()
                         .addGroup(wrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(wrapperLayout.createSequentialGroup()
                                 .addComponent(den_label)
@@ -163,7 +244,9 @@ public class Sluzby extends javax.swing.JPanel {
                         .addComponent(den_label))
                     .addComponent(kalendar))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 535, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(Rezevace_kontejner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -186,7 +269,7 @@ public class Sluzby extends javax.swing.JPanel {
                     .addComponent(wrapper, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(panel_sluzby, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 12, Short.MAX_VALUE)))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -204,11 +287,24 @@ public class Sluzby extends javax.swing.JPanel {
     private void date_fieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_date_fieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_date_fieldActionPerformed
+
+    private void detail_dne_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_detail_dne_tableMouseClicked
+        // TODO add your handling code here:
+        int row = detail_dne_table.rowAtPoint(evt.getPoint());
+        int col = detail_dne_table.columnAtPoint(evt.getPoint());
+        //System.out.println("row: "+row+" col: "+col);
+    }//GEN-LAST:event_detail_dne_tableMouseClicked
+
+    private JComboBox comboBox;
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel Rezevace_kontejner;
     private cz.vutbr.fit.pdb.utils.ObservingTextField date_field;
     private javax.swing.JLabel den_label;
     private javax.swing.JTable detail_dne_table;
     private cz.vutbr.fit.pdb.gui.HotelCompoundPanel hotelCompoundPanel1;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JComboBox jComboBox2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel kalendar;
     private javax.swing.JLabel nazev_skuzby;
