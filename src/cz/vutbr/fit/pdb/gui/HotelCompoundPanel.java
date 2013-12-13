@@ -10,6 +10,7 @@ import java.awt.Shape;
 import javax.swing.JPanel;
 
 import cz.vutbr.fit.pdb.models.ArealModel;
+import java.util.Arrays;
 
 /**
  *
@@ -25,6 +26,10 @@ public class HotelCompoundPanel extends JPanel implements MouseListener {
     private Map<String, Shape> shapes;
     
     private ArealModel arealModel;
+    
+    private String selectedBuilding;
+    
+    private static final String[] excludeBuildings = {"Hotel","Bazén","Bar+Disko","Služby u bazénu"};
 
     public HotelCompoundPanel() {
         this.addMouseListener(this);
@@ -57,11 +62,23 @@ public class HotelCompoundPanel extends JPanel implements MouseListener {
         for (Map.Entry<String, Shape> entry : shapes.entrySet()) {
             //Shape shape = iterator.next();
             //g2D.setTransform(a);
-            g2D.setPaint(Color.GRAY);
+            Color background = Color.darkGray;
+            Color fontColor = Color.lightGray;
+            Color borderColor = Color.black;
+            
+            if (Arrays.asList(excludeBuildings).contains(entry.getKey())) {
+                background = Color.gray;
+            }
+            else if (selectedBuilding != null && selectedBuilding.equals(entry.getKey())) {
+                background = Color.green;
+                fontColor = Color.darkGray;
+            }
+            
+            g2D.setPaint(background);
             g2D.fill(entry.getValue());
-            g2D.setPaint(Color.BLACK);
+            g2D.setPaint(borderColor);
             g2D.draw(entry.getValue());
-            g2D.setColor(Color.lightGray);
+            g2D.setColor(fontColor);
             g2D.setFont(new Font("Verdana", Font.BOLD, 11));
             g2D.drawString(entry.getKey(), (int) entry.getValue().getBounds2D().getMinX() + 5, (int) entry.getValue().getBounds2D().getMaxY() - 5);
         }
@@ -77,13 +94,23 @@ public class HotelCompoundPanel extends JPanel implements MouseListener {
     public void mouseClicked(MouseEvent e) {
         System.out.println("Mouse clicked at (" + e.getX() + "," + e.getY() + ")");
 
+        String buildingName = null;
+        
         try {
-            String buildingName = arealModel.getBuildingAtPoint(e.getX(), e.getY());
-
+            buildingName = arealModel.getBuildingAtPoint(e.getX(), e.getY());
             System.out.println(buildingName);
-            parentPanel.updateTitle(buildingName);    
         } catch (Exception exc) {
             exc.printStackTrace();
+        }
+        
+        if (buildingName != null) {
+            selectedBuilding = buildingName;
+            
+            if (!Arrays.asList(excludeBuildings).contains(buildingName)) {
+                parentPanel.updateTitle(buildingName);    
+            }
+            
+            this.repaint();
         }
     }
 
