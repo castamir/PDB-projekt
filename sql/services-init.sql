@@ -41,6 +41,7 @@ CREATE TABLE sluzby_rezervace (
 	zakaznik INT NOT null,
 	den DATE NOT null,
 	hodina INT NOT null,
+	note VARCHAR(250),
 	CONSTRAINT pk_sluzby_rezervace_id PRIMARY KEY (id),
 	CONSTRAINT fk_sluzby_rezervace_sluzba FOREIGN KEY (sluzba) REFERENCES sluzby(nazev),
 	CONSTRAINT fk_sluzby_rezervace_zakaznik FOREIGN KEY (zakaznik) REFERENCES zakaznik(id),
