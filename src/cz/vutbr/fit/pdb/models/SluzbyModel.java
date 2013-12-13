@@ -48,6 +48,9 @@ public class SluzbyModel extends BaseModel {
                     row.put("dostupnost_od", rs.getInt("dostupnost_od"));
                     row.put("dostupnost_do", rs.getInt("dostupnost_do"));
                 }
+                else {
+                    return null;
+                }
             }
         }
         
@@ -59,6 +62,10 @@ public class SluzbyModel extends BaseModel {
         Map<String,Object> sluzbaInfo = this.getSluzba(sluzba);
         
         List<Map<String,Object>> result = new ArrayList<Map<String,Object>>();
+        
+        if (sluzbaInfo == null) {
+            return result;
+        }
         
         // init den pro sluzbu
         for (int i=(int)sluzbaInfo.get("dostupnost_od"); i <= (int)sluzbaInfo.get("dostupnost_do"); i++) {
