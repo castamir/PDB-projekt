@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import java.util.Map;        
 import oracle.jdbc.pool.OracleDataSource;
@@ -49,7 +50,7 @@ public class ZakaznikModel extends BaseModel {
     
     public Map<Integer, String> getList() throws SQLException {
         
-        Map<Integer,String> listOfCustomers = new HashMap<>();
+        Map<Integer,String> listOfCustomers = new LinkedHashMap<>();
         
         OracleDataSource ods = serviceLocator.getConnection();
         try (Connection conn = ods.getConnection(); 
