@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 public class myIcon extends JLabel{
 
     private boolean active = false;
+    private int index;
     public myIcon(){
         addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -48,5 +49,13 @@ public class myIcon extends JLabel{
     
     public boolean isActive(){
         return active;
+    }
+    
+    public void setIndex(int i) {
+        this.index = i;
+    }
+    
+    public int getIndex() {
+        return this.index;
     }
 }
