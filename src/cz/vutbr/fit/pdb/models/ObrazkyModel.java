@@ -77,6 +77,9 @@ public class ObrazkyModel extends BaseModel {
     
     public byte[] getImage(Integer id) throws SQLException {
         
+        byte[] result;
+        OrdImage img;
+        
         OracleDataSource ods = serviceLocator.getConnection();
         try (Connection conn = ods.getConnection();
              OraclePreparedStatement pstmt = (OraclePreparedStatement)conn.prepareStatement("SELECT img FROM obrazky WHERE id = ?"))
@@ -86,17 +89,18 @@ public class ObrazkyModel extends BaseModel {
             OracleResultSet rs = (OracleResultSet) pstmt.executeQuery();
             
             if (!rs.next()) {
-                return null;
+                result = null;
             }
-            
-            OrdImage img = (OrdImage) rs.getORAData("img", OrdImage.getORADataFactory());
-            
-            try {
-                return img.getDataInByteArray();
+            else {
+                img = (OrdImage) rs.getORAData("img", OrdImage.getORADataFactory());
+
+                result = img.getDataInByteArray();
             }
-            catch (IOException e) {
-                return null;
-            }
+        } 
+        catch (IOException e) {
+            result = null;
         }
+        
+        return result;
     }
 }
