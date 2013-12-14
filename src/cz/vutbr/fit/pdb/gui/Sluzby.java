@@ -190,7 +190,8 @@ public class Sluzby extends javax.swing.JPanel {
         model.fireTableDataChanged();
     }
 
-    private void checkChangesInTable() {
+    private boolean checkChangesInTable() {
+        boolean modified = false;
         List<Map<Object, Object[]>> newTableData = new ArrayList<>();
         List<List<Object>> v = model.getDataVector();
         for (int i = 0; i < refTableData.size(); i++) {
@@ -200,16 +201,36 @@ public class Sluzby extends javax.swing.JPanel {
             System.out.print("id");
             System.out.println(id);
             Object[] refRow = mapItem.get(id);
-            if (id == null && !areRowsEqual(row, refRow)) {
-                System.out.println("insert");
-            } else if (id != null) {
-                if (row.get(2) == null) {
-                    // delete
-                    System.out.println("delete");
-                } else if (!areRowsEqual(row, refRow)) {
-                    // update
-                    System.out.println("update");
+            try {
+                if (id == null && !areRowsEqual(row, refRow)) {
+                    // insert
+                    System.out.println("insert");
+                    modified = true;
+                    Integer zakID = customer_comboBoxIdToDatabaseId.get(i);
+                    String sluzba = nazev_sluzby.getText();
+                    String datum = date_field.getText();
+                    String poznamka = (row.get(3) == null) ? null : row.get(3).toString();
+                    int hodina = Integer.parseInt(row.get(0).toString());
+                    modelSluzby.novaRezervace(zakID, sluzba, datum, hodina, poznamka);
+                } else if (id != null) {
+                    if (row.get(2) == null) {
+                        // delete
+                        System.out.println("update");
+                        modified = true;
+                        modelSluzby.smazatRezervaci((int) id);
+                    } else if (!areRowsEqual(row, refRow)) {
+                        // update
+                        System.out.println("delete");
+                        modified = true;
+                        Integer zakID = customer_comboBoxIdToDatabaseId.get(i);
+                        int hodina = Integer.parseInt(row.get(0).toString());
+                        modelSluzby.upravitRezervaci((int) id, zakID, nazev_sluzby.getText(), date_field.getText(), hodina, row.get(3).toString());
+                    }
                 }
+            } catch (SQLException ex) {
+                Logger.getLogger(Sluzby.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                Logger.getLogger(Sluzby.class.getName()).log(Level.SEVERE, null, ex);
             }
             Object[] newRow = new Object[]{row.get(0), row.get(1), row.get(2), row.get(3)};
             Map<Object, Object[]> newMapItem = new HashMap<>();
@@ -217,6 +238,7 @@ public class Sluzby extends javax.swing.JPanel {
             newTableData.add(newMapItem);
         }
         refTableData = newTableData;
+        return modified;
     }
 
     private boolean areRowsEqual(List<Object> row, Object[] refRow) {
