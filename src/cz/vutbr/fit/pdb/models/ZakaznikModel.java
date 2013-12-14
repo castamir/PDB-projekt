@@ -61,7 +61,7 @@ public class ZakaznikModel extends BaseModel {
             try (ResultSet rs = stmt.executeQuery())
             {
                 while (rs.next()) {
-                    listOfCustomers.put(rs.getInt("id"), rs.getString("jmeno"));
+                    listOfCustomers.put(rs.getInt("id"), rs.getString("id")+" "+rs.getString("jmeno"));
                 }
             }
         }
