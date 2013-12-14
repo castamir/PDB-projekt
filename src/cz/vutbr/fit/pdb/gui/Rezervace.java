@@ -484,7 +484,6 @@ public class Rezervace extends javax.swing.JPanel {
         String rezervaceDo = rezervaceDo_field.getText();
         // implicitně je to 0
         int pocetParkovacichMist = 0;
-        int pocetPokoju = (int)pocetPokoju_spinner.getValue();
         if(jmeno.equals("")|| prijimeni.equals("") || adresa.equals("") || mesto.equals("") || 
            psc.equals("")|| kraj.equals("") || telefon.equals("") || email.equals("")) {
             JOptionPane.showMessageDialog(getParent(), "Všechna pole musí být vyplněna, prosím vyplňte je!","Chyba",JOptionPane.ERROR_MESSAGE);
@@ -500,7 +499,6 @@ public class Rezervace extends javax.swing.JPanel {
             //System.out.println(pocetParkovacichMist);
         }
         System.out.println("Parkovacich mist: "+pocetParkovacichMist);
-        System.out.println("Pokoju: "+pocetPokoju);
         System.out.println("Od: "+rezervaceOd);
         System.out.println("Do: "+rezervaceDo);
         
