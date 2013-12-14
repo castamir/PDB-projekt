@@ -40,7 +40,8 @@ public class HotelCompoundEditablePanel extends JPanel implements MouseListener,
     private boolean drawing = false;
     
     
-    
+    /* nove polygonu */
+    private Map<String,Shape> newShapes;
     
     /* aktualne vytvareny polygon */
     private Polygon newPolygon;
@@ -55,15 +56,20 @@ public class HotelCompoundEditablePanel extends JPanel implements MouseListener,
         
         arealModel = new ArealModel();
         
-        JButton button = new JButton("+");
-        button.setBounds(this.getWidth()-25, this.getHeight()-25, 10, 10);
-        this.add(button);
+        JButton addButton = new JButton("+");
+        //addButton.setPreferredSize(new Dimension(10,10));
+        addButton.setBounds(200, 20, 10, 10);
         
-        button.addActionListener(new ActionListener() {
+        addButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 newObjectNameDialog();
             }
         });
+        
+        JButton addButton2 = new JButton("-");
+        //addButton.setPreferredSize(new Dimension(10,10));
+        addButton2.setBounds(250, 20, 10, 10);
+        this.add(addButton2);
     }
 
     @Override
@@ -122,7 +128,7 @@ public class HotelCompoundEditablePanel extends JPanel implements MouseListener,
         
         if (buildingName != null) {
             
-            parentPanel.updateTitle(buildingName);    
+            //parentPanel.updateTitle(buildingName);    
             selectedBuilding = buildingName;
             
             repaint();
@@ -233,6 +239,7 @@ public class HotelCompoundEditablePanel extends JPanel implements MouseListener,
             }
         }
         else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+            
             points.removeAll(points);
             shapes.remove("line");
             drawing = false;
