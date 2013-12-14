@@ -109,8 +109,6 @@ public class Rezervace extends javax.swing.JPanel {
         kalendar_do = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         pocetPokoju_spinner = new javax.swing.JSpinner();
-        jLabel15 = new javax.swing.JLabel();
-        pocetOsob_spinner = new javax.swing.JSpinner();
         jPanel5 = new javax.swing.JPanel();
         vlozitRezervaci_button = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -317,16 +315,12 @@ public class Rezervace extends javax.swing.JPanel {
 
         pocetPokoju_spinner.setModel(new javax.swing.SpinnerNumberModel(0, 0, 10, 1));
 
-        jLabel15.setText("Počet osob");
-
-        pocetOsob_spinner.setModel(new javax.swing.SpinnerNumberModel(0, 0, 2, 1));
-
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel10)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -336,18 +330,13 @@ public class Rezervace extends javax.swing.JPanel {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel14)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(pocetPokoju_spinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel15)))
+                        .addComponent(pocetPokoju_spinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jLabel12)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(rezervaceDo_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(kalendar_do))
-                    .addComponent(pocetOsob_spinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jLabel12)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(rezervaceDo_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(kalendar_do)
                 .addGap(0, 43, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
@@ -363,9 +352,7 @@ public class Rezervace extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
-                    .addComponent(pocetPokoju_spinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel15)
-                    .addComponent(pocetOsob_spinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(pocetPokoju_spinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -517,7 +504,6 @@ public class Rezervace extends javax.swing.JPanel {
         // implicitně je to 0
         int pocetParkovacichMist = 0;
         int pocetPokoju = (int)pocetPokoju_spinner.getValue();
-        int pocetOsob = (int)pocetOsob_spinner.getValue();;
         if(jmeno.equals("")|| prijimeni.equals("") || adresa.equals("") || mesto.equals("") || 
            psc.equals("")|| kraj.equals("") || telefon.equals("") || email.equals("")) {
             JOptionPane.showMessageDialog(getParent(), "Všechna pole musí být vyplněna, prosím vyplňte je!","Chyba",JOptionPane.ERROR_MESSAGE);
@@ -534,7 +520,6 @@ public class Rezervace extends javax.swing.JPanel {
         }
         System.out.println("Parkovacich mist: "+pocetParkovacichMist);
         System.out.println("Pokoju: "+pocetPokoju);
-        System.out.println("Osob: "+pocetOsob);
         System.out.println("Od: "+rezervaceOd);
         System.out.println("Do: "+rezervaceDo);
         
@@ -608,7 +593,6 @@ public class Rezervace extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -628,7 +612,6 @@ public class Rezervace extends javax.swing.JPanel {
     private javax.swing.JComboBox kraj_combobox;
     private javax.swing.JTextField mesto_field;
     private javax.swing.JCheckBox parkovaciMisto_checkbox;
-    private javax.swing.JSpinner pocetOsob_spinner;
     private javax.swing.JSpinner pocetParkovacihMist_spinner;
     private javax.swing.JSpinner pocetPokoju_spinner;
     private javax.swing.JButton pridatFotoAuta_button;
