@@ -1,12 +1,16 @@
 package cz.vutbr.fit.pdb.gui;
 
+import cz.vutbr.fit.pdb.models.ObrazkyModel;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
@@ -27,6 +31,7 @@ public class Rezervace extends javax.swing.JPanel {
     }
 
     public void myInit(){
+        modelObr = new ObrazkyModel();
         fc = new JFileChooser();
         iconList = new ArrayList<myIcon>();
         layout = new FlowLayout();
@@ -419,9 +424,15 @@ public class Rezervace extends javax.swing.JPanel {
  
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
-            icon = new ImageIcon(getClass().getResource("/icons/"+file.getName()));
+            String path = "/icons/"+file.getName();
+            //icon = new ImageIcon(getClass().getResource(path));
             System.out.println("Opening: " + file.getName() + ".");
-            //System.out.println("/icons/"+file.getName());
+            try {
+                modelObr.insertImage(path);
+                //System.out.println("/icons/"+file.getName());
+            } catch (SQLException ex) {
+                Logger.getLogger(Rezervace.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } else {
             System.out.println("Cancelled by user.");
         }
@@ -469,6 +480,7 @@ public class Rezervace extends javax.swing.JPanel {
     }//GEN-LAST:event_parkovaciMisto_checkboxActionPerformed
 
     //Create a file chooser
+    private ObrazkyModel modelObr;
     private JFileChooser fc;
     private ImageIcon icon;
     private String defaultSearchDir;
