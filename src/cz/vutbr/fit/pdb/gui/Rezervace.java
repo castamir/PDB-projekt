@@ -1,5 +1,8 @@
 package cz.vutbr.fit.pdb.gui;
 
+import java.io.File;
+import javax.swing.JFileChooser;
+
 /**
  *
  * @author Doma
@@ -11,8 +14,12 @@ public class Rezervace extends javax.swing.JPanel {
      */
     public Rezervace() {
         initComponents();
+        myInit();
     }
 
+    public void myInit(){
+        fc = new JFileChooser();
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -158,6 +165,11 @@ public class Rezervace extends javax.swing.JPanel {
         jLabel9.setText("Počet");
 
         pridatFotoAuta_button.setText("Přidat fotografii vozidla");
+        pridatFotoAuta_button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pridatFotoAuta_buttonActionPerformed(evt);
+            }
+        });
 
         vozidla_kontejner.setBorder(javax.swing.BorderFactory.createTitledBorder("Vozidla"));
 
@@ -316,6 +328,21 @@ public class Rezervace extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void pridatFotoAuta_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pridatFotoAuta_buttonActionPerformed
+        // TODO add your handling code here:
+        int returnVal = fc.showOpenDialog(fc);
+ 
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File file = fc.getSelectedFile();
+                System.out.println("Opening: " + file.getName() + ".");
+            } else {
+                System.out.println("Cancelled by user.");
+            }
+            //log.setCaretPosition(log.getDocument().getLength());
+    }//GEN-LAST:event_pridatFotoAuta_buttonActionPerformed
+
+    //Create a file chooser
+    private JFileChooser fc;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField adresa_field;
     private javax.swing.JTextField email_field;

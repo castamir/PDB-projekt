@@ -280,6 +280,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="P&#x159;idat fotografii vozidla"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="pridatFotoAuta_buttonActionPerformed"/>
+          </Events>
         </Component>
         <Container class="javax.swing.JPanel" name="vozidla_kontejner">
           <Properties>
