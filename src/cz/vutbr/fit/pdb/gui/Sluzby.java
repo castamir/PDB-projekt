@@ -35,19 +35,19 @@ import java.text.SimpleDateFormat;
  * @author Doma
  */
 public class Sluzby extends javax.swing.JPanel {
-  
+
     /**
      * Creates new form Sluzby
      */
     public Sluzby() {
         initComponents();
         hotelCompoundPanel1.setParentPanel(this);
-        
+
         modelSluzby = new SluzbyModel();
         modelZakaznik = new ZakaznikModel();
         date_field.setText(now());
-        
-        try {            
+
+        try {
             initTable();
         } catch (Exception ex) {
             Logger.getLogger(Sluzby.class.getName()).log(Level.SEVERE, null, ex);
@@ -65,7 +65,7 @@ public class Sluzby extends javax.swing.JPanel {
         item = (String) cb.getSelectedItem();
         int tmp = (int) cb.getSelectedIndex();
         //if(item != null ||tmp != -1) {
-        System.out.println(item);
+        //System.out.println(item);
         //}
     }
 
@@ -76,9 +76,9 @@ public class Sluzby extends javax.swing.JPanel {
     private void initTable() throws Exception {
 
         TableColumn tc = this.detail_dne_table.getColumnModel().getColumn(2);
-        
+
         this.initComboBoxItems();
-        
+
         comboBox = new JComboBox();
         comboBox.setModel(getComboBoxItems(comboBoxItems));
         comboBox.addActionListener(new ActionListener() {
@@ -94,21 +94,22 @@ public class Sluzby extends javax.swing.JPanel {
                 new DefaultTableCellRenderer();
         renderer.setToolTipText("Vyberte jméno");
         tc.setCellRenderer(renderer);
+        refTableData = new ArrayList<>();
 
         //hodina.toString();
         //model.addRow(new Object[]{hodina.toString(),"Lala",(String)comboBox.getItemAt(2)});
 
     }
-    
+
     private void initComboBoxItems() {
         customer_comboBoxIdToDatabaseId = new HashMap<>();
         customer_databaseIdToComboBoxId = new HashMap<>();
-        
+
         try {
-            int i=0;
-            Map<Integer,String> list = modelZakaznik.getList();
-            
-            String[] items = new String[list.size()+1];
+            int i = 0;
+            Map<Integer, String> list = modelZakaznik.getList();
+
+            String[] items = new String[list.size() + 1];
             items[i++] = "";
             for (Map.Entry<Integer, String> entry : list.entrySet()) {
                 items[i] = entry.getValue();
@@ -116,10 +117,9 @@ public class Sluzby extends javax.swing.JPanel {
                 customer_databaseIdToComboBoxId.put(entry.getKey(), i);
                 i++;
             }
-            
+
             comboBoxItems = items;
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             comboBoxItems = new String[]{"chyba při načítání.."};
         }
     }
@@ -152,6 +152,7 @@ public class Sluzby extends javax.swing.JPanel {
     public void updateTable(String serviceName, String formatedDate) {
         model = (DefaultTableModel) detail_dne_table.getModel();
         model.getDataVector().removeAllElements();
+        refTableData = new ArrayList<>();
 
         try {
             List<Map<String, Object>> myRow = modelSluzby.getRezervace(serviceName, formatedDate);
@@ -161,17 +162,23 @@ public class Sluzby extends javax.swing.JPanel {
             while (it.hasNext()) {
                 Map<String, Object> value = it.next();
                 String hodina = value.get("hodina").toString();
-                Map<String,Object> zakaznik = (Map<String,Object>)value.get("zakaznik");
-                
+                Map<String, Object> zakaznik = (Map<String, Object>) value.get("zakaznik");
+
                 String stav = "";
                 if (value.get("id") != null) {
                     stav = "rezervovano";
                 }
-                
+
                 int comboBoxItemId = 0;
-                if (value.get("id") != null) { comboBoxItemId = customer_databaseIdToComboBoxId.get(zakaznik.get("id")); }
-                
-                model.addRow(new Object[]{hodina, stav, (String) comboBox.getItemAt(comboBoxItemId)});
+                if (value.get("id") != null) {
+                    comboBoxItemId = customer_databaseIdToComboBoxId.get(zakaznik.get("id"));
+                }
+
+                Object[] row = new Object[]{hodina, stav, (String) comboBox.getItemAt(comboBoxItemId), null};
+                model.addRow(row);
+                Map<Object, Object[]> mapItem = new HashMap<>();
+                mapItem.put((Object) (value.get("id")), row);
+                refTableData.add(mapItem);
             }
 
         } catch (SQLException ex) {
@@ -180,6 +187,47 @@ public class Sluzby extends javax.swing.JPanel {
             Logger.getLogger(Sluzby.class.getName()).log(Level.SEVERE, null, ex);
         }
         model.fireTableDataChanged();
+    }
+
+    private void checkChangesInTable() {
+        List<Map<Object, Object[]>> newTableData = new ArrayList<>();
+        List<List<Object>> v = model.getDataVector();
+        for (int i = 0; i < refTableData.size(); i++) {
+            List<Object> row = v.get(i);
+            Map<Object, Object[]> mapItem = refTableData.get(i);
+            Object id = mapItem.keySet().iterator().next(); // VODO magic, do not touch !!!
+            System.out.print("id");
+            System.out.println(id);
+            Object[] refRow = mapItem.get(id);
+            if (id == null && !areRowsEqual(row, refRow)) {
+                System.out.println("insert");
+            } else if (id != null) {
+                if (row.get(2) == null) {
+                    // delete
+                    System.out.println("delete");
+                } else if (!areRowsEqual(row, refRow)) {
+                    // update
+                    System.out.println("update");
+                }
+            }
+            Object[] newRow = new Object[]{row.get(0), row.get(1), row.get(2), row.get(3)};
+            Map<Object, Object[]> newMapItem = new HashMap<>();
+            newMapItem.put(id, newRow);
+            newTableData.add(newMapItem);
+        }
+        refTableData = newTableData;
+    }
+
+    private boolean areRowsEqual(List<Object> row, Object[] refRow) {
+        for (int i = 0; i < row.size(); i++) {
+            if (row.get(i) != refRow[i]) {
+                System.out.println("refRow[i]");
+                System.out.println(row.get(i));
+                System.out.println(refRow[i]);
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -391,8 +439,7 @@ public class Sluzby extends javax.swing.JPanel {
     }//GEN-LAST:event_detail_dne_tableMouseClicked
 
     private void ulozitZmena_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ulozitZmena_buttonActionPerformed
-        //System.out.println("Klik");
-        updateTable(new Object());
+        checkChangesInTable();
     }//GEN-LAST:event_ulozitZmena_buttonActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -414,13 +461,11 @@ public class Sluzby extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_date_fieldCaretUpdate
     private String item;
-    
     private SluzbyModel modelSluzby;
     private ZakaznikModel modelZakaznik;
-    
-    private Map<Integer,Integer> customer_comboBoxIdToDatabaseId;
-    private Map<Integer,Integer> customer_databaseIdToComboBoxId;
-    
+    private Map<Integer, Integer> customer_comboBoxIdToDatabaseId;
+    private Map<Integer, Integer> customer_databaseIdToComboBoxId;
+    private List<Map<Object, Object[]>> refTableData;
     private String[] tmp = {null, "asdasdasd", "2", "3", "4", "5"};
     private JComboBox comboBox;
     private String[] comboBoxItems;
