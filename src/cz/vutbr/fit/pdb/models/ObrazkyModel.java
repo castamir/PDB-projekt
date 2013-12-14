@@ -35,12 +35,12 @@ public class ObrazkyModel extends BaseModel {
             
             try (Statement stmt = conn.createStatement(); )
             {
-                stmt.executeUpdate("INSERT INTO obrazky (img) VALUES (ordsys.ordimage.init())");
+                stmt.executeUpdate("INSERT INTO obrazky (id, img) VALUES (obrazky_seq.nextval, ORDSYS.ORDImage.init())");
             }
             
             try (Statement stmt = conn.createStatement(); )
             {
-                OracleResultSet rs = (OracleResultSet) stmt.executeQuery("SELECT id, img FROM obrazky ORDER BY id DESC LIMIT 1 FOR UPDATE");
+                OracleResultSet rs = (OracleResultSet) stmt.executeQuery("SELECT id, img FROM obrazky ORDER BY id DESC FOR UPDATE");
                 
                 if (!rs.next()) {
                     return null;

@@ -2,7 +2,7 @@ DROP TABLE obrazky;
 
 /** zakaznik */
 CREATE TABLE obrazky (
-  	id NUMBER NOT null primary key,
+  	id NUMBER NOT null,
 	img ORDSYS.ORDImage,
 	img_si ORDSYS.SI_StillImage,
 	img_ac ORDSYS.SI_AverageColor,
