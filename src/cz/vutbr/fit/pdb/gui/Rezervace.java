@@ -386,7 +386,7 @@ public class Rezervace extends javax.swing.JPanel {
             }
         });
 
-        jButton3.setText("Zrušit rezervaci");
+        jButton3.setText("Zpět");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
