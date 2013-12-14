@@ -34,7 +34,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         jScrollPane1.setViewportView(rezervace2);
 
-        jTabbedPane1.addTab("tab2", jScrollPane1);
+        jTabbedPane1.addTab("TMP_Nova rezervace", jScrollPane1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
