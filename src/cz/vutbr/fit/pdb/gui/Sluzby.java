@@ -170,6 +170,7 @@ public class Sluzby extends javax.swing.JPanel {
                 }
 
                 int comboBoxItemId = 0;
+
                 if (value.get("id") != null) {
                     comboBoxItemId = customer_databaseIdToComboBoxId.get(zakaznik.get("id"));
                 }

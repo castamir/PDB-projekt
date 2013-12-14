@@ -97,11 +97,64 @@ public class SluzbyModel extends BaseModel {
 
                     row.put("id", resultSet.getInt("id"));
                     row.put("zakaznik", zakaznikModel.get(resultSet.getInt("zakaznik")));
+                    row.put("poznamka",resultSet.getString("poznamka"));
                 }
             }
         }
         
         return result;
+    }
+    
+    
+    public boolean novaRezervace(int zakaznik, String sluzba, String datum, int hodina, String poznamka) throws SQLException, Exception {
+        OracleDataSource ods = serviceLocator.getConnection();
+        try (Connection conn = ods.getConnection(); 
+             PreparedStatement stmt = conn.prepareStatement("INSERT INTO sluzby_rezervace (sluzba, zakaznik, den, hodina, poznamka) VALUES(?,?,?,?,?)");
+             )
+        {
+            SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+            Date d = new Date(date.parse(datum).getTime());
+            
+            stmt.setString(1,sluzba);   
+            stmt.setInt(2, zakaznik);
+            stmt.setDate(3,d);
+            stmt.setInt(4,hodina);
+            stmt.setString(5,poznamka);
+
+            return stmt.execute();
+        }
+    }
+    
+    public boolean upravitRezervaci(int id, int zakaznik, String sluzba, String datum, int hodina, String poznamka) throws SQLException, Exception {
+        OracleDataSource ods = serviceLocator.getConnection();
+        try (Connection conn = ods.getConnection(); 
+             PreparedStatement stmt = conn.prepareStatement("UPDATE sluzby_rezervace SET sluzba = ?, zakaznik = ?, den = ?, hodina = ?, poznamka = ? WHERE id = ?");
+             )
+        {
+            SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+            Date d = new Date(date.parse(datum).getTime());
+            
+            stmt.setString(1,sluzba);   
+            stmt.setInt(2, zakaznik);
+            stmt.setDate(3,d);
+            stmt.setInt(4,hodina);
+            stmt.setString(5,poznamka);
+            
+            stmt.setInt(6,id);
+
+            return stmt.execute();
+        }
+    }
+    
+    public boolean smazatRezervaci(int id) throws SQLException {
+        OracleDataSource ods = serviceLocator.getConnection();
+        try (Connection conn = ods.getConnection(); 
+             PreparedStatement stmt = conn.prepareStatement("DELETE FROM sluzby_rezervace WHERE id = ?");
+             )
+        {
+            stmt.setInt(1, id);
+            return stmt.execute();
+        }
     }
     
 }
