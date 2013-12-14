@@ -6,6 +6,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -389,14 +390,21 @@ public class Rezervace extends javax.swing.JPanel {
         // TODO add your handling code here:
         //auti.setVisible(false);
         //auti.setIcon(null);
-        it = iconList.iterator();
+        it = iconList.listIterator();
         myIcon tmp;
+        int index;
         while(it.hasNext()){
             tmp = it.next();
+            index = it.nextIndex();
             if(tmp.isActive()){
                 tmp.setVisible(false);
                 tmp.setIcon(null);
+                //indexOf(Object o)
+                //iconList.remove(index);
+                it.remove();
             }
+            
+            //System.out.println(index);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -406,7 +414,7 @@ public class Rezervace extends javax.swing.JPanel {
     private String defaultSearchDir;
     FlowLayout layout;
     List<myIcon> iconList;
-    Iterator<myIcon> it;
+    ListIterator<myIcon> it;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField adresa_field;
     private javax.swing.JTextField email_field;
