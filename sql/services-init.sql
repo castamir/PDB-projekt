@@ -6,6 +6,13 @@ DROP TABLE sluzby;
 CREATE TABLE zakaznik (
   id NUMBER NOT null,
 	jmeno VARCHAR(32) NOT null,
+	prijmeni VARCHAR(32) NOT null,
+	adresa VARCHAR(32) NOT null,
+	mesto VARCHAR(32) NOT null,
+	psc VARCHAR(32) NOT null,
+	kraj VARCHAR(32) NOT null,
+	telefon VARCHAR(32) NOT null,
+	email VARCHAR(32) NOT null,
 	CONSTRAINT pk_zakaznik PRIMARY KEY (id)
 );
 

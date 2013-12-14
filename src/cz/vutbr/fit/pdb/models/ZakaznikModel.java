@@ -68,4 +68,24 @@ public class ZakaznikModel extends BaseModel {
         
         return listOfCustomers;
     }
+    
+    public boolean insert(String name, String surname, String address, String city, String postalCode, String region, String phone, String email) throws SQLException {
+    
+        OracleDataSource ods = serviceLocator.getConnection();
+        try (Connection conn = ods.getConnection(); 
+             PreparedStatement stmt = conn.prepareStatement("INSERT INTO zakaznik (jmeno, prijmeni, adresa, mesto, psc, kraj, telefon, email) VALUES(?,?,?,?,?,?,?,?)");
+             )
+        {
+            stmt.setString(1,name);   
+            stmt.setString(2,surname);
+            stmt.setString(3,address);
+            stmt.setString(4,city);
+            stmt.setString(5,postalCode);
+            stmt.setString(6,region);
+            stmt.setString(7,phone);
+            stmt.setString(8,email);
+
+            return stmt.execute();
+        }
+    }
 }
