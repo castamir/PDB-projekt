@@ -53,6 +53,7 @@ public class Rezervace extends javax.swing.JPanel {
     }
     
     public void loadImagesFromDb(){
+        //System.out.println("load");
         try {
             icon = new ImageIcon(modelObr.getImage(lastInsertedImgId));
         } catch (SQLException ex) {
@@ -432,17 +433,20 @@ public class Rezervace extends javax.swing.JPanel {
         fc.setCurrentDirectory(new File(defaultSearchDir));
         fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
         int returnVal = fc.showOpenDialog(fc);
+        myIcon ic = null;
  
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
             String path = "/icons/"+file.getName();
-            icon = new ImageIcon(getClass().getResource(path));
+            //icon = new ImageIcon(getClass().getResource(path));
             //System.out.println("Opening: " + file.getName() + ".");
             System.out.println("Opening: " +path);
             try {
-                defaultSearchDir = "src/icons/";
                 lastInsertedImgId = modelObr.insertImage(new File(defaultSearchDir).getAbsolutePath()+"/"+file.getName());
-                System.out.println("posledni id:" + lastInsertedImgId);
+                ic = new myIcon();
+                ic.setIndex(lastInsertedImgId);
+                System.out.println("posledni id z obrazku:" + ic.getIndex());
+                System.out.println("posledni id z db:" + lastInsertedImgId);
                 //System.out.println("/icons/"+file.getName());
             } catch (SQLException ex) {
                 Logger.getLogger(Rezervace.class.getName()).log(Level.SEVERE, null, ex);
@@ -450,9 +454,10 @@ public class Rezervace extends javax.swing.JPanel {
         } else {
             System.out.println("Cancelled by user.");
         }
-        //loadImagesFromDb();
+        loadImagesFromDb();
         if(icon != null){
-            iconList.add(new myIcon(icon));
+            ic.setIcon(icon);
+            iconList.add(ic);
             vozidla_kontejner.add(iconList.get(iconList.size()-1));
             vozidla_kontejner.revalidate();
             //auti.setVisible(true);
@@ -473,6 +478,13 @@ public class Rezervace extends javax.swing.JPanel {
                 tmp.setVisible(false);
                 tmp.setIcon(null);
                 it.remove();
+                try {
+                    modelObr.delete(tmp.getIndex());
+                    //tmp.getIndex();
+                    System.out.println("Chci smazat index: "+tmp.getIndex());
+                } catch (SQLException ex) {
+                    Logger.getLogger(Rezervace.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
             
             //System.out.println(index);
