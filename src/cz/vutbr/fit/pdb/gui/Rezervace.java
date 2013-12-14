@@ -21,6 +21,7 @@ public class Rezervace extends javax.swing.JPanel {
 
     public void myInit(){
         fc = new JFileChooser();
+        defaultSearchDir = "src/icons/";
         //icon = new ImageIcon("images/middle.gif","a pretty but meaningless splat");
         /*String fileName = "Calender Month.png";
         icon = new ImageIcon(getClass().getResource("/icons/"+fileName));
@@ -348,7 +349,9 @@ public class Rezervace extends javax.swing.JPanel {
 
     private void pridatFotoAuta_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pridatFotoAuta_buttonActionPerformed
         // TODO add your handling code here:
-        //fc.setCurrentDirectory(getClass().getResource("/icons/"));
+        
+        fc.setCurrentDirectory(new File(defaultSearchDir));
+        fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
         int returnVal = fc.showOpenDialog(fc);
  
         if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -365,6 +368,7 @@ public class Rezervace extends javax.swing.JPanel {
     //Create a file chooser
     private JFileChooser fc;
     private ImageIcon icon;
+    private String defaultSearchDir;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField adresa_field;
     private cz.vutbr.fit.pdb.gui.myIcon auti;
