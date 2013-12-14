@@ -3,6 +3,7 @@ package cz.vutbr.fit.pdb.gui;
 import cz.vutbr.fit.pdb.models.ObrazkyModel;
 import cz.vutbr.fit.pdb.models.ZakaznikModel;
 import cz.vutbr.fit.pdb.utils.DatePicker;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.io.File;
 import java.sql.SQLException;
@@ -458,13 +459,9 @@ public class Rezervace extends javax.swing.JPanel {
             //auti.setVisible(true);
             //auti.setIcon(icon);
         }
-            //log.setCaretPosition(log.getDocument().getLength());
     }//GEN-LAST:event_pridatFotoAuta_buttonActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        //auti.setVisible(false);
-        //auti.setIcon(null);
         it = iconList.listIterator();
         myIcon tmp;
         while(it.hasNext()){
