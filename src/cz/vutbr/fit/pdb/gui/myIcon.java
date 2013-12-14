@@ -38,7 +38,7 @@ public class myIcon extends JLabel{
     public void myIconMouseClicked(java.awt.event.MouseEvent evt){
         System.out.println("Klik my Icon");
         if(!active){
-            setBorder(BorderFactory.createLineBorder(Color.black));
+            setBorder(BorderFactory.createLineBorder(Color.red));
             active = true;
         } else {
             active = false;

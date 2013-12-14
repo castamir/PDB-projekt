@@ -392,15 +392,11 @@ public class Rezervace extends javax.swing.JPanel {
         //auti.setIcon(null);
         it = iconList.listIterator();
         myIcon tmp;
-        int index;
         while(it.hasNext()){
             tmp = it.next();
-            index = it.nextIndex();
             if(tmp.isActive()){
                 tmp.setVisible(false);
                 tmp.setIcon(null);
-                //indexOf(Object o)
-                //iconList.remove(index);
                 it.remove();
             }
             
