@@ -45,12 +45,12 @@ public class Rezervace extends javax.swing.JPanel {
             }
         });
         vozidla_kontejner.setLayout(layout);
-        loadImagesFromDb();
+        //loadImagesFromDb();
     }
-    
+    /*
     public void loadImagesFromDb(){
         
-    }
+    }*/
     
     private void kraj_comboboxAction(ActionEvent ae){
         JComboBox cb = (JComboBox) ae.getSource();
@@ -112,21 +112,23 @@ public class Rezervace extends javax.swing.JPanel {
 
         jLabel1.setText("Jméno");
 
+        jmeno_field.setText("Pepa");
+
         jLabel2.setText("Přijímení");
 
-        prijimeni_field.setText("jTextField2");
+        prijimeni_field.setText("Vozembouch");
 
         jLabel3.setText("Adresa");
 
-        adresa_field.setText("jTextField3");
+        adresa_field.setText("Z depa, 46");
 
         jLabel4.setText("Město");
 
-        mesto_field.setText("jTextField4");
+        mesto_field.setText("Depo");
 
         jLabel5.setText("PSČ");
 
-        psc_field.setText("jTextField5");
+        psc_field.setText("12345");
 
         jLabel6.setText("Zvolte kraj");
 
@@ -134,11 +136,11 @@ public class Rezervace extends javax.swing.JPanel {
 
         jLabel7.setText("Telefon");
 
-        telefon_field.setText("jTextField6");
+        telefon_field.setText("777666555");
 
         jLabel8.setText("E-mail");
 
-        email_field.setText("jTextField7");
+        email_field.setText("pepa@zdepa.cz");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -426,7 +428,8 @@ public class Rezervace extends javax.swing.JPanel {
             File file = fc.getSelectedFile();
             String path = "/icons/"+file.getName();
             //icon = new ImageIcon(getClass().getResource(path));
-            System.out.println("Opening: " + file.getName() + ".");
+            //System.out.println("Opening: " + file.getName() + ".");
+            System.out.println("Opening: " +path);
             try {
                 modelObr.insertImage(path);
                 //System.out.println("/icons/"+file.getName());
@@ -466,6 +469,12 @@ public class Rezervace extends javax.swing.JPanel {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        System.out.println(jmeno_field.getText());
+        System.out.println(prijimeni_field.getText());
+        System.out.println(adresa_field.getText());
+        System.out.println(mesto_field.getText());
+        System.out.println(psc_field.getText());
+        System.out.println((String)kraj_combobox.getSelectedItem());
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void parkovaciMisto_checkboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_parkovaciMisto_checkboxActionPerformed
