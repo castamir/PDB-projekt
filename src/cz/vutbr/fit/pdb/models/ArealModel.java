@@ -1,6 +1,7 @@
 
 package cz.vutbr.fit.pdb.models;
 
+import cz.vutbr.fit.pdb.application.ServiceLocator;
 import cz.vutbr.fit.pdb.models.BaseModel;
 
 
@@ -27,7 +28,7 @@ public class ArealModel extends BaseModel {
     
         Map<String, Shape> shapes = new HashMap<String, Shape>();
         
-        OracleDataSource ods = serviceLocator.getConnection();
+        OracleDataSource ods = ServiceLocator.getConnection();
         try (Connection conn = ods.getConnection(); Statement stmt = conn.createStatement(); ResultSet resultSet = stmt.executeQuery("select nazev, geometrie from areal")) {
             while (resultSet.next()) {
                 byte[] image = resultSet.getBytes("geometrie");
@@ -57,7 +58,7 @@ public class ArealModel extends BaseModel {
     
     public String getBuildingAtPoint(int x, int y) throws SQLException, Exception {
     
-        OracleDataSource ods = serviceLocator.getConnection();
+        OracleDataSource ods = ServiceLocator.getConnection();
         try (Connection conn = ods.getConnection(); Statement stmt = conn.createStatement(); ResultSet resultSet = stmt.executeQuery("select nazev from areal where SDO_RELATE(geometrie, SDO_GEOMETRY(2001, NULL, SDO_POINT_TYPE(" + x + "," + y + ",NULL), NULL, NULL), 'mask=contains') = 'TRUE'")) {
             while (resultSet.next()) {
                 return resultSet.getString("nazev");

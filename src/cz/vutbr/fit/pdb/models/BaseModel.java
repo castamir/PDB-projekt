@@ -12,9 +12,9 @@ import cz.vutbr.fit.pdb.application.ServiceLocator;
  */
 abstract class BaseModel {
    
-    protected ServiceLocator serviceLocator;
+    //protected ServiceLocator serviceLocator;
     
     public BaseModel() {
-        serviceLocator = new ServiceLocator();
+        //serviceLocator = ServiceLocator;
     }
 }
