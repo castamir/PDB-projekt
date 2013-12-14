@@ -1,6 +1,7 @@
 
 package cz.vutbr.fit.pdb.gui;
 
+import javax.swing.Icon;
 import javax.swing.JLabel;
 
 /**
@@ -19,6 +20,16 @@ public class myIcon extends JLabel{
         });
         setText("");
         //setSize(60, 60);
+    }
+    
+    public myIcon(Icon i){
+       addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                myIconMouseClicked(evt);
+            }
+        });
+        setText("");
+        setIcon(i);
     }
     
     public void myIconMouseClicked(java.awt.event.MouseEvent evt){

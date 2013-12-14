@@ -1,5 +1,7 @@
 package cz.vutbr.fit.pdb.gui;
 
+import java.awt.ComponentOrientation;
+import java.awt.FlowLayout;
 import java.io.File;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -21,6 +23,8 @@ public class Rezervace extends javax.swing.JPanel {
 
     public void myInit(){
         fc = new JFileChooser();
+        layout = new FlowLayout();
+        layout.setAlignment(FlowLayout.LEFT);
         defaultSearchDir = "src/icons/";
         //icon = new ImageIcon("images/middle.gif","a pretty but meaningless splat");
         /*String fileName = "Calender Month.png";
@@ -29,6 +33,7 @@ public class Rezervace extends javax.swing.JPanel {
         JLabel obr = new JLabel(icon);
         vozidla_kontejner.add(obr);
         auti.setIcon(icon);*/
+        vozidla_kontejner.setLayout(layout);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -63,7 +68,7 @@ public class Rezervace extends javax.swing.JPanel {
         pridatFotoAuta_button = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         vozidla_kontejner = new javax.swing.JPanel();
-        auti = new cz.vutbr.fit.pdb.gui.myIcon();
+        jButton1 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         rezevaceOd_field = new cz.vutbr.fit.pdb.utils.ObservingTextField();
@@ -190,18 +195,21 @@ public class Rezervace extends javax.swing.JPanel {
         vozidla_kontejner.setLayout(vozidla_kontejnerLayout);
         vozidla_kontejnerLayout.setHorizontalGroup(
             vozidla_kontejnerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(vozidla_kontejnerLayout.createSequentialGroup()
-                .addComponent(auti, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 229, Short.MAX_VALUE))
+            .addGap(0, 289, Short.MAX_VALUE)
         );
         vozidla_kontejnerLayout.setVerticalGroup(
             vozidla_kontejnerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(vozidla_kontejnerLayout.createSequentialGroup()
-                .addComponent(auti, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 40, Short.MAX_VALUE))
+            .addGap(0, 100, Short.MAX_VALUE)
         );
 
         jScrollPane1.setViewportView(vozidla_kontejner);
+
+        jButton1.setText("Odstraň fotografie");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -218,9 +226,11 @@ public class Rezervace extends javax.swing.JPanel {
                         .addComponent(pocetParkovacihMist_spinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(pridatFotoAuta_button)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE)
+            .addComponent(jScrollPane1)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -231,8 +241,10 @@ public class Rezervace extends javax.swing.JPanel {
                     .addComponent(pocetParkovacihMist_spinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(pridatFotoAuta_button)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(pridatFotoAuta_button)
+                    .addComponent(jButton1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -341,7 +353,7 @@ public class Rezervace extends javax.swing.JPanel {
                         .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(41, 41, 41)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -361,18 +373,28 @@ public class Rezervace extends javax.swing.JPanel {
         } else {
             System.out.println("Cancelled by user.");
         }
-        auti.setIcon(icon);
+        vozidla_kontejner.add(new myIcon(icon));
+        vozidla_kontejner.revalidate();
+        //auti.setVisible(true);
+        //auti.setIcon(icon);
             //log.setCaretPosition(log.getDocument().getLength());
     }//GEN-LAST:event_pridatFotoAuta_buttonActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        //auti.setVisible(false);
+        //auti.setIcon(null);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     //Create a file chooser
     private JFileChooser fc;
     private ImageIcon icon;
     private String defaultSearchDir;
+    FlowLayout layout;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField adresa_field;
-    private cz.vutbr.fit.pdb.gui.myIcon auti;
     private javax.swing.JTextField email_field;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
