@@ -1,7 +1,9 @@
 package cz.vutbr.fit.pdb.gui;
 
 import java.io.File;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 
 /**
  *
@@ -19,6 +21,13 @@ public class Rezervace extends javax.swing.JPanel {
 
     public void myInit(){
         fc = new JFileChooser();
+        //icon = new ImageIcon("images/middle.gif","a pretty but meaningless splat");
+        /*String fileName = "Calender Month.png";
+        icon = new ImageIcon(getClass().getResource("/icons/"+fileName));
+        System.out.println(getClass().getResource("/icons/Calender Month.png"));
+        JLabel obr = new JLabel(icon);
+        vozidla_kontejner.add(obr);
+        auti.setIcon(icon);*/
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -52,6 +61,7 @@ public class Rezervace extends javax.swing.JPanel {
         jLabel9 = new javax.swing.JLabel();
         pridatFotoAuta_button = new javax.swing.JButton();
         vozidla_kontejner = new javax.swing.JPanel();
+        auti = new cz.vutbr.fit.pdb.gui.myIcon();
         jPanel4 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         rezevaceOd_field = new cz.vutbr.fit.pdb.utils.ObservingTextField();
@@ -177,11 +187,16 @@ public class Rezervace extends javax.swing.JPanel {
         vozidla_kontejner.setLayout(vozidla_kontejnerLayout);
         vozidla_kontejnerLayout.setHorizontalGroup(
             vozidla_kontejnerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(vozidla_kontejnerLayout.createSequentialGroup()
+                .addComponent(auti, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         vozidla_kontejnerLayout.setVerticalGroup(
             vozidla_kontejnerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 78, Short.MAX_VALUE)
+            .addGroup(vozidla_kontejnerLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(auti, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -199,9 +214,9 @@ public class Rezervace extends javax.swing.JPanel {
                         .addComponent(pocetParkovacihMist_spinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(pridatFotoAuta_button)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(vozidla_kontejner, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addComponent(vozidla_kontejner, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -262,7 +277,7 @@ public class Rezervace extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel13))
                     .addComponent(pocetOsob_spinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 44, Short.MAX_VALUE))
+                .addGap(0, 43, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -330,21 +345,26 @@ public class Rezervace extends javax.swing.JPanel {
 
     private void pridatFotoAuta_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pridatFotoAuta_buttonActionPerformed
         // TODO add your handling code here:
+        //fc.setCurrentDirectory(getClass().getResource("/icons/"));
         int returnVal = fc.showOpenDialog(fc);
  
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                File file = fc.getSelectedFile();
-                System.out.println("Opening: " + file.getName() + ".");
-            } else {
-                System.out.println("Cancelled by user.");
-            }
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            icon = new ImageIcon(getClass().getResource("/icons/"+file.getName()));
+            System.out.println("Opening: " + file.getName() + ".");
+        } else {
+            System.out.println("Cancelled by user.");
+        }
+        auti.setIcon(icon);
             //log.setCaretPosition(log.getDocument().getLength());
     }//GEN-LAST:event_pridatFotoAuta_buttonActionPerformed
 
     //Create a file chooser
     private JFileChooser fc;
+    private ImageIcon icon;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField adresa_field;
+    private cz.vutbr.fit.pdb.gui.myIcon auti;
     private javax.swing.JTextField email_field;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
