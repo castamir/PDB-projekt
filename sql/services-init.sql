@@ -12,7 +12,7 @@ CREATE TABLE zakaznik (
 DROP SEQUENCE zakaznik_seq;
 
 CREATE SEQUENCE zakaznik_seq
-START WITH 1 INCREMENT BY 1;
+START WITH 1001 INCREMENT BY 1;
 /****************************************/
 
 /** sluzby */
@@ -42,7 +42,7 @@ CREATE TABLE sluzby_rezervace (
 	CONSTRAINT pk_sluzby_rezervace_id PRIMARY KEY (id),
 	CONSTRAINT fk_sluzby_rezervace_sluzba FOREIGN KEY (sluzba) REFERENCES sluzby(nazev) on delete cascade,
 	CONSTRAINT fk_sluzby_rezervace_zakaznik FOREIGN KEY (zakaznik) REFERENCES zakaznik(id) on delete cascade,
-  CONSTRAINT uc_sluzby_rezervace_den_hodina UNIQUE (den,hodina)
+  CONSTRAINT uc_sluzby_rezervace_den_hodina UNIQUE (den,hodina,sluzba)
 );
 
 
@@ -87,13 +87,13 @@ INSERT INTO sluzby (nazev, objekt, dostupnost_od, dostupnost_do)
 VALUES ('Golfové høištì', 'Golfové høištì', 11, 17);
 
 INSERT INTO sluzby_rezervace (sluzba, zakaznik, den, hodina)
-VALUES ('Tenisové kurty', 2, TO_DATE('2013-12-13', 'yyyy-mm-dd'), '11');
+VALUES ('Tenisové kurty', 1002, TO_DATE('2013-12-13', 'yyyy-mm-dd'), '11');
 
 INSERT INTO sluzby_rezervace (sluzba, zakaznik, den, hodina)
-VALUES ('Tenisové kurty', 1, '14.12.13', 12);
+VALUES ('Tenisové kurty', 1001, '14.12.13', 12);
 
 INSERT INTO sluzby_rezervace (sluzba, zakaznik, den, hodina)
-VALUES ('Tenisové kurty', 3, '13.12.13', 14);
+VALUES ('Tenisové kurty', 1003, '13.12.13', 14);
 
 COMMIT;
 
