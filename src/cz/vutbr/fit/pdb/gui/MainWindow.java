@@ -24,13 +24,17 @@ public class MainWindow extends javax.swing.JFrame {
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
         sluzby2 = new cz.vutbr.fit.pdb.gui.Sluzby();
-        rezervace1 = new cz.vutbr.fit.pdb.gui.Rezervace();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        rezervace2 = new cz.vutbr.fit.pdb.gui.Rezervace();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PDB projekt - Hotel");
 
         jTabbedPane1.addTab("Služby", sluzby2);
-        jTabbedPane1.addTab("tab2", rezervace1);
+
+        jScrollPane1.setViewportView(rezervace2);
+
+        jTabbedPane1.addTab("tab2", jScrollPane1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -40,7 +44,7 @@ public class MainWindow extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 695, Short.MAX_VALUE)
         );
 
         pack();
@@ -81,8 +85,9 @@ public class MainWindow extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private cz.vutbr.fit.pdb.gui.Rezervace rezervace1;
+    private cz.vutbr.fit.pdb.gui.Rezervace rezervace2;
     private cz.vutbr.fit.pdb.gui.Sluzby sluzby2;
     // End of variables declaration//GEN-END:variables
 }
