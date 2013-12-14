@@ -280,8 +280,6 @@ public class Sluzby extends javax.swing.JPanel {
         date_field = new cz.vutbr.fit.pdb.utils.ObservingTextField();
         kalendar = new javax.swing.JLabel();
         ulozitZmena_button = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
 
         setMaximumSize(new java.awt.Dimension(911, 665));
 
@@ -370,20 +368,6 @@ public class Sluzby extends javax.swing.JPanel {
             }
         });
 
-        jButton1.setText("Add_test");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
-        jButton2.setText("Remove_test");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout wrapperLayout = new javax.swing.GroupLayout(wrapper);
         wrapper.setLayout(wrapperLayout);
         wrapperLayout.setHorizontalGroup(
@@ -401,12 +385,7 @@ public class Sluzby extends javax.swing.JPanel {
                                 .addGap(18, 18, 18)
                                 .addComponent(kalendar))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(wrapperLayout.createSequentialGroup()
-                                .addComponent(ulozitZmena_button)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton2)))
+                            .addComponent(ulozitZmena_button))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -424,11 +403,8 @@ public class Sluzby extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(wrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ulozitZmena_button)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(ulozitZmena_button)
+                .addContainerGap(291, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -475,18 +451,6 @@ public class Sluzby extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_ulozitZmena_buttonActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        model.addRow(new Object[]{"Lala", "Lala", (String) comboBox.getItemAt(2), "Defaultni poznamka"});
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        int numRows = detail_dne_table.getSelectedRows().length;
-        for (int i = 0; i < numRows; i++) {
-            model.removeRow(detail_dne_table.getSelectedRow());
-        }
-    }//GEN-LAST:event_jButton2ActionPerformed
-
     private void date_fieldCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_date_fieldCaretUpdate
         String formatedDate = date_field.getText();
         if (formatedDate.length() > 0) {
@@ -508,8 +472,6 @@ public class Sluzby extends javax.swing.JPanel {
     private javax.swing.JLabel den_label;
     private javax.swing.JTable detail_dne_table;
     private cz.vutbr.fit.pdb.gui.HotelCompoundPanel hotelCompoundPanel1;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel kalendar;
     private javax.swing.JLabel nazev_sluzby;
