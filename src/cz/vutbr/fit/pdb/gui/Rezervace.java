@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,8 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import oracle.ord.im.OrdImage;
 
 /**
  *
@@ -47,10 +50,14 @@ public class Rezervace extends javax.swing.JPanel {
         vozidla_kontejner.setLayout(layout);
         //loadImagesFromDb();
     }
-    /*
+    
     public void loadImagesFromDb(){
-        
-    }*/
+        try {
+            icon = new ImageIcon(modelObr.getImage(1));
+        } catch (SQLException ex) {
+            Logger.getLogger(Rezervace.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
     private void kraj_comboboxAction(ActionEvent ae){
         JComboBox cb = (JComboBox) ae.getSource();
@@ -439,6 +446,7 @@ public class Rezervace extends javax.swing.JPanel {
         } else {
             System.out.println("Cancelled by user.");
         }
+        loadImagesFromDb();
         if(icon != null){
             iconList.add(new myIcon(icon));
             vozidla_kontejner.add(iconList.get(iconList.size()-1));
