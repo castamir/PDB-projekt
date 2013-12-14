@@ -3,6 +3,9 @@ package cz.vutbr.fit.pdb.gui;
 import java.awt.ComponentOrientation;
 import java.awt.FlowLayout;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -23,6 +26,7 @@ public class Rezervace extends javax.swing.JPanel {
 
     public void myInit(){
         fc = new JFileChooser();
+        iconList = new ArrayList<myIcon>();
         layout = new FlowLayout();
         layout.setAlignment(FlowLayout.LEFT);
         defaultSearchDir = "src/icons/";
@@ -373,7 +377,8 @@ public class Rezervace extends javax.swing.JPanel {
         } else {
             System.out.println("Cancelled by user.");
         }
-        vozidla_kontejner.add(new myIcon(icon));
+        iconList.add(new myIcon(icon));
+        vozidla_kontejner.add(iconList.get(iconList.size()-1));
         vozidla_kontejner.revalidate();
         //auti.setVisible(true);
         //auti.setIcon(icon);
@@ -384,6 +389,15 @@ public class Rezervace extends javax.swing.JPanel {
         // TODO add your handling code here:
         //auti.setVisible(false);
         //auti.setIcon(null);
+        it = iconList.iterator();
+        myIcon tmp;
+        while(it.hasNext()){
+            tmp = it.next();
+            if(tmp.isActive()){
+                tmp.setVisible(false);
+                tmp.setIcon(null);
+            }
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     //Create a file chooser
@@ -391,6 +405,8 @@ public class Rezervace extends javax.swing.JPanel {
     private ImageIcon icon;
     private String defaultSearchDir;
     FlowLayout layout;
+    List<myIcon> iconList;
+    Iterator<myIcon> it;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField adresa_field;
     private javax.swing.JTextField email_field;

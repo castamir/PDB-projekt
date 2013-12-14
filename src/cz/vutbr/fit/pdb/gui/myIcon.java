@@ -1,6 +1,8 @@
 
 package cz.vutbr.fit.pdb.gui;
 
+import java.awt.Color;
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 
@@ -12,6 +14,7 @@ import javax.swing.JLabel;
  */
 public class myIcon extends JLabel{
 
+    private boolean active = false;
     public myIcon(){
         addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -34,5 +37,16 @@ public class myIcon extends JLabel{
     
     public void myIconMouseClicked(java.awt.event.MouseEvent evt){
         System.out.println("Klik my Icon");
+        if(!active){
+            setBorder(BorderFactory.createLineBorder(Color.black));
+            active = true;
+        } else {
+            active = false;
+            setBorder(null);
+        }
+    }
+    
+    public boolean isActive(){
+        return active;
     }
 }
