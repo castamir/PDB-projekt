@@ -1,18 +1,16 @@
 package cz.vutbr.fit.pdb.gui;
 
-import java.awt.ComponentOrientation;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 
 /**
  *
@@ -41,18 +39,19 @@ public class Rezervace extends javax.swing.JPanel {
                 kraj_comboboxAction(ae);
             }
         });
-        //icon = new ImageIcon("images/middle.gif","a pretty but meaningless splat");
-        /*String fileName = "Calender Month.png";
-        icon = new ImageIcon(getClass().getResource("/icons/"+fileName));
-        System.out.println(getClass().getResource("/icons/Calender Month.png"));
-        JLabel obr = new JLabel(icon);
-        vozidla_kontejner.add(obr);
-        auti.setIcon(icon);*/
         vozidla_kontejner.setLayout(layout);
+        loadImagesFromDb();
+    }
+    
+    public void loadImagesFromDb(){
+        
     }
     
     private void kraj_comboboxAction(ActionEvent ae){
-        
+        JComboBox cb = (JComboBox) ae.getSource();
+        String item = (String) cb.getSelectedItem();
+        int tmp = (int) cb.getSelectedIndex();
+        //System.out.println(item);
     }
     
     /**
