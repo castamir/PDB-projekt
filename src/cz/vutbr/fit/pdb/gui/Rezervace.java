@@ -47,6 +47,7 @@ public class Rezervace extends javax.swing.JPanel {
                 kraj_comboboxAction(ae);
             }
         });
+        //System.out.println(new File(defaultSearchDir).getAbsolutePath());
         vozidla_kontejner.setLayout(layout);
         //loadImagesFromDb();
     }
@@ -434,19 +435,19 @@ public class Rezervace extends javax.swing.JPanel {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
             String path = "/icons/"+file.getName();
-            //icon = new ImageIcon(getClass().getResource(path));
+            icon = new ImageIcon(getClass().getResource(path));
             //System.out.println("Opening: " + file.getName() + ".");
             System.out.println("Opening: " +path);
-            try {
+            /*try {
                 modelObr.insertImage(path);
                 //System.out.println("/icons/"+file.getName());
             } catch (SQLException ex) {
                 Logger.getLogger(Rezervace.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            }*/
         } else {
             System.out.println("Cancelled by user.");
         }
-        loadImagesFromDb();
+        //loadImagesFromDb();
         if(icon != null){
             iconList.add(new myIcon(icon));
             vozidla_kontejner.add(iconList.get(iconList.size()-1));
