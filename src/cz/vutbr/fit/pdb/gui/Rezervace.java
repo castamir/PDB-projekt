@@ -4,10 +4,7 @@ import cz.vutbr.fit.pdb.models.ObrazkyModel;
 import cz.vutbr.fit.pdb.models.ZakaznikModel;
 import cz.vutbr.fit.pdb.utils.DatePicker;
 import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,11 +17,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
-import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import oracle.ord.im.OrdImage;
 
 /**
  *
