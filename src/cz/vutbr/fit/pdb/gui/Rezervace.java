@@ -53,7 +53,10 @@ public class Rezervace extends javax.swing.JPanel {
     public void loadImagesFromDb(){
         //System.out.println("load");
         try {
-            icon = new ImageIcon(modelObr.getImage(lastInsertedImgId));
+            System.out.println(lastInsertedImgId);
+            if(lastInsertedImgId != null){
+                icon = new ImageIcon(modelObr.getImage(lastInsertedImgId));
+            }
         } catch (SQLException ex) {
             Logger.getLogger(Rezervace.class.getName()).log(Level.SEVERE, null, ex);
         }
