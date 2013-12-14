@@ -1,6 +1,7 @@
 package cz.vutbr.fit.pdb.gui;
 
 import cz.vutbr.fit.pdb.models.ObrazkyModel;
+import cz.vutbr.fit.pdb.models.ZakaznikModel;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -35,6 +36,7 @@ public class Rezervace extends javax.swing.JPanel {
 
     public void myInit(){
         modelObr = new ObrazkyModel();
+        modelZakaznik = new ZakaznikModel();
         fc = new JFileChooser();
         iconList = new ArrayList<myIcon>();
         layout = new FlowLayout();
@@ -499,6 +501,7 @@ public class Rezervace extends javax.swing.JPanel {
         System.out.println(mesto_field.getText());
         System.out.println(psc_field.getText());
         System.out.println((String)kraj_combobox.getSelectedItem());
+        //modelZakaznik.insert(defaultSearchDir, defaultSearchDir, defaultSearchDir, defaultSearchDir, defaultSearchDir, defaultSearchDir, defaultSearchDir, defaultSearchDir);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void parkovaciMisto_checkboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_parkovaciMisto_checkboxActionPerformed
@@ -515,6 +518,7 @@ public class Rezervace extends javax.swing.JPanel {
     private Integer lastInsertedImgId;
     //Create a file chooser
     private ObrazkyModel modelObr;
+    private ZakaznikModel modelZakaznik;
     private JFileChooser fc;
     private ImageIcon icon;
     private String defaultSearchDir;
