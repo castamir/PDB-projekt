@@ -424,6 +424,7 @@ public class Rezervace extends javax.swing.JPanel {
         fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
         int returnVal = fc.showOpenDialog(fc);
         myIcon ic = null;
+        boolean load = true;
  
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
@@ -438,14 +439,18 @@ public class Rezervace extends javax.swing.JPanel {
                 System.out.println("posledni id z obrazku:" + ic.getIndex());
                 System.out.println("posledni id z db:" + lastInsertedImgId);
                 //System.out.println("/icons/"+file.getName());
+    
             } catch (SQLException ex) {
                 Logger.getLogger(Rezervace.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
             System.out.println("Cancelled by user.");
+            load = false;
         }
-        loadImagesFromDb();
-        if(icon != null){
+        if(load){
+            loadImagesFromDb();
+        }
+        if(icon != null && load){
             ic.setIcon(icon);
             iconList.add(ic);
             vozidla_kontejner.add(iconList.get(iconList.size()-1));
