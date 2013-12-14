@@ -1,4 +1,5 @@
 /nbproject/private/
-/src/cz/vutbr/fit/pdb/config.local.properties
+*config.local.properties
 /build/
 /dist/
+nbproject/genfiles.properties
