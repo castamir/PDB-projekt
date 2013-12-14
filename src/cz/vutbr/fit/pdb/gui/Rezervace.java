@@ -2,11 +2,14 @@ package cz.vutbr.fit.pdb.gui;
 
 import java.awt.ComponentOrientation;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -31,6 +34,13 @@ public class Rezervace extends javax.swing.JPanel {
         layout = new FlowLayout();
         layout.setAlignment(FlowLayout.LEFT);
         defaultSearchDir = "src/icons/";
+        kraj_combobox.setModel(new DefaultComboBoxModel(comboBoxItems));
+        kraj_combobox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                kraj_comboboxAction(ae);
+            }
+        });
         //icon = new ImageIcon("images/middle.gif","a pretty but meaningless splat");
         /*String fileName = "Calender Month.png";
         icon = new ImageIcon(getClass().getResource("/icons/"+fileName));
@@ -40,6 +50,11 @@ public class Rezervace extends javax.swing.JPanel {
         auti.setIcon(icon);*/
         vozidla_kontejner.setLayout(layout);
     }
+    
+    private void kraj_comboboxAction(ActionEvent ae){
+        
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -185,6 +200,14 @@ public class Rezervace extends javax.swing.JPanel {
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Parkování"));
 
         parkovaciMisto_checkbox.setText("Parkovací místa?");
+        parkovaciMisto_checkbox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                parkovaciMisto_checkboxActionPerformed(evt);
+            }
+        });
+
+        pocetParkovacihMist_spinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(1)));
+        pocetParkovacihMist_spinner.setEnabled(false);
 
         jLabel9.setText("Počet");
 
@@ -271,7 +294,11 @@ public class Rezervace extends javax.swing.JPanel {
 
         jLabel14.setText("Počet pokojů");
 
+        pocetPokoju_spinner.setModel(new javax.swing.SpinnerNumberModel(0, 0, 10, 1));
+
         jLabel15.setText("Počet osob");
+
+        pocetOsob_spinner.setModel(new javax.swing.SpinnerNumberModel(0, 0, 2, 1));
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -399,11 +426,13 @@ public class Rezervace extends javax.swing.JPanel {
         } else {
             System.out.println("Cancelled by user.");
         }
-        iconList.add(new myIcon(icon));
-        vozidla_kontejner.add(iconList.get(iconList.size()-1));
-        vozidla_kontejner.revalidate();
-        //auti.setVisible(true);
-        //auti.setIcon(icon);
+        if(icon != null){
+            iconList.add(new myIcon(icon));
+            vozidla_kontejner.add(iconList.get(iconList.size()-1));
+            vozidla_kontejner.revalidate();
+            //auti.setVisible(true);
+            //auti.setIcon(icon);
+        }
             //log.setCaretPosition(log.getDocument().getLength());
     }//GEN-LAST:event_pridatFotoAuta_buttonActionPerformed
 
@@ -429,6 +458,17 @@ public class Rezervace extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void parkovaciMisto_checkboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_parkovaciMisto_checkboxActionPerformed
+        // TODO add your handling code here:
+        if(parkovaciMisto_checkbox.isSelected()) {
+            System.out.println("Checked");
+            pocetParkovacihMist_spinner.setEnabled(true);
+        } else {
+            System.out.println("Unchecked");
+            pocetParkovacihMist_spinner.setEnabled(false);
+        }
+    }//GEN-LAST:event_parkovaciMisto_checkboxActionPerformed
+
     //Create a file chooser
     private JFileChooser fc;
     private ImageIcon icon;
@@ -436,6 +476,11 @@ public class Rezervace extends javax.swing.JPanel {
     FlowLayout layout;
     List<myIcon> iconList;
     ListIterator<myIcon> it;
+    private final String comboBoxItems[] = {"Karlovarsky", "Ustecky","Liberecky",
+                                            "Kralovehradecky", "Pardubicky", "Olomoucky",
+                                            "Ostravsky", "Zlinsky", "Brnensky",
+                                            "Jihlavsky", "Budejovicky", "Plzensky",
+                                            "Stredocesky", "Hl. m. Praha"};
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField adresa_field;
     private javax.swing.JTextField email_field;
