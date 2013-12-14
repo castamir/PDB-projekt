@@ -18,6 +18,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import oracle.ord.im.OrdImage;
 
 /**
@@ -495,13 +496,24 @@ public class Rezervace extends javax.swing.JPanel {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        System.out.println(jmeno_field.getText());
-        System.out.println(prijimeni_field.getText());
-        System.out.println(adresa_field.getText());
-        System.out.println(mesto_field.getText());
-        System.out.println(psc_field.getText());
-        System.out.println((String)kraj_combobox.getSelectedItem());
-        //modelZakaznik.insert(defaultSearchDir, defaultSearchDir, defaultSearchDir, defaultSearchDir, defaultSearchDir, defaultSearchDir, defaultSearchDir, defaultSearchDir);
+        String jmeno = jmeno_field.getText();
+        String prijimeni = prijimeni_field.getText();
+        String adresa = adresa_field.getText();
+        String mesto = mesto_field.getText();
+        String psc = psc_field.getText();
+        String kraj = (String)kraj_combobox.getSelectedItem();
+        String telefon = telefon_field.getText();
+        String email = email_field.getText();
+        if(jmeno.equals("")|| prijimeni.equals("") || adresa.equals("") || mesto.equals("") || 
+           psc.equals("")|| kraj.equals("") || telefon.equals("") || email.equals("")) {
+            JOptionPane.showMessageDialog(getParent(), "Všechna pole musí být vyplněna, prosím vyplňte je!","Chyba",JOptionPane.ERROR_MESSAGE);
+        } else {
+            try {
+                modelZakaznik.insert(jmeno, prijimeni, adresa, mesto, psc, kraj, telefon, email);
+            } catch (SQLException ex) {
+                Logger.getLogger(Rezervace.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void parkovaciMisto_checkboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_parkovaciMisto_checkboxActionPerformed
