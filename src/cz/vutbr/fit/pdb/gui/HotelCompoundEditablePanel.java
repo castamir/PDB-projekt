@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -38,6 +39,15 @@ public class HotelCompoundEditablePanel extends JPanel implements MouseListener,
 
     private boolean drawing = false;
     
+    
+    
+    
+    /* aktualne vytvareny polygon */
+    private Polygon newPolygon;
+    private List<Point2D> points;
+    private Line2D.Float currentLine;
+    private String currentPolygonName;
+    
     public HotelCompoundEditablePanel() {
         this.addMouseListener(this);
         this.addMouseMotionListener(this);
@@ -46,8 +56,14 @@ public class HotelCompoundEditablePanel extends JPanel implements MouseListener,
         arealModel = new ArealModel();
         
         JButton button = new JButton("+");
-        button.setBounds(this.getWidth()-25, this.getHeight()-25, 25, 25);
+        button.setBounds(this.getWidth()-25, this.getHeight()-25, 10, 10);
         this.add(button);
+        
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                newObjectNameDialog();
+            }
+        });
     }
 
     @Override
@@ -118,13 +134,14 @@ public class HotelCompoundEditablePanel extends JPanel implements MouseListener,
     public void mouseEntered(MouseEvent e) {
         requestFocus();
     }
-
-    private Polygon newPolygon;
-    private List<Point2D> points;
-    private Line2D.Float currentLine;
     
     @Override
     public void mousePressed(MouseEvent e) {
+        
+        if (drawing == false)
+            return;
+        
+        
         System.out.println("pressed");
         
         if (points == null) {
@@ -145,12 +162,12 @@ public class HotelCompoundEditablePanel extends JPanel implements MouseListener,
         }
         newPolygon = new Polygon(xpoints, ypoints, npoints);
         
-        if (shapes.get("new") != null) {
-            shapes.remove("new");
+        if (shapes.get(currentPolygonName) != null) {
+            shapes.remove(currentPolygonName);
         }
         shapes.remove("line");
         
-        shapes.put("new", newPolygon);
+        shapes.put(currentPolygonName, newPolygon);
         
         repaint();
     }
@@ -175,6 +192,8 @@ public class HotelCompoundEditablePanel extends JPanel implements MouseListener,
     @Override
     public void mouseMoved(MouseEvent e) {
         
+        if (drawing == false)
+            return;
         
         System.out.println("motion");
         
@@ -204,13 +223,19 @@ public class HotelCompoundEditablePanel extends JPanel implements MouseListener,
         System.out.println("pressed");
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             System.out.println("esc");
-            points.removeAll(points);
-            shapes.remove("new");
-            shapes.remove("line");    
+            if (points.size() > 0) {
+                points.removeAll(points);
+                shapes.remove("new");
+                shapes.remove("line");   
+            }
+            else {
+                drawing = false;
+            }
         }
         else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
             points.removeAll(points);
             shapes.remove("line");
+            drawing = false;
         }
         
         repaint();
@@ -225,6 +250,25 @@ public class HotelCompoundEditablePanel extends JPanel implements MouseListener,
     public void keyReleased(KeyEvent e) {
     }
     
+    
+    /* dialog pro ziskani nazvu kresleneho objektu */
+    public void newObjectNameDialog() {
+    
+        String s = (String)JOptionPane.showInputDialog(
+                    getParent(),
+                    "Zadejte název nového objektu:\n"
+                    + "(název musí být unikátní)",
+                    "Nový objekt",
+                    JOptionPane.PLAIN_MESSAGE,
+                    null,
+                    null,
+                    "Nový objekt");
+        
+        if (s != null) {
+            currentPolygonName = s;
+            drawing = true;
+        }
+    }
     
     
     
