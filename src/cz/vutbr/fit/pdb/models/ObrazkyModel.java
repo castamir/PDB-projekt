@@ -8,6 +8,7 @@ package cz.vutbr.fit.pdb.models;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -102,5 +103,16 @@ public class ObrazkyModel extends BaseModel {
         }
         
         return result;
+    }
+    
+    public boolean delete(Integer id) throws SQLException {
+        OracleDataSource ods = serviceLocator.getConnection();
+        try (Connection conn = ods.getConnection(); 
+             PreparedStatement stmt = conn.prepareStatement("DELETE FROM obrazky WHERE id = ?");
+             )
+        {
+            stmt.setInt(1, id);
+            return stmt.execute();
+        }
     }
 }
