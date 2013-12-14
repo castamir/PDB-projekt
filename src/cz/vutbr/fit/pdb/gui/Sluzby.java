@@ -121,7 +121,7 @@ public class Sluzby extends javax.swing.JPanel {
             comboBoxItems = new String[]{"chyba při načítání.."};
         }
     }
-    
+
     private void updateTable(Object o) {
         model = (DefaultTableModel) detail_dne_table.getModel();
         //Odstraníme všechny řádky
@@ -172,7 +172,7 @@ public class Sluzby extends javax.swing.JPanel {
                 if (value.get("id") != null) {
                     comboBoxItemId = customer_databaseIdToComboBoxId.get(zakaznik.get("id"));
                 }
-                
+
                 String poznamka = value.get("poznamka") != null ? value.get("poznamka").toString() : null;
 
                 Object[] row = new Object[]{hodina, stav, (String) comboBox.getItemAt(comboBoxItemId), poznamka};
@@ -223,8 +223,11 @@ public class Sluzby extends javax.swing.JPanel {
                         System.out.println("update");
                         modified = true;
                         Integer zakID = parseCustomerIdFromString(row.get(2).toString());
+                        String sluzba = nazev_sluzby.getText();
+                        String datum = date_field.getText();
+                        String poznamka = (row.get(3) == null) ? null : row.get(3).toString();
                         int hodina = Integer.parseInt(row.get(0).toString());
-                        modelSluzby.upravitRezervaci(Integer.parseInt(id.toString()), zakID, nazev_sluzby.getText(), date_field.getText(), hodina, row.get(3).toString());
+                        modelSluzby.upravitRezervaci(Integer.parseInt(id.toString()), zakID, sluzba, datum, hodina, poznamka);
                     }
                 }
             } catch (SQLException ex) {
@@ -240,7 +243,7 @@ public class Sluzby extends javax.swing.JPanel {
         refTableData = newTableData;
         return modified;
     }
-    
+
     private int parseCustomerIdFromString(String str) {
         String[] components = str.split(" ");
         return Integer.parseInt(components[0]);
