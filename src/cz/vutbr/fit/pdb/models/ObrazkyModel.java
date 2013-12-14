@@ -78,6 +78,7 @@ public class ObrazkyModel extends BaseModel {
     public byte[] getImage(Integer id) throws SQLException {
         
         byte[] result;
+        OrdImage img;
         
         OracleDataSource ods = serviceLocator.getConnection();
         try (Connection conn = ods.getConnection();
@@ -91,17 +92,14 @@ public class ObrazkyModel extends BaseModel {
                 result = null;
             }
             else {
-            
-                OrdImage img = (OrdImage) rs.getORAData("img", OrdImage.getORADataFactory());
+                img = (OrdImage) rs.getORAData("img", OrdImage.getORADataFactory());
 
-                try {
-                    result = img.getDataInByteArray();
-                }
-                catch (IOException e) {
-                    result = null;
-                }
+                result = img.getDataInByteArray();
             }
         } 
+        catch (IOException e) {
+            result = null;
+        }
         
         return result;
     }

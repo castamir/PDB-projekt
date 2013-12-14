@@ -53,7 +53,7 @@ public class Rezervace extends javax.swing.JPanel {
     
     public void loadImagesFromDb(){
         try {
-            icon = new ImageIcon(modelObr.getImage(1));
+            icon = new ImageIcon(modelObr.getImage(lastInsertedImgId));
         } catch (SQLException ex) {
             Logger.getLogger(Rezervace.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -423,7 +423,9 @@ public class Rezervace extends javax.swing.JPanel {
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    private Integer lastInsertedImgId;
+    
     private void pridatFotoAuta_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pridatFotoAuta_buttonActionPerformed
         // TODO add your handling code here:
         
@@ -438,7 +440,9 @@ public class Rezervace extends javax.swing.JPanel {
             //System.out.println("Opening: " + file.getName() + ".");
             System.out.println("Opening: " +path);
             try {
-                modelObr.insertImage(path);
+                defaultSearchDir = "src/icons/";
+                lastInsertedImgId = modelObr.insertImage(new File(defaultSearchDir).getAbsolutePath()+"/"+file.getName());
+                System.out.println("posledni id:" + lastInsertedImgId);
                 //System.out.println("/icons/"+file.getName());
             } catch (SQLException ex) {
                 Logger.getLogger(Rezervace.class.getName()).log(Level.SEVERE, null, ex);
