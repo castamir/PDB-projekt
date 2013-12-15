@@ -54,11 +54,46 @@ public class iconViewer extends javax.swing.JPanel {
         obrazek.setIcon(null);
     }
     
+    private void getNextIcon() {
+        
+    }
+    
+    private void getPreviousIcon() {
+        
+    }
+    
+    private Map<Integer, ImageIcon> updateUserImages(int usrId){
+        Map<Integer, ImageIcon> result = null;
+        try {
+            result =  modelObr.getImagesOfCustomer(usrId);
+        } catch (SQLException ex) {
+            Logger.getLogger(iconViewer.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+        return result;
+    }
+    
     public void setNewIcon(int usrId) {
         byte[] tmp;
         boolean notFound = false;
-        try {
-            tmp = modelObr.getImage(lastUserId);
+        //try {
+            //System.out.println("Jsem v setNewIcon");
+            //obrazkyAktualnihoUz = modelObr.getImagesOfCustomer(usrId);
+            obrazkyAktualnihoUz = updateUserImages(usrId);
+            if(obrazkyAktualnihoUz.isEmpty()) {
+                System.out.println("NULL");
+                String path = "/icons/Badge-cancel.png";
+                i = new ImageIcon(getClass().getResource(path));
+                smaz_button.setEnabled(false);
+                otoc_button.setEnabled(false);
+                notFound = true;
+            } else {
+                Map.Entry<Integer, ImageIcon> item = obrazkyAktualnihoUz.entrySet().iterator().next();
+                i = item.getValue();
+                smaz_button.setEnabled(true);
+                otoc_button.setEnabled(true);
+            }
+            /*tmp = modelObr.getImage(lastUserId);
             if(tmp != null){
                 //System.out.println("Not NULL");
                 i = new ImageIcon(tmp);
@@ -71,10 +106,10 @@ public class iconViewer extends javax.swing.JPanel {
                 smaz_button.setEnabled(false);
                 otoc_button.setEnabled(false);
                 notFound = true;
-            }
-        } catch (SQLException ex) {
+            }*/
+        /*} catch (SQLException ex) {
             Logger.getLogger(iconViewer.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
         if(i != null){
             if(notFound) {
                 obrazek.setText("No IMAGE");
@@ -263,4 +298,5 @@ public class iconViewer extends javax.swing.JPanel {
     private String[] comboBoxItems;
     private ImageIcon i;
     private int lastUserId;
+    private Map<Integer, ImageIcon> obrazkyAktualnihoUz;
 }
