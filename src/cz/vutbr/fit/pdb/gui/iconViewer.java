@@ -7,9 +7,11 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Level;
@@ -70,8 +72,8 @@ public class iconViewer extends javax.swing.JPanel {
     
     private void getPreviousIcon() {
         Map.Entry<Integer, myIcon>  novy;
-        if(it.hasNext()) {
-            novy = it.next();
+        if(it != null && it.hasPrevious()) {
+            novy = it.previous();
             i = novy.getValue().getMyIcon();
             smaz_button.setEnabled(true);
             otoc_button.setEnabled(true);
@@ -162,8 +164,12 @@ public class iconViewer extends javax.swing.JPanel {
                 otoc_button.setEnabled(false);
                 notFound = true;
             } else {
-                it = obrazkyAktualnihoUz.entrySet().iterator();
+                
+                List<Map.Entry<Integer, myIcon>> list = new ArrayList<>(obrazkyAktualnihoUz.entrySet());
+                
+                it = list.listIterator();
                 item = it.next();
+                
                 i = item.getValue().getMyIcon();
                 smaz_button.setEnabled(true);
                 otoc_button.setEnabled(true);
@@ -248,6 +254,11 @@ public class iconViewer extends javax.swing.JPanel {
         jButton1.setText("Vyhledej podobné");
 
         jButton2.setText("<");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText(">");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -327,6 +338,10 @@ public class iconViewer extends javax.swing.JPanel {
         getNextIcon();
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        getPreviousIcon();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -345,5 +360,5 @@ public class iconViewer extends javax.swing.JPanel {
     private int lastUserId;
     private Map<Integer, myIcon> obrazkyAktualnihoUz;
     private Map.Entry<Integer, myIcon> item;
-    private Iterator<Entry<Integer, myIcon>> it = null;
+    private ListIterator<Map.Entry<Integer, myIcon>> it = null;
 }
