@@ -758,7 +758,6 @@ public class Rezervace extends javax.swing.JPanel {
         System.out.println("Od: "+rezervaceOd);
         System.out.println("Do: "+rezervaceDo);*/
         //System.out.println(rezervovanePokoje.toArray());
-        //!!!Pak dispoze okna!!!!!
         pFrame.dispose();
     }//GEN-LAST:event_vlozitRezervaci_buttonActionPerformed
 
