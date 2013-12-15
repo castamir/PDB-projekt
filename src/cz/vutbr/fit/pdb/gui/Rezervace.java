@@ -607,10 +607,10 @@ public class Rezervace extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
     
-    
+/*
+ * CESTA!!!!!!
+ */   
     private void pridatFotoAuta_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pridatFotoAuta_buttonActionPerformed
-        // TODO add your handling code here:
-        
         fc.setCurrentDirectory(new File(defaultSearchDir));
         fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
         int returnVal = fc.showOpenDialog(fc);
