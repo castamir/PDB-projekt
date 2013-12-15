@@ -26,7 +26,7 @@ import oracle.ord.im.OrdImage;
  */
 public class ObrazkyModel extends BaseModel {
     
-    public Integer insertImage(String path) throws SQLException {
+    public Integer insertImage(String path, int zakaznik) throws SQLException {
         
         Integer id;
         
@@ -35,9 +35,11 @@ public class ObrazkyModel extends BaseModel {
         {
             conn.setAutoCommit(false);
             
-            try (Statement stmt = conn.createStatement(); )
+            try (PreparedStatement stmt = conn.prepareStatement("INSERT INTO obrazky (id, img, zakaznik) VALUES (obrazky_seq.nextval, ORDSYS.ORDImage.init(), ?)"); )
             {
-                stmt.executeUpdate("INSERT INTO obrazky (id, img) VALUES (obrazky_seq.nextval, ORDSYS.ORDImage.init())");
+                stmt.setInt(1, zakaznik);
+                
+                stmt.executeUpdate();
             }
             
             try (Statement stmt = conn.createStatement(); )
