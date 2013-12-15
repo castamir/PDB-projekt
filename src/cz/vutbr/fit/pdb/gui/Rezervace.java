@@ -100,7 +100,7 @@ public class Rezervace extends javax.swing.JPanel {
      * Pokud je obsazeno, tak uncheck..
      */
     public void updateCheckBoxes(String _od, String _do) {
-        System.out.println("Update checkboxes od: " + _od+" do: "+_do);
+        //System.out.println("Update checkboxes od: " + _od+" do: "+_do);
         try {
             rezervovanePokoje = modelRezervace.rezervovanePokojeVObdobi(_od,_do);
         } catch (SQLException ex) {
@@ -140,6 +140,16 @@ public class Rezervace extends javax.swing.JPanel {
         }
     }
     
+    public ImageIcon updateIcon(int i){
+        ImageIcon tmp = null;
+        try {
+            tmp = new ImageIcon(modelObr.getImage(i));
+        } catch (SQLException ex) {
+            Logger.getLogger(Rezervace.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return tmp;
+    }
+    
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -175,6 +185,7 @@ public class Rezervace extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         vozidla_kontejner = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
+        otocit_button = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         rezervaceOd_field = new cz.vutbr.fit.pdb.utils.ObservingTextField();
@@ -306,7 +317,7 @@ public class Rezervace extends javax.swing.JPanel {
 
         jLabel9.setText("Počet");
 
-        pridatFotoAuta_button.setText("Přidat fotografii vozidla");
+        pridatFotoAuta_button.setText("Přidej");
         pridatFotoAuta_button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 pridatFotoAuta_buttonActionPerformed(evt);
@@ -329,10 +340,17 @@ public class Rezervace extends javax.swing.JPanel {
 
         jScrollPane1.setViewportView(vozidla_kontejner);
 
-        jButton1.setText("Odstraň fotografie");
+        jButton1.setText("Smaž");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
+            }
+        });
+
+        otocit_button.setText("Otoč");
+        otocit_button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                otocit_buttonActionPerformed(evt);
             }
         });
 
@@ -353,6 +371,8 @@ public class Rezervace extends javax.swing.JPanel {
                         .addComponent(pridatFotoAuta_button)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(otocit_button)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
@@ -368,7 +388,8 @@ public class Rezervace extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(pridatFotoAuta_button)
-                    .addComponent(jButton1))
+                    .addComponent(jButton1)
+                    .addComponent(otocit_button))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -620,9 +641,11 @@ public class Rezervace extends javax.swing.JPanel {
             //icon = new ImageIcon(getClass().getResource(path));
             //System.out.println("Opening: " + file.getName() + ".");
             System.out.println("Opening: " +path);
+            System.out.println("Opening path to DB: "+new File(defaultSearchDir).getAbsolutePath()+"/"+file.getName());
             try {
                 //DRUHY PARAMETR JE ID ZAKAZNIKA
-                lastInsertedImgId = modelObr.insertImage(new File(defaultSearchDir).getAbsolutePath()+"/"+file.getName(),1);
+                lastInsertedImgId = modelObr.insertImage(new File(defaultSearchDir).getAbsolutePath()+"/"+file.getName(),1033);
+                //modelObr.rotateImage(lastInsertedImgId);
                 ic = new myIcon();
                 ic.setIndex(lastInsertedImgId);
                 ic.setPreferredSize(new Dimension(60,60));
@@ -663,6 +686,7 @@ public class Rezervace extends javax.swing.JPanel {
                     modelObr.delete(tmp.getIndex());
                     //tmp.getIndex();
                     System.out.println("Chci smazat index: "+tmp.getIndex());
+                    vozidla_kontejner.revalidate();
                 } catch (SQLException ex) {
                     Logger.getLogger(Rezervace.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -772,6 +796,26 @@ public class Rezervace extends javax.swing.JPanel {
         //updateCheckBoxes(rezervaceOd_field.getText(),rezervaceDo_field.getText());
     }//GEN-LAST:event_kalendar_doMouseClicked
 
+    private void otocit_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_otocit_buttonActionPerformed
+        it = iconList.listIterator();
+        myIcon tmp;
+        while(it.hasNext()){
+            tmp = it.next();
+            if(tmp.isActive()){
+                try {
+                    modelObr.rotateImage(tmp.getIndex());
+                    ImageIcon i = updateIcon(tmp.getIndex());
+                    if(i != null){
+                        tmp.setIcon(i);
+                    }
+                    System.out.println("Chci otocit index: "+tmp.getIndex());
+                } catch (SQLException ex) {
+                    Logger.getLogger(Rezervace.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }//GEN-LAST:event_otocit_buttonActionPerformed
+
     private Locale getLocale(String loc) {
         if (loc != null && loc.length() > 0) {
             return new Locale(loc);
@@ -836,6 +880,7 @@ public class Rezervace extends javax.swing.JPanel {
     private javax.swing.JLabel kalendar_od;
     private javax.swing.JComboBox kraj_combobox;
     private javax.swing.JTextField mesto_field;
+    private javax.swing.JButton otocit_button;
     private javax.swing.JCheckBox parkovaciMisto_checkbox;
     private javax.swing.JSpinner pocetParkovacihMist_spinner;
     private javax.swing.JCheckBox pokoj10_checkbox;
