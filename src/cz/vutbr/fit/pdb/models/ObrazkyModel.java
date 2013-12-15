@@ -6,6 +6,8 @@
 
 package cz.vutbr.fit.pdb.models;
 
+import cz.vutbr.fit.pdb.gui.myIcon;
+
 import cz.vutbr.fit.pdb.application.ServiceLocator;
 import java.io.IOException;
 import java.sql.Connection;
@@ -82,9 +84,9 @@ public class ObrazkyModel extends BaseModel {
         return id;
     }
     
-    public Map<Integer, ImageIcon> getImagesOfCustomer(int customer) throws SQLException {
+    public Map<Integer, myIcon> getImagesOfCustomer(int customer) throws SQLException {
     
-        Map<Integer, ImageIcon> result = new HashMap<>();
+        Map<Integer, myIcon> result = new HashMap<>();
         
         OracleDataSource ods = ServiceLocator.getConnection();
         try (Connection conn = ods.getConnection();
@@ -98,7 +100,7 @@ public class ObrazkyModel extends BaseModel {
                 OrdImage img = (OrdImage) rs.getORAData("img", OrdImage.getORADataFactory());
                 byte[] tmp = img.getDataInByteArray();
                 
-                result.put(rs.getInt("int"), new ImageIcon(tmp));
+                result.put(rs.getInt("id"), new myIcon(new ImageIcon(tmp)));
             }
         } 
         catch (IOException e) {
