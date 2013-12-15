@@ -191,7 +191,7 @@ public class PrehledRezervaci extends javax.swing.JPanel {
         rez.setParentFrame(frame);
         Container con = frame.getContentPane();
         con.add(rez);
-        frame.setPreferredSize(new Dimension(761, 700));
+        frame.setPreferredSize(new Dimension(761, 550));
         //frame.dispose();
         frame.setVisible(true);
         frame.pack();             
