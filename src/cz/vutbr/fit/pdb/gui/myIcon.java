@@ -18,6 +18,7 @@ public class myIcon extends JLabel{
 
     private boolean active = false;
     private int index;
+    private String path = null;
     
     public myIcon(){
         addMouseListener(new java.awt.event.MouseAdapter() {
@@ -60,5 +61,13 @@ public class myIcon extends JLabel{
     
     public int getIndex() {
         return this.index;
+    }
+    
+    public void setPath(String p){
+        this.path = p;
+    }
+    
+    public String getPath(){
+        return this.path;
     }
 }

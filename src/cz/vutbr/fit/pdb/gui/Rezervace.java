@@ -645,9 +645,9 @@ public class Rezervace extends javax.swing.JPanel {
             try {
                 //DRUHY PARAMETR JE ID ZAKAZNIKA
                 lastInsertedImgId = modelObr.insertImage(new File(defaultSearchDir).getAbsolutePath()+"/"+file.getName(),1033);
-                //modelObr.rotateImage(lastInsertedImgId);
                 ic = new myIcon();
                 ic.setIndex(lastInsertedImgId);
+                //Miniatury budou mit velikost 60x60px
                 ic.setPreferredSize(new Dimension(60,60));
                 System.out.println("posledni id z obrazku:" + ic.getIndex());
                 System.out.println("posledni id z db:" + lastInsertedImgId);
