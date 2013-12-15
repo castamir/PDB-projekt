@@ -28,3 +28,21 @@ end;
 /
 
 COMMIT;
+
+CREATE OR REPLACE PROCEDURE Rotate_image
+    (img_id IN NUMBER)
+IS
+    obj ORDSYS.ORDImage;
+
+BEGIN
+    SELECT img INTO obj FROM obrazky
+    WHERE id = img_id FOR UPDATE;
+
+    obj.process('rotate=90');
+
+    UPDATE obrazky SET img = obj WHERE id = img_id;
+
+    COMMIT;
+END;
+
+COMMIT;
