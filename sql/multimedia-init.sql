@@ -3,12 +3,15 @@ DROP TABLE obrazky;
 /** zakaznik */
 CREATE TABLE obrazky (
   	id NUMBER NOT null,
+  	zakaznik NUMBER NOT null,
 	img ORDSYS.ORDImage,
 	img_si ORDSYS.SI_StillImage,
 	img_ac ORDSYS.SI_AverageColor,
 	img_ch ORDSYS.SI_ColorHistogram,
 	img_pc ORDSYS.SI_PositionalColor,
-	img_tx ORDSYS.SI_Texture
+	img_tx ORDSYS.SI_Texture,
+	CONSTRAINT pk_obrazky PRIMARY KEY (id),
+	CONSTRAINT fk_obr_zakaznik FOREIGN KEY (zakaznik) REFERENCES zakaznik(id) on delete cascade
 );
 
 DROP SEQUENCE obrazky_seq;
@@ -44,5 +47,6 @@ BEGIN
 
     COMMIT;
 END;
+/
 
 COMMIT;
