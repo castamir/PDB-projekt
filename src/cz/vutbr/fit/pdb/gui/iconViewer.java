@@ -59,7 +59,7 @@ public class iconViewer extends javax.swing.JPanel {
     }
     
     private void getNextIcon() {
-        Map.Entry<Integer, myIcon>  novy;
+        //Map.Entry<Integer, myIcon>  novy;
         if(it != null && it.hasNext()) {
             novy = it.next();
             i = novy.getValue().getMyIcon();
@@ -71,7 +71,7 @@ public class iconViewer extends javax.swing.JPanel {
     }
     
     private void getPreviousIcon() {
-        Map.Entry<Integer, myIcon>  novy;
+        //Map.Entry<Integer, myIcon>  novy;
         if(it != null && it.hasPrevious()) {
             novy = it.previous();
             i = novy.getValue().getMyIcon();
@@ -320,12 +320,23 @@ public class iconViewer extends javax.swing.JPanel {
             //Mazani z DB!
             try {
                 modelObr.delete(obrazek.getIndex());
+                //Odebrat z mapy
+                //obrazkyAktualnihoUz.remove(obrazek.getIndex());
                 //tmp.getIndex();
                 System.out.println("Chci smazat s indexem: "+obrazek.getIndex());
+                myIcon remove = obrazkyAktualnihoUz.remove(obrazek.getIndex());
+                //List<Map.Entry<Integer, myIcon>> list = new ArrayList<>(obrazkyAktualnihoUz.entrySet());
+                //it = list.listIterator();
+                it.remove();
                 //vozidla_kontejner.revalidate();
             } catch (SQLException ex) {
                 Logger.getLogger(Rezervace.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
+        if(it.hasNext()) {
+           getNextIcon();
+        } else if(it.hasPrevious()) {
+           getPreviousIcon();
         }
         //getNextIcon();
     }//GEN-LAST:event_smaz_buttonActionPerformed
@@ -361,4 +372,5 @@ public class iconViewer extends javax.swing.JPanel {
     private Map<Integer, myIcon> obrazkyAktualnihoUz;
     private Map.Entry<Integer, myIcon> item;
     private ListIterator<Map.Entry<Integer, myIcon>> it = null;
+    Map.Entry<Integer, myIcon>  novy;
 }
