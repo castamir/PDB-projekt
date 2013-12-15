@@ -13,6 +13,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
+import javax.swing.ImageIcon;
 import oracle.jdbc.OraclePreparedStatement;
 import oracle.jdbc.OracleResultSet;
 import oracle.jdbc.pool.OracleDataSource;
@@ -79,6 +82,32 @@ public class ObrazkyModel extends BaseModel {
         return id;
     }
     
+    public Map<Integer, ImageIcon> getImagesOfCustomer(int customer) throws SQLException {
+    
+        Map<Integer, ImageIcon> result = new HashMap<>();
+        
+        OracleDataSource ods = ServiceLocator.getConnection();
+        try (Connection conn = ods.getConnection();
+               OraclePreparedStatement pstmt = (OraclePreparedStatement)conn.prepareStatement("SELECT id, img FROM obrazky WHERE zakaznik = ?"))
+        {
+            pstmt.setInt(1, customer);
+            
+            OracleResultSet rs = (OracleResultSet) pstmt.executeQuery();
+            
+            while (rs.next()) {
+                OrdImage img = (OrdImage) rs.getORAData("img", OrdImage.getORADataFactory());
+                byte[] tmp = img.getDataInByteArray();
+                
+                result.put(rs.getInt("int"), new ImageIcon(tmp));
+            }
+        } 
+        catch (IOException e) {
+            result = null;
+        }
+        
+        return result;
+    }
+    
     public byte[] getImage(Integer id) throws SQLException {
         
 
@@ -87,8 +116,7 @@ public class ObrazkyModel extends BaseModel {
         
         OracleDataSource ods = ServiceLocator.getConnection();
         try (Connection conn = ods.getConnection();
-             //OraclePreparedStatement pstmt = (OraclePreparedStatement)conn.prepareStatement("SELECT img FROM obrazky WHERE id = ?"))
-               OraclePreparedStatement pstmt = (OraclePreparedStatement)conn.prepareStatement("SELECT img FROM obrazky WHERE zakaznik = ?"))
+             OraclePreparedStatement pstmt = (OraclePreparedStatement)conn.prepareStatement("SELECT img FROM obrazky WHERE id = ?"))
         {
             pstmt.setInt(1, id);
             
@@ -113,8 +141,7 @@ public class ObrazkyModel extends BaseModel {
     public boolean delete(Integer id) throws SQLException {
         OracleDataSource ods = ServiceLocator.getConnection();
         try (Connection conn = ods.getConnection(); 
-             //PreparedStatement stmt = conn.prepareStatement("DELETE FROM obrazky WHERE id = ?");
-               PreparedStatement stmt = conn.prepareStatement("DELETE FROM obrazky WHERE zakaznik = ?");
+             PreparedStatement stmt = conn.prepareStatement("DELETE FROM obrazky WHERE id = ?");
              )
         {
             stmt.setInt(1, id);
