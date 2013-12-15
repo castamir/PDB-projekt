@@ -1,5 +1,7 @@
 package cz.vutbr.fit.pdb.gui;
 
+import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
@@ -47,6 +49,9 @@ public class MainWindow extends javax.swing.JFrame {
         hotelCompoundEditablePanel1 = new cz.vutbr.fit.pdb.gui.HotelCompoundEditablePanel();
         jPanel1 = new javax.swing.JPanel();
         icon_kontejner = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        novaRezervace_button = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PDB projekt - Hotel");
@@ -90,6 +95,43 @@ public class MainWindow extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("icon_viewer", jPanel1);
 
+        novaRezervace_button.setText("Nová rezervace");
+        novaRezervace_button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                novaRezervace_buttonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(404, 404, 404)
+                .addComponent(novaRezervace_button)
+                .addContainerGap(410, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(225, 225, 225)
+                .addComponent(novaRezervace_button)
+                .addContainerGap(419, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("Rezervace", jPanel2);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -112,6 +154,18 @@ public class MainWindow extends javax.swing.JFrame {
             iw.updateCombo();
         }
     }//GEN-LAST:event_jTabbedPane1StateChanged
+
+    private void novaRezervace_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_novaRezervace_buttonActionPerformed
+        JFrame frame = new JFrame("Nova rezervace");
+        Rezervace rez = new Rezervace();
+        rez.setParentFrame(frame);
+        Container con = frame.getContentPane();
+        con.add(rez);
+        frame.setPreferredSize(new Dimension(761, 700));
+        //frame.dispose();
+        frame.setVisible(true);
+        frame.pack();
+    }//GEN-LAST:event_novaRezervace_buttonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -153,8 +207,11 @@ public class MainWindow extends javax.swing.JFrame {
     private cz.vutbr.fit.pdb.gui.HotelCompoundEditablePanel hotelCompoundEditablePanel1;
     private javax.swing.JPanel icon_kontejner;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JButton novaRezervace_button;
     private cz.vutbr.fit.pdb.gui.Rezervace rezervace2;
     private cz.vutbr.fit.pdb.gui.Sluzby sluzby2;
     // End of variables declaration//GEN-END:variables
