@@ -62,8 +62,8 @@ public class iconViewer extends javax.swing.JPanel {
         
     }
     
-    private Map<Integer, ImageIcon> updateUserImages(int usrId){
-        Map<Integer, ImageIcon> result = null;
+    private Map<Integer, myIcon> updateUserImages(int usrId){
+        Map<Integer, myIcon> result = null;
         try {
             result =  modelObr.getImagesOfCustomer(usrId);
         } catch (SQLException ex) {
@@ -88,8 +88,8 @@ public class iconViewer extends javax.swing.JPanel {
                 otoc_button.setEnabled(false);
                 notFound = true;
             } else {
-                Map.Entry<Integer, ImageIcon> item = obrazkyAktualnihoUz.entrySet().iterator().next();
-                i = item.getValue();
+                Map.Entry<Integer, myIcon> item = obrazkyAktualnihoUz.entrySet().iterator().next();
+                i = item.getValue().getMyIcon();
                 smaz_button.setEnabled(true);
                 otoc_button.setEnabled(true);
             }
@@ -298,5 +298,5 @@ public class iconViewer extends javax.swing.JPanel {
     private String[] comboBoxItems;
     private ImageIcon i;
     private int lastUserId;
-    private Map<Integer, ImageIcon> obrazkyAktualnihoUz;
+    private Map<Integer, myIcon> obrazkyAktualnihoUz;
 }

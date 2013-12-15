@@ -100,7 +100,8 @@ public class ObrazkyModel extends BaseModel {
                 OrdImage img = (OrdImage) rs.getORAData("img", OrdImage.getORADataFactory());
                 byte[] tmp = img.getDataInByteArray();
                 
-                result.put(rs.getInt("id"), new myIcon(new ImageIcon(tmp)));
+                ImageIcon i = new ImageIcon(tmp);
+                result.put(rs.getInt("id"), new myIcon(i));
             }
         } 
         catch (IOException e) {

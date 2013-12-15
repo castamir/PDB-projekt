@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -20,6 +21,7 @@ public class myIcon extends JLabel{
     private int index;
     private String path = null;
     private boolean focusable = true;
+    private ImageIcon ic;
     
     public myIcon(){
         addMouseListener(new java.awt.event.MouseAdapter() {
@@ -31,14 +33,15 @@ public class myIcon extends JLabel{
         //setSize(60, 60);
     }
     
-    public myIcon(Icon i){
+    public myIcon(ImageIcon i){
        addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 myIconMouseClicked(evt);
             }
         });
         setText("");
-        setIcon(i);
+        //setIcon(i);
+        ic = i;
     }
     
     public void myIconMouseClicked(java.awt.event.MouseEvent evt){
@@ -80,5 +83,9 @@ public class myIcon extends JLabel{
     
     public String getPath(){
         return this.path;
+    }
+    
+    public ImageIcon getMyIcon(){
+        return this.ic;
     }
 }
