@@ -348,6 +348,7 @@ public class Rezervace extends javax.swing.JPanel {
         });
 
         otocit_button.setText("Otoč");
+        otocit_button.setEnabled(false);
         otocit_button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 otocit_buttonActionPerformed(evt);
@@ -638,11 +639,15 @@ public class Rezervace extends javax.swing.JPanel {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
             String path = "/icons/"+file.getName();
-            //icon = new ImageIcon(getClass().getResource(path));
+            icon = new ImageIcon(getClass().getResource(path));
+            ic = new myIcon();
+            ic.setPreferredSize(new Dimension(60,60));
+            ic.setPath(new File(defaultSearchDir).getAbsolutePath()+"/"+file.getName());
             //System.out.println("Opening: " + file.getName() + ".");
             System.out.println("Opening: " +path);
-            System.out.println("Opening path to DB: "+new File(defaultSearchDir).getAbsolutePath()+"/"+file.getName());
-            try {
+            System.out.println("Opening path to DB: "+ic.getPath());
+            //Load z DB!
+            /*try {
                 //DRUHY PARAMETR JE ID ZAKAZNIKA
                 lastInsertedImgId = modelObr.insertImage(new File(defaultSearchDir).getAbsolutePath()+"/"+file.getName(),1033);
                 ic = new myIcon();
@@ -655,14 +660,15 @@ public class Rezervace extends javax.swing.JPanel {
     
             } catch (SQLException ex) {
                 Logger.getLogger(Rezervace.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            }*/
         } else {
             System.out.println("Cancelled by user.");
             load = false;
         }
-        if(load){
+        //Load z DB!
+        /*if(load){
             loadImagesFromDb();
-        }
+        }*/
         if(icon != null && load){
             ic.setIcon(icon);
             iconList.add(ic);
@@ -682,14 +688,15 @@ public class Rezervace extends javax.swing.JPanel {
                 tmp.setVisible(false);
                 tmp.setIcon(null);
                 it.remove();
-                try {
+                //Mazani z DB!
+                /*try {
                     modelObr.delete(tmp.getIndex());
                     //tmp.getIndex();
                     System.out.println("Chci smazat index: "+tmp.getIndex());
                     vozidla_kontejner.revalidate();
                 } catch (SQLException ex) {
                     Logger.getLogger(Rezervace.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                }*/
             }
             
             //System.out.println(index);
@@ -740,6 +747,14 @@ public class Rezervace extends javax.swing.JPanel {
                     System.out.println("Pro zaakznika id: "+zakaznik_id);
                     modelRezervace.vytvoritRezervaci(zakaznik_id, rezervace, rezervaceOd, rezervaceDo);
                     updateCheckBoxes(rezervaceOd, rezervaceDo);
+                    //lastInsertedImgId = modelObr.insertImage(new File(defaultSearchDir).getAbsolutePath()+"/"+file.getName(),1033);
+                    it = iconList.listIterator();
+                    myIcon tmp;
+                    while(it.hasNext()){
+                        tmp = it.next();
+                        lastInsertedImgId = modelObr.insertImage(tmp.getPath(),zakaznik_id);
+                        tmp.setIndex(lastInsertedImgId);
+                    }
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(Rezervace.class.getName()).log(Level.SEVERE, null, ex);
@@ -761,7 +776,7 @@ public class Rezervace extends javax.swing.JPanel {
         System.out.println("Od: "+rezervaceOd);
         System.out.println("Do: "+rezervaceDo);*/
         //System.out.println(rezervovanePokoje.toArray());
-        
+        //!!!!!Pak dispoze okna!!!!!
     }//GEN-LAST:event_vlozitRezervaci_buttonActionPerformed
 
     private void parkovaciMisto_checkboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_parkovaciMisto_checkboxActionPerformed
