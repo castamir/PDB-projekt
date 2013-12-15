@@ -135,6 +135,8 @@ public class iconViewer extends javax.swing.JPanel {
         user_comboBox = new javax.swing.JComboBox();
         refreshUserList_button = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         otoc_button.setText("Otoč");
         otoc_button.addActionListener(new java.awt.event.ActionListener() {
@@ -172,6 +174,10 @@ public class iconViewer extends javax.swing.JPanel {
 
         jButton1.setText("Vyhledej podobné");
 
+        jButton2.setText("<");
+
+        jButton3.setText(">");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -186,7 +192,11 @@ public class iconViewer extends javax.swing.JPanel {
                 .addComponent(refreshUserList_button)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
-                .addGap(0, 128, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton3)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addComponent(obrazek_kontejner, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
@@ -197,7 +207,9 @@ public class iconViewer extends javax.swing.JPanel {
                     .addComponent(smaz_button)
                     .addComponent(user_comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(refreshUserList_button)
-                    .addComponent(jButton1))
+                    .addComponent(jButton1)
+                    .addComponent(jButton2)
+                    .addComponent(jButton3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(obrazek_kontejner, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -214,6 +226,7 @@ public class iconViewer extends javax.swing.JPanel {
     if(obrazek.isActive()){
         obrazek.setVisible(false);
         obrazek.setIcon(null);
+        obrazek.setBorder(null);
         //it.remove();
         //Mazani z DB!
         try {
@@ -233,6 +246,8 @@ public class iconViewer extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JPanel obrazek_kontejner;
     private javax.swing.JButton otoc_button;
     private javax.swing.JButton refreshUserList_button;
