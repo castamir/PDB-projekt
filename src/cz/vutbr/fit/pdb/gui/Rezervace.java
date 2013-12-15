@@ -692,7 +692,7 @@ public class Rezervace extends javax.swing.JPanel {
         // TODO add your handling code here:
         
         int zakaznik_id = -1;
-        
+        boolean again = false;
         String jmeno = jmeno_field.getText();
         String prijmeni = prijmeni_field.getText();
         String adresa = adresa_field.getText();
@@ -708,6 +708,7 @@ public class Rezervace extends javax.swing.JPanel {
         if(jmeno.equals("")|| prijmeni.equals("") || adresa.equals("") || mesto.equals("") || 
            psc.equals("")|| kraj.equals("") || telefon.equals("") || email.equals("")) {
             JOptionPane.showMessageDialog(getParent(), "Všechna pole musí být vyplněna, prosím vyplňte je!","Chyba",JOptionPane.ERROR_MESSAGE);
+            again = true;
         } else {
             try {
                 List<Integer> rezervace = new ArrayList<>();
@@ -721,6 +722,7 @@ public class Rezervace extends javax.swing.JPanel {
                 }
                 if(!roomChecked){
                     JOptionPane.showMessageDialog(getParent(), "Není vybrán žádný pokoj!","Chyba",JOptionPane.ERROR_MESSAGE);
+                    again = true;
                 } else {
                     zakaznik_id = modelZakaznik.insert(jmeno, prijmeni, adresa, mesto, psc, kraj, telefon, email);
                     //int[] pokoje = new int[] {1,2};
@@ -757,7 +759,9 @@ public class Rezervace extends javax.swing.JPanel {
         System.out.println("Od: "+rezervaceOd);
         System.out.println("Do: "+rezervaceDo);*/
         //System.out.println(rezervovanePokoje.toArray());
-        pFrame.dispose();
+        if(!again) {
+            pFrame.dispose();
+        }
     }//GEN-LAST:event_vlozitRezervaci_buttonActionPerformed
 
     private void parkovaciMisto_checkboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_parkovaciMisto_checkboxActionPerformed

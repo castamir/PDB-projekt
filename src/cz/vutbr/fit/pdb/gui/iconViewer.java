@@ -7,6 +7,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -346,11 +347,16 @@ public class iconViewer extends javax.swing.JPanel {
             try {
                 modelObr.rotateImage(obrazek.getIndex());
                 ImageIcon ic = new ImageIcon(modelObr.getImage(obrazek.getIndex()));
+                obrazek.setNewIcon(ic);
                 setNewIcon(ic, false);
+                //item = 
+                //obrazkyAktualnihoUz.put(obrazek.getIndex(), obrazek);
+                Entry<Integer, myIcon> en = new AbstractMap.SimpleEntry<Integer, myIcon>(obrazek.getIndex(), obrazek); 
+                //it.
+                it.set(en);
             } catch (SQLException ex) {
                 Logger.getLogger(iconViewer.class.getName()).log(Level.SEVERE, null, ex);
             }
-            //it.
         }
     }//GEN-LAST:event_otoc_buttonActionPerformed
 

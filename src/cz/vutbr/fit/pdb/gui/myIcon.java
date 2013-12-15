@@ -44,6 +44,10 @@ public class myIcon extends JLabel{
         ic = i;
     }
     
+    public void setNewIcon(ImageIcon i){
+        ic = i;
+    }
+    
     public void myIconMouseClicked(java.awt.event.MouseEvent evt){
         //System.out.println("Klik my Icon");
         if(focusable) {
