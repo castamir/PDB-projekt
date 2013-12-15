@@ -10,6 +10,7 @@ import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,57 @@ import oracle.jdbc.pool.OracleDataSource;
  * @author Pavel
  */
 public class RezervaceModel extends BaseModel {
+    
+    public Map<Integer, Map<String, Object>> getRezervaceVObdobi(String datum_od, String datum_do, Integer pokoj) throws SQLException, ParseException {
+    
+        String query = "SELECT * FROM rezervace WHERE ((od BETWEEN ? AND ?) OR (do BETWEEN ? AND ?) OR (? BETWEEN od AND do) OR (? BETWEEN od AND do))";
+        
+        if (pokoj != null) {
+            query += " AND pokoj=?";
+        }
+        
+        Map<Integer, Map<String, Object>> result = new LinkedHashMap<>();
+        
+        OracleDataSource ods = ServiceLocator.getConnection();
+        try (Connection conn = ods.getConnection(); 
+             PreparedStatement stmt = conn.prepareStatement(query);
+             )
+        {
+            SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+            Date d_od = new Date(date.parse(datum_od).getTime());
+            Date d_do = new Date(date.parse(datum_do).getTime());   
+            
+            stmt.setDate(1, d_od);
+            stmt.setDate(2, d_do);
+            stmt.setDate(3, d_od);
+            stmt.setDate(4, d_do);
+            
+            stmt.setDate(5, d_od);
+            stmt.setDate(6, d_do);
+            
+            if (pokoj != null) {
+                stmt.setInt(7, pokoj);
+            }
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+           
+                while (rs.next()) {
+                    
+                    Map<String, Object> value = new HashMap<>();
+                    
+                    value.put("id", rs.getInt("id"));
+                    value.put("zakaznik", rs.getInt("zakaznik"));                    
+                    value.put("pokoj", rs.getInt("pokoj"));
+                    value.put("od", rs.getString("od"));
+                    value.put("do", rs.getString("do"));
+                    
+                    result.put(rs.getInt("id"), value);
+                }
+            }
+        }
+        
+        return result;
+    }
     
     public void vytvoritRezervaci(int zakaznik, List<Integer> pokoje, String datum_od, String datum_do) throws SQLException, ParseException {
         
