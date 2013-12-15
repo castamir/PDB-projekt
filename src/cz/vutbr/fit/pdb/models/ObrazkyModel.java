@@ -117,4 +117,16 @@ public class ObrazkyModel extends BaseModel {
             return stmt.execute();
         }
     }
+    
+    public void rotateImage(int id) throws SQLException {
+        
+        OracleDataSource ods = ServiceLocator.getConnection();
+        try (Connection conn = ods.getConnection(); 
+             PreparedStatement stmt = conn.prepareStatement("CALL Rotate_image(?)");)
+        {
+            stmt.setInt(1,id);
+            
+            stmt.execute();
+        }
+    }
 }
