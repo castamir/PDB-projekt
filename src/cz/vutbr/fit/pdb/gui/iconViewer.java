@@ -333,16 +333,25 @@ public class iconViewer extends javax.swing.JPanel {
                 Logger.getLogger(Rezervace.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        if(it.hasNext()) {
+        if(it != null && it.hasNext()) {
            getNextIcon();
-        } else if(it.hasPrevious()) {
+        } else if(it != null && it.hasPrevious()) {
            getPreviousIcon();
         }
         //getNextIcon();
     }//GEN-LAST:event_smaz_buttonActionPerformed
 
     private void otoc_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_otoc_buttonActionPerformed
-        
+        if(obrazek.isActive()){
+            try {
+                modelObr.rotateImage(obrazek.getIndex());
+                ImageIcon ic = new ImageIcon(modelObr.getImage(obrazek.getIndex()));
+                setNewIcon(ic, false);
+            } catch (SQLException ex) {
+                Logger.getLogger(iconViewer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            //it.
+        }
     }//GEN-LAST:event_otoc_buttonActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
