@@ -97,7 +97,7 @@ public class Rezervace extends javax.swing.JPanel {
     }
     
     public void updateCheckBoxes(String _od, String _do) {
-        //System.out.println("Update checkboxes od: " + _od+" do: "+_do);
+        System.out.println("Update checkboxes od: " + _od+" do: "+_do);
         try {
             rezervovanePokoje = modelRezervace.rezervovanePokojeVObdobi(_od,_do);
         } catch (SQLException ex) {
@@ -675,7 +675,7 @@ public class Rezervace extends javax.swing.JPanel {
     private void vlozitRezervaci_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vlozitRezervaci_buttonActionPerformed
         // TODO add your handling code here:
         
-        int zakaznik_id;
+        int zakaznik_id = -1;
         
         String jmeno = jmeno_field.getText();
         String prijimeni = prijimeni_field.getText();
@@ -697,7 +697,15 @@ public class Rezervace extends javax.swing.JPanel {
                 zakaznik_id = modelZakaznik.insert(jmeno, prijimeni, adresa, mesto, psc, kraj, telefon, email);
                 //int[] pokoje = new int[] {1,2};
                 //modelRezervace.vytvoritRezervaci(zakaznik_id, pokoje, "2013-12-15", "2013-12-20");
-                modelRezervace.vytvoritRezervaci(zakaznik_id, rezervovanePokoje, rezervaceOd, rezervaceDo);
+                System.out.println("Pro zaakznika id: "+zakaznik_id);
+                List<Integer> rezervace = new ArrayList<>();
+                for(int i=0; i<checkBoxlist.size(); i++){
+                    JCheckBox ch = checkBoxlist.get(i);
+                    if(ch.isSelected()){
+                        rezervace.add(i+1);
+                    }
+                }
+                modelRezervace.vytvoritRezervaci(zakaznik_id, rezervace, rezervaceOd, rezervaceDo);
             } catch (SQLException ex) {
                 Logger.getLogger(Rezervace.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -711,9 +719,9 @@ public class Rezervace extends javax.swing.JPanel {
         }
 
         
-        System.out.println("Parkovacich mist: "+pocetParkovacichMist);
+        /*System.out.println("Parkovacich mist: "+pocetParkovacichMist);
         System.out.println("Od: "+rezervaceOd);
-        System.out.println("Do: "+rezervaceDo);
+        System.out.println("Do: "+rezervaceDo);*/
         //System.out.println(rezervovanePokoje.toArray());
         
     }//GEN-LAST:event_vlozitRezervaci_buttonActionPerformed
