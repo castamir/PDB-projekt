@@ -4,9 +4,12 @@ import cz.vutbr.fit.pdb.application.ServiceLocator;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import oracle.jdbc.pool.OracleDataSource;
 
 /**
@@ -15,7 +18,7 @@ import oracle.jdbc.pool.OracleDataSource;
  */
 public class RezervaceModel extends BaseModel {
     
-    public boolean vytvoritRezervaci(int zakaznik, int[] pokoje, String datum_od, String datum_do) throws SQLException, ParseException {
+    public void vytvoritRezervaci(int zakaznik, int[] pokoje, String datum_od, String datum_do) throws SQLException, ParseException {
         
         OracleDataSource ods = ServiceLocator.getConnection();
         try (Connection conn = ods.getConnection(); 
@@ -37,8 +40,37 @@ public class RezervaceModel extends BaseModel {
             }
 
             int[] result = stmt.executeBatch();
+            
+            conn.commit();
+        }
+    }
+    
+    public List<Integer> rezervovanePokojeVObdobi(String datum_od, String datum_do) throws SQLException, ParseException {
+    
+        List<Integer> pokoje = new ArrayList<>();
+        
+        OracleDataSource ods = ServiceLocator.getConnection();
+        try (Connection conn = ods.getConnection(); 
+             PreparedStatement stmt = conn.prepareStatement("SELECT pokoj FROM rezervace WHERE (od BETWEEN ? AND ?) OR (do BETWEEN ? AND ?)");
+             )
+        {
+            SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+            Date d_od = new Date(date.parse(datum_od).getTime());
+            Date d_do = new Date(date.parse(datum_do).getTime());   
+            
+            stmt.setDate(1, d_od);
+            stmt.setDate(2, d_do);
+            stmt.setDate(3, d_od);
+            stmt.setDate(4, d_do);
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+           
+                while (rs.next()) {
+                    pokoje.add(rs.getInt("pokoj"));
+                }
+            }
         }
         
-        return true;
+        return pokoje;
     }
 }
