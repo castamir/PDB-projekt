@@ -19,6 +19,7 @@ public class myIcon extends JLabel{
     private boolean active = false;
     private int index;
     private String path = null;
+    private boolean focusable = true;
     
     public myIcon(){
         addMouseListener(new java.awt.event.MouseAdapter() {
@@ -42,13 +43,23 @@ public class myIcon extends JLabel{
     
     public void myIconMouseClicked(java.awt.event.MouseEvent evt){
         //System.out.println("Klik my Icon");
-        if(!active){
-            setBorder(BorderFactory.createLineBorder(Color.red));
-            active = true;
-        } else {
-            active = false;
-            setBorder(null);
+        if(focusable) {
+            if(!active){
+                setBorder(BorderFactory.createLineBorder(Color.red));
+                active = true;
+            } else {
+                active = false;
+                setBorder(null);
+            }
         }
+    }
+    
+    public boolean canFocus() {
+        return focusable;
+    }
+    
+    public void setFocus(boolean f) {
+        focusable = f;
     }
     
     public boolean isActive(){

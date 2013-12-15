@@ -844,11 +844,7 @@ public class Rezervace extends javax.swing.JPanel {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         return sdf.format(cal.getTime());
     }
-    
-    public List<myIcon> getIconList() {
-        return this.iconList;
-    }
-    
+     
     private DocumentListener dl;
     private List<JCheckBox> checkBoxlist;
     private Map<Integer, String> pokoje;

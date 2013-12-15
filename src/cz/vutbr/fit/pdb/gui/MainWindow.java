@@ -2,6 +2,7 @@ package cz.vutbr.fit.pdb.gui;
 
 import java.awt.FlowLayout;
 import javax.swing.JFrame;
+import javax.swing.JTabbedPane;
 
 /**
  *
@@ -22,8 +23,7 @@ public class MainWindow extends javax.swing.JFrame {
         FlowLayout layout = new FlowLayout();
         layout.setAlignment(FlowLayout.LEFT);
         icon_kontejner.setLayout(layout);
-        iconViewer iw = new iconViewer();
-        //iw.setIconList(rezervace2.getIconList());
+        iw = new iconViewer();
         iw.myInit();
         iw.setVisible(true);
         icon_kontejner.add(iw);
@@ -51,6 +51,11 @@ public class MainWindow extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PDB projekt - Hotel");
 
+        jTabbedPane1.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jTabbedPane1StateChanged(evt);
+            }
+        });
         jTabbedPane1.addTab("Administrace", administrace1);
         jTabbedPane1.addTab("Služby", sluzby2);
 
@@ -99,6 +104,15 @@ public class MainWindow extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
+        JTabbedPane zdroj = (JTabbedPane) evt.getSource();
+        int index = zdroj.getSelectedIndex();
+        System.out.println("Tab changed to: " + zdroj.getTitleAt(index));
+        if(zdroj.getTitleAt(index).equals("icon_viewer")) {
+            iw.updateCombo();
+        }
+    }//GEN-LAST:event_jTabbedPane1StateChanged
+
     /**
      * @param args the command line arguments
      */
@@ -133,7 +147,7 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
     }
-    
+    private iconViewer iw;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private cz.vutbr.fit.pdb.gui.Administrace administrace1;
     private cz.vutbr.fit.pdb.gui.HotelCompoundEditablePanel hotelCompoundEditablePanel1;

@@ -76,8 +76,10 @@ public class iconViewer extends javax.swing.JPanel {
         if(i != null){
             if(notFound) {
                 obrazek.setText("No IMAGE");
+                obrazek.setFocus(false);
             } else {
                 obrazek.setText("");
+                obrazek.setFocus(true);
             }
             obrazek.setVisible(true);
             obrazek.setIcon(i);
@@ -96,6 +98,10 @@ public class iconViewer extends javax.swing.JPanel {
             lastUserId = Integer.parseInt(substring);
             System.out.println(lastUserId);
             setNewIcon(lastUserId);
+        } else {
+            obrazek.setVisible(false);
+            obrazek.setIcon(null);
+            obrazek.setText("");
         }
     }
     
@@ -128,8 +134,14 @@ public class iconViewer extends javax.swing.JPanel {
         obrazek_kontejner = new javax.swing.JPanel();
         user_comboBox = new javax.swing.JComboBox();
         refreshUserList_button = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         otoc_button.setText("Otoč");
+        otoc_button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                otoc_buttonActionPerformed(evt);
+            }
+        });
 
         smaz_button.setText("Smaž");
         smaz_button.addActionListener(new java.awt.event.ActionListener() {
@@ -158,6 +170,8 @@ public class iconViewer extends javax.swing.JPanel {
             }
         });
 
+        jButton1.setText("Vyhledej podobné");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -170,7 +184,9 @@ public class iconViewer extends javax.swing.JPanel {
                 .addComponent(user_comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(refreshUserList_button)
-                .addGap(0, 103, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1)
+                .addGap(0, 128, Short.MAX_VALUE))
             .addComponent(obrazek_kontejner, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
@@ -180,7 +196,8 @@ public class iconViewer extends javax.swing.JPanel {
                     .addComponent(otoc_button)
                     .addComponent(smaz_button)
                     .addComponent(user_comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(refreshUserList_button))
+                    .addComponent(refreshUserList_button)
+                    .addComponent(jButton1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(obrazek_kontejner, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -210,14 +227,18 @@ public class iconViewer extends javax.swing.JPanel {
     }
     }//GEN-LAST:event_smaz_buttonActionPerformed
 
+    private void otoc_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_otoc_buttonActionPerformed
+        
+    }//GEN-LAST:event_otoc_buttonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JPanel obrazek_kontejner;
     private javax.swing.JButton otoc_button;
     private javax.swing.JButton refreshUserList_button;
     private javax.swing.JButton smaz_button;
     private javax.swing.JComboBox user_comboBox;
     // End of variables declaration//GEN-END:variables
-    private List<myIcon> iconList;
     private ObrazkyModel modelObr;
     private myIcon obrazek;
     private Map<Integer, Integer> customer_databaseIdToComboBoxId;

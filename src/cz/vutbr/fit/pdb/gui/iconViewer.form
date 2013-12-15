@@ -24,7 +24,9 @@
               <Component id="user_comboBox" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="refreshUserList_button" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="0" pref="103" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="0" pref="128" max="32767" attributes="0"/>
           </Group>
           <Component id="obrazek_kontejner" alignment="0" max="32767" attributes="0"/>
       </Group>
@@ -37,6 +39,7 @@
                   <Component id="smaz_button" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="user_comboBox" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="refreshUserList_button" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="obrazek_kontejner" max="32767" attributes="0"/>
@@ -50,6 +53,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Oto&#x10d;"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="otoc_buttonActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="smaz_button">
       <Properties>
@@ -93,6 +99,11 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="refreshUserList_buttonActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="jButton1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Vyhledej podobn&#xe9;"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>
