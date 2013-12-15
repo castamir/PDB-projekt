@@ -74,42 +74,22 @@ public class iconViewer extends javax.swing.JPanel {
     }
     
     public void setNewIcon(int usrId) {
-        byte[] tmp;
         boolean notFound = false;
-        //try {
-            //System.out.println("Jsem v setNewIcon");
-            //obrazkyAktualnihoUz = modelObr.getImagesOfCustomer(usrId);
-            obrazkyAktualnihoUz = updateUserImages(usrId);
-            if(obrazkyAktualnihoUz.isEmpty()) {
-                System.out.println("NULL");
-                String path = "/icons/Badge-cancel.png";
-                i = new ImageIcon(getClass().getResource(path));
-                smaz_button.setEnabled(false);
-                otoc_button.setEnabled(false);
-                notFound = true;
-            } else {
-                Map.Entry<Integer, myIcon> item = obrazkyAktualnihoUz.entrySet().iterator().next();
-                i = item.getValue().getMyIcon();
-                smaz_button.setEnabled(true);
-                otoc_button.setEnabled(true);
-            }
-            /*tmp = modelObr.getImage(lastUserId);
-            if(tmp != null){
-                //System.out.println("Not NULL");
-                i = new ImageIcon(tmp);
-                smaz_button.setEnabled(true);
-                otoc_button.setEnabled(true);
-            } else {
-                //System.out.println("NULL");
-                String path = "/icons/Badge-cancel.png";
-                i = new ImageIcon(getClass().getResource(path));
-                smaz_button.setEnabled(false);
-                otoc_button.setEnabled(false);
-                notFound = true;
-            }*/
-        /*} catch (SQLException ex) {
-            Logger.getLogger(iconViewer.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+        obrazkyAktualnihoUz = updateUserImages(usrId);
+        if(obrazkyAktualnihoUz.isEmpty()) {
+            System.out.println("NULL");
+            String path = "/icons/Badge-cancel.png";
+            i = new ImageIcon(getClass().getResource(path));
+            smaz_button.setEnabled(false);
+            otoc_button.setEnabled(false);
+            notFound = true;
+        } else {
+            Map.Entry<Integer, myIcon> item = obrazkyAktualnihoUz.entrySet().iterator().next();
+            i = item.getValue().getMyIcon();
+            smaz_button.setEnabled(true);
+            otoc_button.setEnabled(true);
+            obrazek.setIndex(item.getKey());
+        }
         if(i != null){
             if(notFound) {
                 obrazek.setText("No IMAGE");
@@ -120,7 +100,7 @@ public class iconViewer extends javax.swing.JPanel {
             }
             obrazek.setVisible(true);
             obrazek.setIcon(i);
-            obrazek.setIndex(lastUserId);
+            //obrazek.setIndex(lastUserId);
             obrazek_kontejner.add(obrazek);
             obrazek_kontejner.revalidate();
         }
