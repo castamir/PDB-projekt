@@ -1,8 +1,16 @@
 package cz.vutbr.fit.pdb.gui;
 
+import cz.vutbr.fit.pdb.models.RezervaceModel;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -15,8 +23,30 @@ public class PrehledRezervaci extends javax.swing.JPanel {
      */
     public PrehledRezervaci() {
         initComponents();
+        initTable();
+        myInit();
     }
 
+    public void myInit(){
+        modelRez = new RezervaceModel();
+        try {
+            vsechnyPokoje = modelRez.getPokoje();
+        } catch (SQLException ex) {
+            Logger.getLogger(PrehledRezervaci.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //List<String> seznamPokoju = new ArrayList<>();
+        String[] comboboxItems = new String[vsechnyPokoje.size() + 1];
+        for(Integer key : vsechnyPokoje.keySet()){
+            //seznamPokoju.add(vsechnyPokoje.get(key));
+            //System.out.println(vsechnyPokoje.get(key)); //jedna dva tri (serazene podle klice)
+        }
+
+    }
+    
+    public void initTable() {
+    
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -29,10 +59,10 @@ public class PrehledRezervaci extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         novaRezervace_button = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        jComboBox1 = new javax.swing.JComboBox();
+        pokoje_combobox = new javax.swing.JComboBox();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        pokoje_table = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
@@ -45,7 +75,7 @@ public class PrehledRezervaci extends javax.swing.JPanel {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Pokoje"));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        pokoje_combobox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -53,25 +83,22 @@ public class PrehledRezervaci extends javax.swing.JPanel {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jComboBox1, 0, 185, Short.MAX_VALUE)
+                .addComponent(pokoje_combobox, 0, 185, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pokoje_combobox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(21, Short.MAX_VALUE))
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Stav pokoje"));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        pokoje_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+
             },
             new String [] {
                 "Host", "Stav pokoje"
@@ -85,7 +112,7 @@ public class PrehledRezervaci extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(jTable1);
+        jScrollPane2.setViewportView(pokoje_table);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -121,7 +148,7 @@ public class PrehledRezervaci extends javax.swing.JPanel {
                         .addComponent(novaRezervace_button, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(68, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -170,15 +197,17 @@ public class PrehledRezervaci extends javax.swing.JPanel {
         frame.pack();             
     }//GEN-LAST:event_novaRezervace_buttonActionPerformed
 
+    private RezervaceModel modelRez;
+    private Map<Integer, String> vsechnyPokoje;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
     private javax.swing.JButton novaRezervace_button;
+    private javax.swing.JComboBox pokoje_combobox;
+    private javax.swing.JTable pokoje_table;
     // End of variables declaration//GEN-END:variables
 }

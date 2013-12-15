@@ -50,6 +50,8 @@ public class iconViewer extends javax.swing.JPanel {
             comboBoxItems = new String[]{"chyba při načítání.."};
         }
         user_comboBox.setModel(new DefaultComboBoxModel(comboBoxItems));
+        obrazek.setVisible(false);
+        obrazek.setIcon(null);
     }
     
     public void setNewIcon(int usrId) {
@@ -109,6 +111,8 @@ public class iconViewer extends javax.swing.JPanel {
         FlowLayout layout = new FlowLayout();
         layout.setAlignment(FlowLayout.LEFT);
         obrazek_kontejner.setLayout(layout);
+        modelObr = new ObrazkyModel();
+        obrazek = new myIcon();
         updateCombo();
         //user_comboBox.setModel(new DefaultComboBoxModel(comboBoxItems));
         user_comboBox.addActionListener(new ActionListener() {
@@ -117,8 +121,7 @@ public class iconViewer extends javax.swing.JPanel {
                 comboBoxAction(ae);
             }
         });
-        modelObr = new ObrazkyModel();
-        obrazek = new myIcon();
+        
     }
     /**
      * This method is called from within the constructor to initialize the form.
