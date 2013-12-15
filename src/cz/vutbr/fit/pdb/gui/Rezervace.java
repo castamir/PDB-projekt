@@ -8,6 +8,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -618,30 +619,40 @@ public class Rezervace extends javax.swing.JPanel {
         boolean load = true;
  
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File file = fc.getSelectedFile();
-            String path = "/icons/"+file.getName();
-            icon = new ImageIcon(getClass().getResource(path));
-            ic = new myIcon();
-            ic.setPreferredSize(new Dimension(60,60));
-            ic.setPath(new File(defaultSearchDir).getAbsolutePath()+"/"+file.getName());
-            //System.out.println("Opening: " + file.getName() + ".");
-            System.out.println("Opening: " +path);
-            System.out.println("Opening path to DB: "+ic.getPath());
-            //Load z DB!
-            /*try {
-                //DRUHY PARAMETR JE ID ZAKAZNIKA
-                lastInsertedImgId = modelObr.insertImage(new File(defaultSearchDir).getAbsolutePath()+"/"+file.getName(),1033);
+            try {
+                File file = fc.getSelectedFile();
+                //String path = "/icons/"+file.getName();
+                System.out.println(file.getAbsoluteFile());
+                try {
+                    icon = new ImageIcon(file.getCanonicalPath().toString());
+                } catch (IOException ex) {
+                    Logger.getLogger(Rezervace.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                //icon = new ImageIcon(getClass().getResource(path));
                 ic = new myIcon();
-                ic.setIndex(lastInsertedImgId);
-                //Miniatury budou mit velikost 60x60px
                 ic.setPreferredSize(new Dimension(60,60));
-                System.out.println("posledni id z obrazku:" + ic.getIndex());
-                System.out.println("posledni id z db:" + lastInsertedImgId);
-                //System.out.println("/icons/"+file.getName());
-    
-            } catch (SQLException ex) {
+                ic.setPath(file.getCanonicalPath().toString());
+                //System.out.println("Opening: " + file.getName() + ".");
+                /*System.out.println("Opening: " +path);
+                System.out.println("Opening path to DB: "+ic.getPath());*/
+                //Load z DB!
+                /*try {
+                    //DRUHY PARAMETR JE ID ZAKAZNIKA
+                    lastInsertedImgId = modelObr.insertImage(new File(defaultSearchDir).getAbsolutePath()+"/"+file.getName(),1033);
+                    ic = new myIcon();
+                    ic.setIndex(lastInsertedImgId);
+                    //Miniatury budou mit velikost 60x60px
+                    ic.setPreferredSize(new Dimension(60,60));
+                    System.out.println("posledni id z obrazku:" + ic.getIndex());
+                    System.out.println("posledni id z db:" + lastInsertedImgId);
+                    //System.out.println("/icons/"+file.getName());
+        
+                } catch (SQLException ex) {
+                    Logger.getLogger(Rezervace.class.getName()).log(Level.SEVERE, null, ex);
+                }*/
+            } catch (IOException ex) {
                 Logger.getLogger(Rezervace.class.getName()).log(Level.SEVERE, null, ex);
-            }*/
+            }
         } else {
             System.out.println("Cancelled by user.");
             load = false;
