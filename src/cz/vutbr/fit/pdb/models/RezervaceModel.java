@@ -22,6 +22,8 @@ public class RezervaceModel extends BaseModel {
              PreparedStatement stmt = conn.prepareStatement("INSERT INTO rezervace (zakaznik, pokoj, od, do) VALUES(?,?,?,?)");
              )
         {
+            conn.setAutoCommit(false);
+            
             SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
             Date d_od = new Date(date.parse(datum_od).getTime());
             Date d_do = new Date(date.parse(datum_do).getTime());
@@ -34,7 +36,9 @@ public class RezervaceModel extends BaseModel {
                 stmt.addBatch();
             }
 
-            return stmt.execute();
+            int[] result = stmt.executeBatch();
         }
+        
+        return true;
     }
 }

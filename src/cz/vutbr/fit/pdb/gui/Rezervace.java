@@ -2,12 +2,14 @@ package cz.vutbr.fit.pdb.gui;
 
 import cz.vutbr.fit.pdb.models.ObrazkyModel;
 import cz.vutbr.fit.pdb.models.ZakaznikModel;
+import cz.vutbr.fit.pdb.models.RezervaceModel;
 import cz.vutbr.fit.pdb.utils.DatePicker;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.io.File;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -39,6 +41,8 @@ public class Rezervace extends javax.swing.JPanel {
     public void myInit(){
         modelObr = new ObrazkyModel();
         modelZakaznik = new ZakaznikModel();
+        modelRezervace = new RezervaceModel();
+        
         fc = new JFileChooser();
         iconList = new ArrayList<myIcon>();
         layout = new FlowLayout();
@@ -634,6 +638,9 @@ public class Rezervace extends javax.swing.JPanel {
      */
     private void vlozitRezervaci_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vlozitRezervaci_buttonActionPerformed
         // TODO add your handling code here:
+        
+        int zakaznik_id;
+        
         String jmeno = jmeno_field.getText();
         String prijimeni = prijimeni_field.getText();
         String adresa = adresa_field.getText();
@@ -651,8 +658,13 @@ public class Rezervace extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(getParent(), "Všechna pole musí být vyplněna, prosím vyplňte je!","Chyba",JOptionPane.ERROR_MESSAGE);
         } else {
             try {
-                modelZakaznik.insert(jmeno, prijimeni, adresa, mesto, psc, kraj, telefon, email);
+                zakaznik_id = modelZakaznik.insert(jmeno, prijimeni, adresa, mesto, psc, kraj, telefon, email);
+                int[] pokoje = new int[] {1,2};
+                modelRezervace.vytvoritRezervaci(zakaznik_id, pokoje, "2013-12-15", "2013-12-20");
             } catch (SQLException ex) {
+                Logger.getLogger(Rezervace.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            catch (ParseException ex) {
                 Logger.getLogger(Rezervace.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -714,6 +726,7 @@ public class Rezervace extends javax.swing.JPanel {
     //Create a file chooser
     private ObrazkyModel modelObr;
     private ZakaznikModel modelZakaznik;
+    private RezervaceModel modelRezervace;
     private JFileChooser fc;
     private ImageIcon icon;
     private String defaultSearchDir;
