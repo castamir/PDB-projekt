@@ -53,6 +53,34 @@ public class iconViewer extends javax.swing.JPanel {
         user_comboBox.setModel(new DefaultComboBoxModel(comboBoxItems));
     }
     
+    public void setNewIcon(int usrId) {
+        byte[] tmp;
+        boolean notFound = false;
+        try {
+            tmp = modelObr.getImage(lastUserId);
+            if(tmp != null){
+                i = new ImageIcon(tmp);
+            } else {
+                String path = "/icons/Badge-cancel.png";
+                i = new ImageIcon(getClass().getResource(path));
+                notFound = true;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(iconViewer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if(i != null){
+            if(notFound) {
+                obrazek.setText("No IMAGE");
+            } else {
+                obrazek.setText("");
+            }
+            obrazek.setIcon(i);
+            obrazek.setIndex(lastUserId);
+            obrazek_kontejner.add(obrazek);
+            obrazek_kontejner.revalidate();
+        }
+   }
+    
     public void comboBoxAction(ActionEvent ae) {
         JComboBox cb = (JComboBox) ae.getSource();
         String item = (String) cb.getSelectedItem();
@@ -61,17 +89,7 @@ public class iconViewer extends javax.swing.JPanel {
             String substring = item.substring(0, item.indexOf(" "));
             lastUserId = Integer.parseInt(substring);
             System.out.println(lastUserId);
-            try {
-                i = new ImageIcon(modelObr.getImage(lastUserId));
-            } catch (SQLException ex) {
-                Logger.getLogger(iconViewer.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            if(i != null){
-                obrazek.setIcon(i);
-                obrazek.setIndex(lastUserId);
-                obrazek_kontejner.add(obrazek);
-                obrazek_kontejner.revalidate();
-            }
+            setNewIcon(lastUserId);
         }
     }
     
@@ -100,14 +118,19 @@ public class iconViewer extends javax.swing.JPanel {
     private void initComponents() {
 
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        smaz_button = new javax.swing.JButton();
         obrazek_kontejner = new javax.swing.JPanel();
         user_comboBox = new javax.swing.JComboBox();
         refreshUserList_button = new javax.swing.JButton();
 
         jButton1.setText("Otoč");
 
-        jButton2.setText("Smaž");
+        smaz_button.setText("Smaž");
+        smaz_button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                smaz_buttonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout obrazek_kontejnerLayout = new javax.swing.GroupLayout(obrazek_kontejner);
         obrazek_kontejner.setLayout(obrazek_kontejnerLayout);
@@ -136,7 +159,7 @@ public class iconViewer extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
+                .addComponent(smaz_button)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(user_comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -149,7 +172,7 @@ public class iconViewer extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
-                    .addComponent(jButton2)
+                    .addComponent(smaz_button)
                     .addComponent(user_comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(refreshUserList_button))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -162,11 +185,28 @@ public class iconViewer extends javax.swing.JPanel {
         updateCombo();
     }//GEN-LAST:event_refreshUserList_buttonActionPerformed
 
+    private void smaz_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_smaz_buttonActionPerformed
+    if(obrazek.isActive()){
+        obrazek.setVisible(false);
+        obrazek.setIcon(null);
+        //it.remove();
+        //Mazani z DB!
+        try {
+            modelObr.delete(obrazek.getIndex());
+            //tmp.getIndex();
+            System.out.println("Chci smazat s indexem: "+obrazek.getIndex());
+            //vozidla_kontejner.revalidate();
+        } catch (SQLException ex) {
+            Logger.getLogger(Rezervace.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    }//GEN-LAST:event_smaz_buttonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JPanel obrazek_kontejner;
     private javax.swing.JButton refreshUserList_button;
+    private javax.swing.JButton smaz_button;
     private javax.swing.JComboBox user_comboBox;
     // End of variables declaration//GEN-END:variables
     private List<myIcon> iconList;

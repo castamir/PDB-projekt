@@ -19,7 +19,7 @@
           <Group type="102" attributes="0">
               <Component id="jButton1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jButton2" min="-2" max="-2" attributes="0"/>
+              <Component id="smaz_button" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="user_comboBox" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -34,7 +34,7 @@
           <Group type="102" alignment="0" attributes="0">
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jButton2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="smaz_button" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="user_comboBox" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="refreshUserList_button" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
@@ -51,10 +51,13 @@
         <Property name="text" type="java.lang.String" value="Oto&#x10d;"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton2">
+    <Component class="javax.swing.JButton" name="smaz_button">
       <Properties>
         <Property name="text" type="java.lang.String" value="Sma&#x17e;"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="smaz_buttonActionPerformed"/>
+      </Events>
     </Component>
     <Container class="javax.swing.JPanel" name="obrazek_kontejner">
 
