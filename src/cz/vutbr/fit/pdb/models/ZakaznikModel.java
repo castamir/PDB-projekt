@@ -90,7 +90,7 @@ public class ZakaznikModel extends BaseModel {
             stmt.execute();
             
             try (Statement stmt2 = conn.createStatement();
-                 ResultSet rs = stmt2.executeQuery("SELECT id FROM zakaznik ORDER BY id"))
+                 ResultSet rs = stmt2.executeQuery("SELECT id FROM zakaznik ORDER BY id DESC"))
             {
                 rs.next();
                 
