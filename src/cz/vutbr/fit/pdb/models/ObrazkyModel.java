@@ -6,6 +6,7 @@
 
 package cz.vutbr.fit.pdb.models;
 
+import cz.vutbr.fit.pdb.application.ServiceLocator;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -29,7 +30,7 @@ public class ObrazkyModel extends BaseModel {
         
         Integer id;
         
-        OracleDataSource ods = serviceLocator.getConnection();
+        OracleDataSource ods = ServiceLocator.getConnection();
         try (Connection conn = ods.getConnection();)
         {
             conn.setAutoCommit(false);
@@ -78,10 +79,11 @@ public class ObrazkyModel extends BaseModel {
     
     public byte[] getImage(Integer id) throws SQLException {
         
+
         byte[] result;
         OrdImage img;
         
-        OracleDataSource ods = serviceLocator.getConnection();
+        OracleDataSource ods = ServiceLocator.getConnection();
         try (Connection conn = ods.getConnection();
              OraclePreparedStatement pstmt = (OraclePreparedStatement)conn.prepareStatement("SELECT img FROM obrazky WHERE id = ?"))
         {
@@ -106,7 +108,7 @@ public class ObrazkyModel extends BaseModel {
     }
     
     public boolean delete(Integer id) throws SQLException {
-        OracleDataSource ods = serviceLocator.getConnection();
+        OracleDataSource ods = ServiceLocator.getConnection();
         try (Connection conn = ods.getConnection(); 
              PreparedStatement stmt = conn.prepareStatement("DELETE FROM obrazky WHERE id = ?");
              )

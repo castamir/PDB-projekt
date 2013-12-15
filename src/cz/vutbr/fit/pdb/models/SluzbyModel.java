@@ -1,6 +1,7 @@
 
 package cz.vutbr.fit.pdb.models;
 
+import cz.vutbr.fit.pdb.application.ServiceLocator;
 import java.sql.Connection;
 
 import java.sql.ResultSet;
@@ -37,7 +38,7 @@ public class SluzbyModel extends BaseModel {
         
         Map<String,Object> row = new HashMap<String,Object>();
         
-        OracleDataSource ods = serviceLocator.getConnection();
+        OracleDataSource ods = ServiceLocator.getConnection();
         try (Connection conn = ods.getConnection(); 
              PreparedStatement stmt = conn.prepareStatement("SELECT * FROM sluzby WHERE nazev = ?");
              )
@@ -79,7 +80,7 @@ public class SluzbyModel extends BaseModel {
             result.add(hodina);
         }
         
-        OracleDataSource ods = serviceLocator.getConnection();
+        OracleDataSource ods = ServiceLocator.getConnection();
         try (Connection conn = ods.getConnection(); 
              PreparedStatement stmt = conn.prepareStatement("SELECT * FROM sluzby_rezervace WHERE sluzba = ? AND den = ?");
             ) 
@@ -107,7 +108,7 @@ public class SluzbyModel extends BaseModel {
     
     
     public boolean novaRezervace(int zakaznik, String sluzba, String datum, int hodina, String poznamka) throws SQLException, Exception {
-        OracleDataSource ods = serviceLocator.getConnection();
+        OracleDataSource ods = ServiceLocator.getConnection();
         try (Connection conn = ods.getConnection(); 
              PreparedStatement stmt = conn.prepareStatement("INSERT INTO sluzby_rezervace (sluzba, zakaznik, den, hodina, poznamka) VALUES(?,?,?,?,?)");
              )
@@ -126,7 +127,7 @@ public class SluzbyModel extends BaseModel {
     }
     
     public boolean upravitRezervaci(int id, int zakaznik, String sluzba, String datum, int hodina, String poznamka) throws SQLException, Exception {
-        OracleDataSource ods = serviceLocator.getConnection();
+        OracleDataSource ods = ServiceLocator.getConnection();
         try (Connection conn = ods.getConnection(); 
              PreparedStatement stmt = conn.prepareStatement("UPDATE sluzby_rezervace SET sluzba = ?, zakaznik = ?, den = ?, hodina = ?, poznamka = ? WHERE id = ?");
              )
@@ -147,7 +148,7 @@ public class SluzbyModel extends BaseModel {
     }
     
     public boolean smazatRezervaci(int id) throws SQLException {
-        OracleDataSource ods = serviceLocator.getConnection();
+        OracleDataSource ods = ServiceLocator.getConnection();
         try (Connection conn = ods.getConnection(); 
              PreparedStatement stmt = conn.prepareStatement("DELETE FROM sluzby_rezervace WHERE id = ?");
              )

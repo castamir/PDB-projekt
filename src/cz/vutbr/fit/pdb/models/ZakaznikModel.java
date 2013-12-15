@@ -1,6 +1,7 @@
 
 package cz.vutbr.fit.pdb.models;
 
+import cz.vutbr.fit.pdb.application.ServiceLocator;
 import cz.vutbr.fit.pdb.models.BaseModel;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -25,7 +26,7 @@ public class ZakaznikModel extends BaseModel {
         
         Map<String,Object> row = new HashMap<>();
         
-        OracleDataSource ods = serviceLocator.getConnection();
+        OracleDataSource ods = ServiceLocator.getConnection();
         try (Connection conn = ods.getConnection(); 
              PreparedStatement stmt = conn.prepareStatement("SELECT * FROM zakaznik WHERE id = ?");
              )
@@ -52,7 +53,7 @@ public class ZakaznikModel extends BaseModel {
         
         Map<Integer,String> listOfCustomers = new LinkedHashMap<>();
         
-        OracleDataSource ods = serviceLocator.getConnection();
+        OracleDataSource ods = ServiceLocator.getConnection();
         try (Connection conn = ods.getConnection(); 
              PreparedStatement stmt = conn.prepareStatement("SELECT * FROM zakaznik ORDER BY jmeno");
              )
@@ -71,7 +72,7 @@ public class ZakaznikModel extends BaseModel {
     
     public boolean insert(String name, String surname, String address, String city, String postalCode, String region, String phone, String email) throws SQLException {
     
-        OracleDataSource ods = serviceLocator.getConnection();
+        OracleDataSource ods = ServiceLocator.getConnection();
         try (Connection conn = ods.getConnection(); 
              PreparedStatement stmt = conn.prepareStatement("INSERT INTO zakaznik (jmeno, prijmeni, adresa, mesto, psc, kraj, telefon, email) VALUES(?,?,?,?,?,?,?,?)");
              )

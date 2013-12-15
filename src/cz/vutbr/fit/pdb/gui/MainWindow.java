@@ -23,6 +23,7 @@ public class MainWindow extends javax.swing.JFrame {
     private void initComponents() {
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
+        administrace1 = new cz.vutbr.fit.pdb.gui.Administrace();
         sluzby2 = new cz.vutbr.fit.pdb.gui.Sluzby();
         jScrollPane1 = new javax.swing.JScrollPane();
         rezervace2 = new cz.vutbr.fit.pdb.gui.Rezervace();
@@ -33,6 +34,7 @@ public class MainWindow extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PDB projekt - Hotel");
 
+        jTabbedPane1.addTab("Administrace", administrace1);
         jTabbedPane1.addTab("Služby", sluzby2);
 
         jScrollPane1.setViewportView(rezervace2);
@@ -43,16 +45,17 @@ public class MainWindow extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(hotelCompoundEditablePanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 921, Short.MAX_VALUE)
+            .addGap(0, 959, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(hotelCompoundEditablePanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 665, Short.MAX_VALUE)
+            .addGap(0, 665, Short.MAX_VALUE)
         );
 
         jScrollPane2.setViewportView(jPanel1);
 
         jTabbedPane1.addTab("tab3", jScrollPane2);
+        jTabbedPane1.addTab("tab5", hotelCompoundEditablePanel1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -62,7 +65,7 @@ public class MainWindow extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 695, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1)
         );
 
         pack();
@@ -103,6 +106,7 @@ public class MainWindow extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private cz.vutbr.fit.pdb.gui.Administrace administrace1;
     private cz.vutbr.fit.pdb.gui.HotelCompoundEditablePanel hotelCompoundEditablePanel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
