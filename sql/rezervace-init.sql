@@ -12,9 +12,9 @@ CREATE TABLE pokoje (
 
 /** prozatim jen hloupa data bez geometrie */
 
-INSERT INTO pokoje (id, nazev) VALUES (1, "Pokoj 1");
-INSERT INTO pokoje (id, nazev) VALUES (2, "Pokoj 2");
-INSERT INTO pokoje (id, nazev) VALUES (3, "Pokoj 3");
+INSERT INTO pokoje (id, nazev) VALUES (1, 'Pokoj 1');
+INSERT INTO pokoje (id, nazev) VALUES (2, 'Pokoj 2');
+INSERT INTO pokoje (id, nazev) VALUES (3, 'Pokoj 3');
 
 
 DROP TABLE rezervace;
@@ -27,8 +27,8 @@ CREATE TABLE rezervace (
 	od DATE NOT null,
 	do DATE NOT null,
 	CONSTRAINT pk_rezervace PRIMARY KEY (id),
-	CONSTRAINT fk_rezervace_zakaznik FOREIGN KEY (zakaznik) REFERENCES zakaznik(id),
-	CONSTRAINT fk_rezervace_pokoj FOREIGN KEY (pokoj) REFERENCES pokoje(id),
+	CONSTRAINT fk_rezervace_zakaznik FOREIGN KEY (zakaznik) REFERENCES zakaznik(id) on delete cascade,
+	CONSTRAINT fk_rezervace_pokoj FOREIGN KEY (pokoj) REFERENCES pokoje(id) on delete cascade,
 	CONSTRAINT uc_rezervace_pokoj_od_do UNIQUE (pokoj,od,do)
 );
 

@@ -77,9 +77,9 @@ COMMIT;
 
 
 /****** init data */
-INSERT INTO zakaznik (jmeno) VALUES ('Mira');
-INSERT INTO zakaznik (jmeno) VALUES ('Tom');
-INSERT INTO zakaznik (jmeno) VALUES ('Pavel');
+INSERT INTO zakaznik (jmeno, prijmeni, adresa, mesto, psc, kraj, telefon, email) VALUES ('Mira', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
+INSERT INTO zakaznik (jmeno, prijmeni, adresa, mesto, psc, kraj, telefon, email) VALUES ('Tom', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
+INSERT INTO zakaznik (jmeno, prijmeni, adresa, mesto, psc, kraj, telefon, email) VALUES ('Pavel', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
 
 INSERT INTO sluzby (nazev, objekt, dostupnost_od, dostupnost_do)
 VALUES ('Tenisové kurty', 'Tenisové kurty', 8, 18);
