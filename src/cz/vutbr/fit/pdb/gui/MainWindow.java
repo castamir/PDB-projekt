@@ -1,5 +1,8 @@
 package cz.vutbr.fit.pdb.gui;
 
+import java.awt.FlowLayout;
+import javax.swing.JFrame;
+
 /**
  *
  * @author Doma
@@ -11,6 +14,20 @@ public class MainWindow extends javax.swing.JFrame {
      */
     public MainWindow() {
         initComponents();
+        myInit();
+    }
+    
+    public void myInit(){
+        //iconViewer1.setIconList(rezervace2.getIconList());
+        FlowLayout layout = new FlowLayout();
+        layout.setAlignment(FlowLayout.LEFT);
+        icon_kontejner.setLayout(layout);
+        iconViewer iw = new iconViewer();
+        //iw.setIconList(rezervace2.getIconList());
+        iw.myInit();
+        iw.setVisible(true);
+        icon_kontejner.add(iw);
+        //icon_kontejner.revalidate();
     }
 
     /**
@@ -28,6 +45,8 @@ public class MainWindow extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         rezervace2 = new cz.vutbr.fit.pdb.gui.Rezervace();
         hotelCompoundEditablePanel1 = new cz.vutbr.fit.pdb.gui.HotelCompoundEditablePanel();
+        jPanel1 = new javax.swing.JPanel();
+        icon_kontejner = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PDB projekt - Hotel");
@@ -39,6 +58,32 @@ public class MainWindow extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("TMP_Nova rezervace", jScrollPane1);
         jTabbedPane1.addTab("tab5", hotelCompoundEditablePanel1);
+
+        javax.swing.GroupLayout icon_kontejnerLayout = new javax.swing.GroupLayout(icon_kontejner);
+        icon_kontejner.setLayout(icon_kontejnerLayout);
+        icon_kontejnerLayout.setHorizontalGroup(
+            icon_kontejnerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 923, Short.MAX_VALUE)
+        );
+        icon_kontejnerLayout.setVerticalGroup(
+            icon_kontejnerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 656, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(icon_kontejner, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addComponent(icon_kontejner, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("icon_viewer", jPanel1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -88,9 +133,12 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
     }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private cz.vutbr.fit.pdb.gui.Administrace administrace1;
     private cz.vutbr.fit.pdb.gui.HotelCompoundEditablePanel hotelCompoundEditablePanel1;
+    private javax.swing.JPanel icon_kontejner;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private cz.vutbr.fit.pdb.gui.Rezervace rezervace2;

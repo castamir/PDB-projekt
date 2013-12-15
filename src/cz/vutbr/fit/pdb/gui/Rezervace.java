@@ -845,9 +845,13 @@ public class Rezervace extends javax.swing.JPanel {
         return sdf.format(cal.getTime());
     }
     
-    DocumentListener dl;
-    List<JCheckBox> checkBoxlist;
-    Map<Integer, String> pokoje;
+    public List<myIcon> getIconList() {
+        return this.iconList;
+    }
+    
+    private DocumentListener dl;
+    private List<JCheckBox> checkBoxlist;
+    private Map<Integer, String> pokoje;
     private List<Integer> rezervovanePokoje;
     private Integer lastInsertedImgId;
     //Create a file chooser
@@ -857,9 +861,9 @@ public class Rezervace extends javax.swing.JPanel {
     private JFileChooser fc;
     private ImageIcon icon;
     private String defaultSearchDir;
-    FlowLayout layout;
-    List<myIcon> iconList;
-    ListIterator<myIcon> it;
+    private FlowLayout layout;
+    private List<myIcon> iconList;
+    private ListIterator<myIcon> it;
     private final String comboBoxItems[] = {"Karlovarsky", "Ustecky","Liberecky",
                                             "Kralovehradecky", "Pardubicky", "Olomoucky",
                                             "Ostravsky", "Zlinsky", "Brnensky",

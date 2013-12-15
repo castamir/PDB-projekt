@@ -87,7 +87,8 @@ public class ObrazkyModel extends BaseModel {
         
         OracleDataSource ods = ServiceLocator.getConnection();
         try (Connection conn = ods.getConnection();
-             OraclePreparedStatement pstmt = (OraclePreparedStatement)conn.prepareStatement("SELECT img FROM obrazky WHERE id = ?"))
+             //OraclePreparedStatement pstmt = (OraclePreparedStatement)conn.prepareStatement("SELECT img FROM obrazky WHERE id = ?"))
+               OraclePreparedStatement pstmt = (OraclePreparedStatement)conn.prepareStatement("SELECT img FROM obrazky WHERE zakaznik = ?"))
         {
             pstmt.setInt(1, id);
             
@@ -112,7 +113,8 @@ public class ObrazkyModel extends BaseModel {
     public boolean delete(Integer id) throws SQLException {
         OracleDataSource ods = ServiceLocator.getConnection();
         try (Connection conn = ods.getConnection(); 
-             PreparedStatement stmt = conn.prepareStatement("DELETE FROM obrazky WHERE id = ?");
+             //PreparedStatement stmt = conn.prepareStatement("DELETE FROM obrazky WHERE id = ?");
+               PreparedStatement stmt = conn.prepareStatement("DELETE FROM obrazky WHERE zakaznik = ?");
              )
         {
             stmt.setInt(1, id);
