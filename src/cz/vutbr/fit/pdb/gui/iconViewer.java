@@ -58,7 +58,7 @@ public class iconViewer extends javax.swing.JPanel {
     
     private void getNextIcon() {
         Map.Entry<Integer, myIcon>  novy;
-        if(it.hasNext()) {
+        if(it != null && it.hasNext()) {
             novy = it.next();
             i = novy.getValue().getMyIcon();
             smaz_button.setEnabled(true);
@@ -146,6 +146,7 @@ public class iconViewer extends javax.swing.JPanel {
     public void comboBoxAction(ActionEvent ae) {
         JComboBox cb = (JComboBox) ae.getSource();
         String comboBoxitem = (String) cb.getSelectedItem();
+        it = null;
         if(!comboBoxitem.equals("")){
             //int tmp = (int) cb.getSelectedIndex();
             String substring = comboBoxitem.substring(0, comboBoxitem.indexOf(" "));
@@ -344,5 +345,5 @@ public class iconViewer extends javax.swing.JPanel {
     private int lastUserId;
     private Map<Integer, myIcon> obrazkyAktualnihoUz;
     private Map.Entry<Integer, myIcon> item;
-    private Iterator<Entry<Integer, myIcon>> it;
+    private Iterator<Entry<Integer, myIcon>> it = null;
 }
