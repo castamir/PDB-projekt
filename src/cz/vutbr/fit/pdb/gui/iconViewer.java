@@ -45,7 +45,6 @@ public class iconViewer extends javax.swing.JPanel {
                 customer_databaseIdToComboBoxId.put(entry.getKey(), i);
                 i++;
             }
-
             comboBoxItems = items;
         } catch (SQLException e) {
             comboBoxItems = new String[]{"chyba při načítání.."};
@@ -59,10 +58,16 @@ public class iconViewer extends javax.swing.JPanel {
         try {
             tmp = modelObr.getImage(lastUserId);
             if(tmp != null){
+                //System.out.println("Not NULL");
                 i = new ImageIcon(tmp);
+                smaz_button.setEnabled(true);
+                otoc_button.setEnabled(true);
             } else {
+                //System.out.println("NULL");
                 String path = "/icons/Badge-cancel.png";
                 i = new ImageIcon(getClass().getResource(path));
+                smaz_button.setEnabled(false);
+                otoc_button.setEnabled(false);
                 notFound = true;
             }
         } catch (SQLException ex) {
@@ -74,6 +79,7 @@ public class iconViewer extends javax.swing.JPanel {
             } else {
                 obrazek.setText("");
             }
+            obrazek.setVisible(true);
             obrazek.setIcon(i);
             obrazek.setIndex(lastUserId);
             obrazek_kontejner.add(obrazek);
@@ -117,13 +123,13 @@ public class iconViewer extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
+        otoc_button = new javax.swing.JButton();
         smaz_button = new javax.swing.JButton();
         obrazek_kontejner = new javax.swing.JPanel();
         user_comboBox = new javax.swing.JComboBox();
         refreshUserList_button = new javax.swing.JButton();
 
-        jButton1.setText("Otoč");
+        otoc_button.setText("Otoč");
 
         smaz_button.setText("Smaž");
         smaz_button.addActionListener(new java.awt.event.ActionListener() {
@@ -157,7 +163,7 @@ public class iconViewer extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jButton1)
+                .addComponent(otoc_button)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(smaz_button)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -171,7 +177,7 @@ public class iconViewer extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
+                    .addComponent(otoc_button)
                     .addComponent(smaz_button)
                     .addComponent(user_comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(refreshUserList_button))
@@ -183,6 +189,8 @@ public class iconViewer extends javax.swing.JPanel {
 
     private void refreshUserList_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshUserList_buttonActionPerformed
         updateCombo();
+        obrazek.setVisible(false);
+        obrazek.setIcon(null);
     }//GEN-LAST:event_refreshUserList_buttonActionPerformed
 
     private void smaz_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_smaz_buttonActionPerformed
@@ -203,8 +211,8 @@ public class iconViewer extends javax.swing.JPanel {
     }//GEN-LAST:event_smaz_buttonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JPanel obrazek_kontejner;
+    private javax.swing.JButton otoc_button;
     private javax.swing.JButton refreshUserList_button;
     private javax.swing.JButton smaz_button;
     private javax.swing.JComboBox user_comboBox;
