@@ -6,6 +6,8 @@
 
 package cz.vutbr.fit.pdb.models;
 
+import cz.vutbr.fit.pdb.gui.myIcon;
+
 import cz.vutbr.fit.pdb.application.ServiceLocator;
 import java.io.IOException;
 import java.sql.Connection;
@@ -13,6 +15,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
+import javax.swing.ImageIcon;
 import oracle.jdbc.OraclePreparedStatement;
 import oracle.jdbc.OracleResultSet;
 import oracle.jdbc.pool.OracleDataSource;
@@ -26,7 +31,7 @@ import oracle.ord.im.OrdImage;
  */
 public class ObrazkyModel extends BaseModel {
     
-    public Integer insertImage(String path) throws SQLException {
+    public Integer insertImage(String path, int zakaznik) throws SQLException {
         
         Integer id;
         
@@ -35,9 +40,11 @@ public class ObrazkyModel extends BaseModel {
         {
             conn.setAutoCommit(false);
             
-            try (Statement stmt = conn.createStatement(); )
+            try (PreparedStatement stmt = conn.prepareStatement("INSERT INTO obrazky (id, img, zakaznik) VALUES (obrazky_seq.nextval, ORDSYS.ORDImage.init(), ?)"); )
             {
-                stmt.executeUpdate("INSERT INTO obrazky (id, img) VALUES (obrazky_seq.nextval, ORDSYS.ORDImage.init())");
+                stmt.setInt(1, zakaznik);
+                
+                stmt.executeUpdate();
             }
             
             try (Statement stmt = conn.createStatement(); )
@@ -75,6 +82,33 @@ public class ObrazkyModel extends BaseModel {
         }
         
         return id;
+    }
+    
+    public Map<Integer, myIcon> getImagesOfCustomer(int customer) throws SQLException {
+    
+        Map<Integer, myIcon> result = new HashMap<>();
+        
+        OracleDataSource ods = ServiceLocator.getConnection();
+        try (Connection conn = ods.getConnection();
+               OraclePreparedStatement pstmt = (OraclePreparedStatement)conn.prepareStatement("SELECT id, img FROM obrazky WHERE zakaznik = ?"))
+        {
+            pstmt.setInt(1, customer);
+            
+            OracleResultSet rs = (OracleResultSet) pstmt.executeQuery();
+            
+            while (rs.next()) {
+                OrdImage img = (OrdImage) rs.getORAData("img", OrdImage.getORADataFactory());
+                byte[] tmp = img.getDataInByteArray();
+                
+                ImageIcon i = new ImageIcon(tmp);
+                result.put(rs.getInt("id"), new myIcon(i));
+            }
+        } 
+        catch (IOException e) {
+            result = null;
+        }
+        
+        return result;
     }
     
     public byte[] getImage(Integer id) throws SQLException {
@@ -115,6 +149,18 @@ public class ObrazkyModel extends BaseModel {
         {
             stmt.setInt(1, id);
             return stmt.execute();
+        }
+    }
+    
+    public void rotateImage(int id) throws SQLException {
+        
+        OracleDataSource ods = ServiceLocator.getConnection();
+        try (Connection conn = ods.getConnection(); 
+             PreparedStatement stmt = conn.prepareStatement("CALL Rotate_image(?)");)
+        {
+            stmt.setInt(1,id);
+            
+            stmt.execute();
         }
     }
 }

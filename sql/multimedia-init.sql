@@ -3,12 +3,15 @@ DROP TABLE obrazky;
 /** zakaznik */
 CREATE TABLE obrazky (
   	id NUMBER NOT null,
+  	zakaznik NUMBER NOT null,
 	img ORDSYS.ORDImage,
 	img_si ORDSYS.SI_StillImage,
 	img_ac ORDSYS.SI_AverageColor,
 	img_ch ORDSYS.SI_ColorHistogram,
 	img_pc ORDSYS.SI_PositionalColor,
-	img_tx ORDSYS.SI_Texture
+	img_tx ORDSYS.SI_Texture,
+	CONSTRAINT pk_obrazky PRIMARY KEY (id),
+	CONSTRAINT fk_obr_zakaznik FOREIGN KEY (zakaznik) REFERENCES zakaznik(id) on delete cascade
 );
 
 DROP SEQUENCE obrazky_seq;
@@ -25,6 +28,25 @@ for each row
 begin
     select obrazky_seq.nextval into :new.id from dual;
 end;
+/
+
+COMMIT;
+
+CREATE OR REPLACE PROCEDURE Rotate_image
+    (img_id IN NUMBER)
+IS
+    obj ORDSYS.ORDImage;
+
+BEGIN
+    SELECT img INTO obj FROM obrazky
+    WHERE id = img_id FOR UPDATE;
+
+    obj.process('rotate=90');
+
+    UPDATE obrazky SET img = obj WHERE id = img_id;
+
+    COMMIT;
+END;
 /
 
 COMMIT;

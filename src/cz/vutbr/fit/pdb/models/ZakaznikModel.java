@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
@@ -70,7 +71,7 @@ public class ZakaznikModel extends BaseModel {
         return listOfCustomers;
     }
     
-    public boolean insert(String name, String surname, String address, String city, String postalCode, String region, String phone, String email) throws SQLException {
+    public int insert(String name, String surname, String address, String city, String postalCode, String region, String phone, String email) throws SQLException {
     
         OracleDataSource ods = ServiceLocator.getConnection();
         try (Connection conn = ods.getConnection(); 
@@ -86,7 +87,15 @@ public class ZakaznikModel extends BaseModel {
             stmt.setString(7,phone);
             stmt.setString(8,email);
 
-            return stmt.execute();
+            stmt.execute();
+            
+            try (Statement stmt2 = conn.createStatement();
+                 ResultSet rs = stmt2.executeQuery("SELECT id FROM zakaznik ORDER BY id DESC"))
+            {
+                rs.next();
+                
+                return rs.getInt("id");
+            }
         }
     }
 }

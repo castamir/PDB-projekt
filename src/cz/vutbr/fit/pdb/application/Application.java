@@ -24,6 +24,7 @@ public class Application{
          frame.setSize(maxX * windowZoom, maxY * windowZoom);
          frame.setVisible(true);*/
         MainWindow mainWin = new MainWindow();
+        mainWin.setLocationRelativeTo(null);
         mainWin.setVisible(true);
     }
 }

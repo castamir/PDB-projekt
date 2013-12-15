@@ -3,7 +3,7 @@ package cz.vutbr.fit.pdb.gui;
 
 import java.awt.Color;
 import javax.swing.BorderFactory;
-import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 /**
@@ -16,6 +16,10 @@ public class myIcon extends JLabel{
 
     private boolean active = false;
     private int index;
+    private String path = null;
+    private boolean focusable = true;
+    private ImageIcon ic;
+    
     public myIcon(){
         addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -26,25 +30,40 @@ public class myIcon extends JLabel{
         //setSize(60, 60);
     }
     
-    public myIcon(Icon i){
+    public myIcon(ImageIcon i){
        addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 myIconMouseClicked(evt);
             }
         });
         setText("");
-        setIcon(i);
+        //setIcon(i);
+        ic = i;
+    }
+    
+    public void setNewIcon(ImageIcon i){
+        ic = i;
     }
     
     public void myIconMouseClicked(java.awt.event.MouseEvent evt){
-        System.out.println("Klik my Icon");
-        if(!active){
-            setBorder(BorderFactory.createLineBorder(Color.red));
-            active = true;
-        } else {
-            active = false;
-            setBorder(null);
+        //System.out.println("Klik my Icon");
+        if(focusable) {
+            if(!active){
+                setBorder(BorderFactory.createLineBorder(Color.red));
+                active = true;
+            } else {
+                active = false;
+                setBorder(null);
+            }
         }
+    }
+    
+    public boolean canFocus() {
+        return focusable;
+    }
+    
+    public void setFocus(boolean f) {
+        focusable = f;
     }
     
     public boolean isActive(){
@@ -57,5 +76,17 @@ public class myIcon extends JLabel{
     
     public int getIndex() {
         return this.index;
+    }
+    
+    public void setPath(String p){
+        this.path = p;
+    }
+    
+    public String getPath(){
+        return this.path;
+    }
+    
+    public ImageIcon getMyIcon(){
+        return this.ic;
     }
 }

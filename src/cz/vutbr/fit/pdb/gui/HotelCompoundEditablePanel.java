@@ -1,46 +1,44 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
 package cz.vutbr.fit.pdb.gui;
 
+import cz.vutbr.fit.pdb.models.ArealModel;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.*;
-import java.util.Map;
-import java.awt.Shape;
-import javax.swing.JPanel;
-
-import cz.vutbr.fit.pdb.models.ArealModel;
-import java.awt.Dimension;
 import java.awt.Polygon;
+import java.awt.Shape;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import javax.swing.JButton;
+import java.util.Map;
 import javax.swing.JOptionPane;
 
 /**
  *
- * @author Paulík Miroslav
- * @author Mikulica Tomáš
- * @author Gajdoš Pavel
+ * @author Pavel
  */
-public class HotelCompoundEditablePanel extends JPanel implements MouseListener, MouseMotionListener, KeyListener {
+public class HotelCompoundEditablePanel extends javax.swing.JPanel implements MouseListener, MouseMotionListener, KeyListener {
 
-    private static final long serialVersionUID = 1L;
-    //private double zoom = 1.0;
-    private Sluzby parentPanel;
     private Map<String, Shape> shapes;
-    
-    private ArealModel arealModel;
     
     private String selectedBuilding;
 
     private boolean drawing = false;
     
-    
-    
+    private ArealModel arealModel;
     
     /* aktualne vytvareny polygon */
     private Polygon newPolygon;
@@ -48,24 +46,19 @@ public class HotelCompoundEditablePanel extends JPanel implements MouseListener,
     private Line2D.Float currentLine;
     private String currentPolygonName;
     
+    /**
+     * Creates new form HotelCompoundEditablePanel
+     */
     public HotelCompoundEditablePanel() {
+        initComponents();
+        
         this.addMouseListener(this);
         this.addMouseMotionListener(this);
         this.addKeyListener(this);
         
         arealModel = new ArealModel();
-        
-        JButton button = new JButton("+");
-        button.setBounds(this.getWidth()-25, this.getHeight()-25, 10, 10);
-        this.add(button);
-        
-        button.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                newObjectNameDialog();
-            }
-        });
     }
-
+    
     @Override
     public void paint(Graphics g) {
         
@@ -104,12 +97,7 @@ public class HotelCompoundEditablePanel extends JPanel implements MouseListener,
         }
     }
 
-    public void setParentPanel(Sluzby panel) {
-        parentPanel = panel;
-    }
-
-
-    /* MouseListener methods */
+    // <editor-fold defaultstate="collapsed" desc="Mouse listener methods">   
     @Override
     public void mouseClicked(MouseEvent e) {
         String buildingName = null;
@@ -122,14 +110,16 @@ public class HotelCompoundEditablePanel extends JPanel implements MouseListener,
         
         if (buildingName != null) {
             
-            parentPanel.updateTitle(buildingName);    
+            //parentPanel.updateTitle(buildingName);    
             selectedBuilding = buildingName;
-            
-            repaint();
         }
+        else {
+            selectedBuilding = null;
+        }
+        
+        repaint();
     }
-
-    // povinna implementace metod
+    
     @Override
     public void mouseEntered(MouseEvent e) {
         requestFocus();
@@ -179,16 +169,9 @@ public class HotelCompoundEditablePanel extends JPanel implements MouseListener,
     @Override
     public void mouseExited(MouseEvent e) {
     }
-
-    /*
-    public void setZoom(double zoomFactor) {
-    zoom = zoomFactor;
-    repaint();
-    }*/
+    // </editor-fold> 
     
-    
-    /* mouse motion listener methods */
-    
+    // <editor-fold defaultstate="collapsed" desc="Mouse Motion listener methods">   
     @Override
     public void mouseMoved(MouseEvent e) {
         
@@ -216,8 +199,9 @@ public class HotelCompoundEditablePanel extends JPanel implements MouseListener,
     public void mouseDragged(MouseEvent e) {
         
     }
+    // </editor-fold> 
     
-    /* key listener */
+    // <editor-fold defaultstate="collapsed" desc="Key listener methods">   
     @Override
     public void keyPressed(KeyEvent e) {
         System.out.println("pressed");
@@ -225,14 +209,14 @@ public class HotelCompoundEditablePanel extends JPanel implements MouseListener,
             System.out.println("esc");
             if (points.size() > 0) {
                 points.removeAll(points);
-                shapes.remove("new");
+                shapes.remove(currentPolygonName);
                 shapes.remove("line");   
             }
-            else {
-                drawing = false;
-            }
+            
+            drawing = false;
         }
         else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+            
             points.removeAll(points);
             shapes.remove("line");
             drawing = false;
@@ -250,6 +234,7 @@ public class HotelCompoundEditablePanel extends JPanel implements MouseListener,
     public void keyReleased(KeyEvent e) {
     }
     
+    // </editor-fold>
     
     /* dialog pro ziskani nazvu kresleneho objektu */
     public void newObjectNameDialog() {
@@ -270,6 +255,88 @@ public class HotelCompoundEditablePanel extends JPanel implements MouseListener,
         }
     }
     
-    
-    
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jToolBar1 = new javax.swing.JToolBar();
+        addBtn = new javax.swing.JButton();
+        removeBtn = new javax.swing.JButton();
+
+        jToolBar1.setRollover(true);
+
+        addBtn.setText("+");
+        addBtn.setFocusable(false);
+        addBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        addBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        addBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addBtnActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(addBtn);
+
+        removeBtn.setText("-");
+        removeBtn.setFocusable(false);
+        removeBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        removeBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        removeBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeBtnActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(removeBtn);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 757, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(510, Short.MAX_VALUE)
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
+        newObjectNameDialog();
+    }//GEN-LAST:event_addBtnActionPerformed
+
+    private void removeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeBtnActionPerformed
+        if (selectedBuilding == null) {
+            JOptionPane.showMessageDialog(getParent(), "Vyberte nejprve objekt ke smazání.");
+        }
+        else {
+            try {
+                arealModel.deleteBuildingWithName(selectedBuilding);
+                
+                shapes.clear();
+                shapes = null;
+                
+                repaint();
+            }
+            catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_removeBtnActionPerformed
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addBtn;
+    private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JButton removeBtn;
+    // End of variables declaration//GEN-END:variables
 }
