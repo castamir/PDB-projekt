@@ -21,7 +21,7 @@ import oracle.jdbc.pool.OracleDataSource;
  */
 public class RezervaceModel extends BaseModel {
     
-    public void vytvoritRezervaci(int zakaznik, int[] pokoje, String datum_od, String datum_do) throws SQLException, ParseException {
+    public void vytvoritRezervaci(int zakaznik, List<Integer> pokoje, String datum_od, String datum_do) throws SQLException, ParseException {
         
         OracleDataSource ods = ServiceLocator.getConnection();
         try (Connection conn = ods.getConnection(); 
@@ -34,9 +34,9 @@ public class RezervaceModel extends BaseModel {
             Date d_od = new Date(date.parse(datum_od).getTime());
             Date d_do = new Date(date.parse(datum_do).getTime());
             
-            for (int i=0; i < pokoje.length; i++) {
+            for (Integer i : pokoje) {
                 stmt.setInt(1, zakaznik);
-                stmt.setInt(2, pokoje[i]);
+                stmt.setInt(2, i);
                 stmt.setDate(3,d_od);
                 stmt.setDate(4,d_do);
                 stmt.addBatch();
