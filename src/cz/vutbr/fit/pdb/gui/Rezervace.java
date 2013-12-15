@@ -97,7 +97,7 @@ public class Rezervace extends javax.swing.JPanel {
     }
     
     public void updateCheckBoxes(String _od, String _do) {
-        System.out.println("Update checkboxes od: " + _od+" do: "+_do);
+        //System.out.println("Update checkboxes od: " + _od+" do: "+_do);
         try {
             rezervovanePokoje = modelRezervace.rezervovanePokojeVObdobi(_od,_do);
         } catch (SQLException ex) {
@@ -670,7 +670,6 @@ public class Rezervace extends javax.swing.JPanel {
     /*
      * Osetrit:
      *          1) od 12.12.2013 od 3.4.2013
-     *          2) Pocet osob a pokoju musi byt > 0
      */
     private void vlozitRezervaci_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vlozitRezervaci_buttonActionPerformed
         // TODO add your handling code here:
@@ -708,9 +707,12 @@ public class Rezervace extends javax.swing.JPanel {
             pocetParkovacichMist = (int) pocetParkovacihMist_spinner.getValue();
             //System.out.println(pocetParkovacichMist);
         }
+
+        
         System.out.println("Parkovacich mist: "+pocetParkovacichMist);
         System.out.println("Od: "+rezervaceOd);
         System.out.println("Do: "+rezervaceDo);
+        System.out.println(rezervovanePokoje.toArray());
         
     }//GEN-LAST:event_vlozitRezervaci_buttonActionPerformed
 
