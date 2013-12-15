@@ -17,12 +17,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Locale;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
+import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 /**
  *
@@ -42,7 +47,7 @@ public class Rezervace extends javax.swing.JPanel {
         modelObr = new ObrazkyModel();
         modelZakaznik = new ZakaznikModel();
         modelRezervace = new RezervaceModel();
-        
+        checkBoxlist = new ArrayList<JCheckBox>();
         fc = new JFileChooser();
         iconList = new ArrayList<myIcon>();
         layout = new FlowLayout();
@@ -53,7 +58,70 @@ public class Rezervace extends javax.swing.JPanel {
         vozidla_kontejner.setLayout(layout);
         rezervaceDo_field.setText(now());
         rezervaceOd_field.setText(now());
-        //loadImagesFromDb();
+        //LISTENERY
+        dl = new DocumentListener() {
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                updateCheckBoxes(rezervaceOd_field.getText(), rezervaceDo_field.getText());
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent arg0) {
+            }
+        };
+        rezervaceOd_field.getDocument().addDocumentListener(dl);
+        rezervaceDo_field.getDocument().addDocumentListener(dl);
+        ////////////////////////////////////////////////////////////////////////
+        try {
+            pokoje = modelRezervace.getPokoje();
+        } catch (SQLException ex) {
+            Logger.getLogger(Rezervace.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        checkBoxlist.add(pokoj1_checkbox);
+        checkBoxlist.add(pokoj2_checkbox);
+        checkBoxlist.add(pokoj3_checkbox);
+        checkBoxlist.add(pokoj4_checkbox);
+        checkBoxlist.add(pokoj5_checkbox);
+        checkBoxlist.add(pokoj6_checkbox);
+        checkBoxlist.add(pokoj7_checkbox);
+        checkBoxlist.add(pokoj8_checkbox);
+        checkBoxlist.add(pokoj9_checkbox);
+        checkBoxlist.add(pokoj10_checkbox);
+        
+        updateCheckBoxes(rezervaceOd_field.getText(),rezervaceDo_field.getText());
+    }
+    
+    public void updateCheckBoxes(String _od, String _do) {
+        System.out.println("Update checkboxes od: " + _od+" do: "+_do);
+        try {
+            rezervovanePokoje = modelRezervace.rezervovanePokojeVObdobi(_od,_do);
+        } catch (SQLException ex) {
+            Logger.getLogger(Rezervace.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(Rezervace.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        boolean allFree = true;
+        for (Integer val : rezervovanePokoje) {
+            //System.out.println(val);
+            for(int i=0;i<checkBoxlist.size();i++){
+                JCheckBox tmp = checkBoxlist.get(i);
+                if(tmp.getText().equals(pokoje.get(val))){
+                    tmp.setEnabled(false);
+                    allFree = false;
+                }
+            }
+        }
+        if(allFree) {
+            allFree = true;
+            for(int i=0;i<checkBoxlist.size();i++){
+                checkBoxlist.get(i).setEnabled(true);
+            }
+        }
     }
     
     public void loadImagesFromDb(){
@@ -112,17 +180,17 @@ public class Rezervace extends javax.swing.JPanel {
         kalendar_do = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
-        jCheckBox6 = new javax.swing.JCheckBox();
-        jCheckBox7 = new javax.swing.JCheckBox();
-        jCheckBox8 = new javax.swing.JCheckBox();
-        jCheckBox9 = new javax.swing.JCheckBox();
-        jCheckBox10 = new javax.swing.JCheckBox();
+        pokoj1_checkbox = new javax.swing.JCheckBox();
+        pokoj2_checkbox = new javax.swing.JCheckBox();
+        pokoj3_checkbox = new javax.swing.JCheckBox();
+        pokoj4_checkbox = new javax.swing.JCheckBox();
+        pokoj5_checkbox = new javax.swing.JCheckBox();
         jPanel7 = new javax.swing.JPanel();
-        jCheckBox11 = new javax.swing.JCheckBox();
-        jCheckBox12 = new javax.swing.JCheckBox();
-        jCheckBox13 = new javax.swing.JCheckBox();
-        jCheckBox14 = new javax.swing.JCheckBox();
-        jCheckBox15 = new javax.swing.JCheckBox();
+        pokoj6_checkbox = new javax.swing.JCheckBox();
+        pokoj7_checkbox = new javax.swing.JCheckBox();
+        pokoj8_checkbox = new javax.swing.JCheckBox();
+        pokoj9_checkbox = new javax.swing.JCheckBox();
+        pokoj10_checkbox = new javax.swing.JCheckBox();
         vlozitRezervaci_button = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
@@ -343,7 +411,7 @@ public class Rezervace extends javax.swing.JPanel {
                         .addComponent(rezervaceOd_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(kalendar_od)))
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -362,15 +430,15 @@ public class Rezervace extends javax.swing.JPanel {
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Pokoje"));
 
-        jCheckBox6.setText("Pokoj č.1");
+        pokoj1_checkbox.setText("Pokoj 1");
 
-        jCheckBox7.setText("Pokoj č.2");
+        pokoj2_checkbox.setText("Pokoj 2");
 
-        jCheckBox8.setText("Pokoj č.3");
+        pokoj3_checkbox.setText("Pokoj 3");
 
-        jCheckBox9.setText("Pokoj č.4");
+        pokoj4_checkbox.setText("Pokoj 4");
 
-        jCheckBox10.setText("Pokoj č.5");
+        pokoj5_checkbox.setText("Pokoj 5");
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -379,40 +447,37 @@ public class Rezervace extends javax.swing.JPanel {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jCheckBox7)
-                    .addComponent(jCheckBox8)
-                    .addComponent(jCheckBox9)
-                    .addComponent(jCheckBox10))
+                    .addComponent(pokoj2_checkbox)
+                    .addComponent(pokoj3_checkbox)
+                    .addComponent(pokoj4_checkbox)
+                    .addComponent(pokoj5_checkbox)
+                    .addComponent(pokoj1_checkbox))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jCheckBox6)
-                .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jCheckBox6)
+                .addComponent(pokoj1_checkbox)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox7)
+                .addComponent(pokoj2_checkbox)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox8)
+                .addComponent(pokoj3_checkbox)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 3, Short.MAX_VALUE)
-                .addComponent(jCheckBox9)
+                .addComponent(pokoj4_checkbox)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jCheckBox10))
+                .addComponent(pokoj5_checkbox))
         );
 
-        jCheckBox11.setText("Pokoj č.6");
+        pokoj6_checkbox.setText("Pokoj 6");
 
-        jCheckBox12.setText("Pokoj č.7");
+        pokoj7_checkbox.setText("Pokoj 7");
 
-        jCheckBox13.setText("Pokoj č.8");
+        pokoj8_checkbox.setText("Pokoj 8");
 
-        jCheckBox14.setText("Pokoj č.9");
+        pokoj9_checkbox.setText("Pokoj 9");
 
-        jCheckBox15.setText("Pokoj č.10");
+        pokoj10_checkbox.setText("Pokoj 10");
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -421,26 +486,26 @@ public class Rezervace extends javax.swing.JPanel {
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jCheckBox11)
-                    .addComponent(jCheckBox13)
-                    .addComponent(jCheckBox14)
-                    .addComponent(jCheckBox12)
-                    .addComponent(jCheckBox15))
+                    .addComponent(pokoj6_checkbox)
+                    .addComponent(pokoj8_checkbox)
+                    .addComponent(pokoj9_checkbox)
+                    .addComponent(pokoj7_checkbox)
+                    .addComponent(pokoj10_checkbox))
                 .addContainerGap(7, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jCheckBox11)
+                .addComponent(pokoj6_checkbox)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox12)
+                .addComponent(pokoj7_checkbox)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox13)
+                .addComponent(pokoj8_checkbox)
                 .addGap(3, 3, 3)
-                .addComponent(jCheckBox14)
+                .addComponent(pokoj9_checkbox)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jCheckBox15))
+                .addComponent(pokoj10_checkbox))
         );
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
@@ -470,7 +535,6 @@ public class Rezervace extends javax.swing.JPanel {
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Obrázek"));
 
-        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mapka.png"))); // NOI18N
         jLabel11.setPreferredSize(new java.awt.Dimension(200, 200));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -668,6 +732,7 @@ public class Rezervace extends javax.swing.JPanel {
         Date selectedDate = dp.parseDate(rezervaceOd_field.getText());
         dp.setSelectedDate(selectedDate);
         dp.start(rezervaceOd_field);
+        //updateCheckBoxes(rezervaceOd_field.getText(),rezervaceDo_field.getText());
     }//GEN-LAST:event_kalendar_odMouseClicked
 
     private void kalendar_doMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_kalendar_doMouseClicked
@@ -678,6 +743,7 @@ public class Rezervace extends javax.swing.JPanel {
         Date selectedDate = dp.parseDate(rezervaceDo_field.getText());
         dp.setSelectedDate(selectedDate);
         dp.start(rezervaceDo_field);
+        //updateCheckBoxes(rezervaceOd_field.getText(),rezervaceDo_field.getText());
     }//GEN-LAST:event_kalendar_doMouseClicked
 
     private Locale getLocale(String loc) {
@@ -694,6 +760,10 @@ public class Rezervace extends javax.swing.JPanel {
         return sdf.format(cal.getTime());
     }
     
+    DocumentListener dl;
+    List<JCheckBox> checkBoxlist;
+    Map<Integer, String> pokoje;
+    private List<Integer> rezervovanePokoje;
     private Integer lastInsertedImgId;
     //Create a file chooser
     private ObrazkyModel modelObr;
@@ -715,16 +785,6 @@ public class Rezervace extends javax.swing.JPanel {
     private javax.swing.JTextField email_field;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
-    private javax.swing.JCheckBox jCheckBox10;
-    private javax.swing.JCheckBox jCheckBox11;
-    private javax.swing.JCheckBox jCheckBox12;
-    private javax.swing.JCheckBox jCheckBox13;
-    private javax.swing.JCheckBox jCheckBox14;
-    private javax.swing.JCheckBox jCheckBox15;
-    private javax.swing.JCheckBox jCheckBox6;
-    private javax.swing.JCheckBox jCheckBox7;
-    private javax.swing.JCheckBox jCheckBox8;
-    private javax.swing.JCheckBox jCheckBox9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -752,6 +812,16 @@ public class Rezervace extends javax.swing.JPanel {
     private javax.swing.JTextField mesto_field;
     private javax.swing.JCheckBox parkovaciMisto_checkbox;
     private javax.swing.JSpinner pocetParkovacihMist_spinner;
+    private javax.swing.JCheckBox pokoj10_checkbox;
+    private javax.swing.JCheckBox pokoj1_checkbox;
+    private javax.swing.JCheckBox pokoj2_checkbox;
+    private javax.swing.JCheckBox pokoj3_checkbox;
+    private javax.swing.JCheckBox pokoj4_checkbox;
+    private javax.swing.JCheckBox pokoj5_checkbox;
+    private javax.swing.JCheckBox pokoj6_checkbox;
+    private javax.swing.JCheckBox pokoj7_checkbox;
+    private javax.swing.JCheckBox pokoj8_checkbox;
+    private javax.swing.JCheckBox pokoj9_checkbox;
     private javax.swing.JButton pridatFotoAuta_button;
     private javax.swing.JTextField prijimeni_field;
     private javax.swing.JTextField psc_field;
