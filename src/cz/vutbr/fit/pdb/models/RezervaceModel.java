@@ -54,7 +54,7 @@ public class RezervaceModel extends BaseModel {
         
         OracleDataSource ods = ServiceLocator.getConnection();
         try (Connection conn = ods.getConnection(); 
-             PreparedStatement stmt = conn.prepareStatement("SELECT pokoj FROM rezervace WHERE (od BETWEEN ? AND ?) OR (do BETWEEN ? AND ?)");
+             PreparedStatement stmt = conn.prepareStatement("SELECT pokoj FROM rezervace WHERE (od BETWEEN ? AND ?) OR (do BETWEEN ? AND ?) OR (? BETWEEN od AND do) OR (? BETWEEN od AND do)");
              )
         {
             SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
@@ -65,6 +65,9 @@ public class RezervaceModel extends BaseModel {
             stmt.setDate(2, d_do);
             stmt.setDate(3, d_od);
             stmt.setDate(4, d_do);
+            
+            stmt.setDate(5, d_od);
+            stmt.setDate(6, d_do);
             
             try (ResultSet rs = stmt.executeQuery()) {
            
