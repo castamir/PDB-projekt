@@ -710,6 +710,7 @@ public class Rezervace extends javax.swing.JPanel {
                     }
                 }
                 modelRezervace.vytvoritRezervaci(zakaznik_id, rezervace, rezervaceOd, rezervaceDo);
+                updateCheckBoxes(rezervaceOd, rezervaceDo);
             } catch (SQLException ex) {
                 Logger.getLogger(Rezervace.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -721,14 +722,14 @@ public class Rezervace extends javax.swing.JPanel {
             pocetParkovacichMist = (int) pocetParkovacihMist_spinner.getValue();
             //System.out.println(pocetParkovacichMist);
         }
-
+        /*
         System.out.println("Souhrne info o rezervaci: ");
         System.out.println("Jmeno: " + jmeno + " Prijmeni: " + prijmeni);
         System.out.println("Mesto: "+mesto+" PSC: "+psc + " kraj: " +kraj);
         System.out.println("Telefon: "+telefon+" email: "+email);
         System.out.println("Parkovacich mist: "+pocetParkovacichMist);
         System.out.println("Od: "+rezervaceOd);
-        System.out.println("Do: "+rezervaceDo);
+        System.out.println("Do: "+rezervaceDo);*/
         //System.out.println(rezervovanePokoje.toArray());
         
     }//GEN-LAST:event_vlozitRezervaci_buttonActionPerformed
