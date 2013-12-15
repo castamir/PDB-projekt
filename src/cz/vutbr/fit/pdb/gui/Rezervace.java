@@ -4,6 +4,7 @@ import cz.vutbr.fit.pdb.models.ObrazkyModel;
 import cz.vutbr.fit.pdb.models.ZakaznikModel;
 import cz.vutbr.fit.pdb.utils.DatePicker;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.io.File;
 import java.sql.SQLException;
@@ -419,6 +420,7 @@ public class Rezervace extends javax.swing.JPanel {
                 lastInsertedImgId = modelObr.insertImage(new File(defaultSearchDir).getAbsolutePath()+"/"+file.getName());
                 ic = new myIcon();
                 ic.setIndex(lastInsertedImgId);
+                ic.setPreferredSize(new Dimension(60,60));
                 System.out.println("posledni id z obrazku:" + ic.getIndex());
                 System.out.println("posledni id z db:" + lastInsertedImgId);
                 //System.out.println("/icons/"+file.getName());
