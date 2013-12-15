@@ -2,9 +2,11 @@
 package cz.vutbr.fit.pdb.gui;
 
 import java.awt.Color;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 /**
  *
@@ -16,6 +18,7 @@ public class myIcon extends JLabel{
 
     private boolean active = false;
     private int index;
+    
     public myIcon(){
         addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
