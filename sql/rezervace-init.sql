@@ -9,12 +9,16 @@ CREATE TABLE pokoje (
 
 
 /** doplnit data do pokoju rucne */
-
-/** prozatim jen hloupa data bez geometrie */
-
 INSERT INTO pokoje (id, nazev) VALUES (1, 'Pokoj 1');
 INSERT INTO pokoje (id, nazev) VALUES (2, 'Pokoj 2');
 INSERT INTO pokoje (id, nazev) VALUES (3, 'Pokoj 3');
+INSERT INTO pokoje (id, nazev) VALUES (4, 'Pokoj 4');
+INSERT INTO pokoje (id, nazev) VALUES (5, 'Pokoj 5');
+INSERT INTO pokoje (id, nazev) VALUES (6, 'Pokoj 6');
+INSERT INTO pokoje (id, nazev) VALUES (7, 'Pokoj 7');
+INSERT INTO pokoje (id, nazev) VALUES (8, 'Pokoj 8');
+INSERT INTO pokoje (id, nazev) VALUES (9, 'Pokoj 9');
+INSERT INTO pokoje (id, nazev) VALUES (10, 'Pokoj 10');
 
 
 DROP TABLE rezervace;
