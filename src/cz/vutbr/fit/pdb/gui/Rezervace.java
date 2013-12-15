@@ -617,7 +617,8 @@ public class Rezervace extends javax.swing.JPanel {
             //System.out.println("Opening: " + file.getName() + ".");
             System.out.println("Opening: " +path);
             try {
-                lastInsertedImgId = modelObr.insertImage(new File(defaultSearchDir).getAbsolutePath()+"/"+file.getName());
+                //DRUHY PARAMETR JE ID ZAKAZNIKA
+                lastInsertedImgId = modelObr.insertImage(new File(defaultSearchDir).getAbsolutePath()+"/"+file.getName(),1);
                 ic = new myIcon();
                 ic.setIndex(lastInsertedImgId);
                 ic.setPreferredSize(new Dimension(60,60));
@@ -694,8 +695,9 @@ public class Rezervace extends javax.swing.JPanel {
         } else {
             try {
                 zakaznik_id = modelZakaznik.insert(jmeno, prijimeni, adresa, mesto, psc, kraj, telefon, email);
-                int[] pokoje = new int[] {1,2};
-                modelRezervace.vytvoritRezervaci(zakaznik_id, pokoje, "2013-12-15", "2013-12-20");
+                //int[] pokoje = new int[] {1,2};
+                //modelRezervace.vytvoritRezervaci(zakaznik_id, pokoje, "2013-12-15", "2013-12-20");
+                modelRezervace.vytvoritRezervaci(zakaznik_id, rezervovanePokoje, rezervaceOd, rezervaceDo);
             } catch (SQLException ex) {
                 Logger.getLogger(Rezervace.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -712,7 +714,7 @@ public class Rezervace extends javax.swing.JPanel {
         System.out.println("Parkovacich mist: "+pocetParkovacichMist);
         System.out.println("Od: "+rezervaceOd);
         System.out.println("Do: "+rezervaceDo);
-        System.out.println(rezervovanePokoje.toArray());
+        //System.out.println(rezervovanePokoje.toArray());
         
     }//GEN-LAST:event_vlozitRezervaci_buttonActionPerformed
 
