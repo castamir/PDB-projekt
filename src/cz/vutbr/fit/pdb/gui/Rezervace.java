@@ -698,19 +698,25 @@ public class Rezervace extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(getParent(), "Všechna pole musí být vyplněna, prosím vyplňte je!","Chyba",JOptionPane.ERROR_MESSAGE);
         } else {
             try {
-                zakaznik_id = modelZakaznik.insert(jmeno, prijmeni, adresa, mesto, psc, kraj, telefon, email);
-                //int[] pokoje = new int[] {1,2};
-                //modelRezervace.vytvoritRezervaci(zakaznik_id, pokoje, "2013-12-15", "2013-12-20");
-                System.out.println("Pro zaakznika id: "+zakaznik_id);
                 List<Integer> rezervace = new ArrayList<>();
+                boolean roomChecked = false;
                 for(int i=0; i<checkBoxlist.size(); i++){
                     JCheckBox ch = checkBoxlist.get(i);
                     if(ch.isSelected()){
                         rezervace.add(i+1);
+                        roomChecked = true;
                     }
                 }
-                modelRezervace.vytvoritRezervaci(zakaznik_id, rezervace, rezervaceOd, rezervaceDo);
-                updateCheckBoxes(rezervaceOd, rezervaceDo);
+                if(!roomChecked){
+                    JOptionPane.showMessageDialog(getParent(), "Není vybrán žádný pokoj!","Chyba",JOptionPane.ERROR_MESSAGE);
+                } else {
+                    zakaznik_id = modelZakaznik.insert(jmeno, prijmeni, adresa, mesto, psc, kraj, telefon, email);
+                    //int[] pokoje = new int[] {1,2};
+                    //modelRezervace.vytvoritRezervaci(zakaznik_id, pokoje, "2013-12-15", "2013-12-20");
+                    System.out.println("Pro zaakznika id: "+zakaznik_id);
+                    modelRezervace.vytvoritRezervaci(zakaznik_id, rezervace, rezervaceOd, rezervaceDo);
+                    updateCheckBoxes(rezervaceOd, rezervaceDo);
+                }
             } catch (SQLException ex) {
                 Logger.getLogger(Rezervace.class.getName()).log(Level.SEVERE, null, ex);
             }
