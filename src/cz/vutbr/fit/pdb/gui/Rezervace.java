@@ -96,6 +96,9 @@ public class Rezervace extends javax.swing.JPanel {
         updateCheckBoxes(rezervaceOd_field.getText(),rezervaceDo_field.getText());
     }
     
+    /*
+     * Pokud je obsazeno, tak uncheck..
+     */
     public void updateCheckBoxes(String _od, String _do) {
         System.out.println("Update checkboxes od: " + _od+" do: "+_do);
         try {
@@ -113,6 +116,7 @@ public class Rezervace extends javax.swing.JPanel {
                 if(tmp.getText().equals(pokoje.get(val))){
                     tmp.setEnabled(false);
                     allFree = false;
+                    tmp.setSelected(false);
                 }
             }
         }
@@ -150,7 +154,7 @@ public class Rezervace extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jmeno_field = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        prijimeni_field = new javax.swing.JTextField();
+        prijmeni_field = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         adresa_field = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
@@ -200,9 +204,9 @@ public class Rezervace extends javax.swing.JPanel {
 
         jLabel1.setText("Jméno");
 
-        jLabel2.setText("Přijímení");
+        jLabel2.setText("Přijmení");
 
-        prijimeni_field.setText("Vozembouch");
+        prijmeni_field.setText("Vozembouch");
 
         jLabel3.setText("Adresa");
 
@@ -233,7 +237,7 @@ public class Rezervace extends javax.swing.JPanel {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jmeno_field)
-            .addComponent(prijimeni_field)
+            .addComponent(prijmeni_field)
             .addComponent(adresa_field)
             .addComponent(mesto_field)
             .addComponent(psc_field)
@@ -261,7 +265,7 @@ public class Rezervace extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(prijimeni_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(prijmeni_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -678,7 +682,7 @@ public class Rezervace extends javax.swing.JPanel {
         int zakaznik_id = -1;
         
         String jmeno = jmeno_field.getText();
-        String prijimeni = prijimeni_field.getText();
+        String prijmeni = prijmeni_field.getText();
         String adresa = adresa_field.getText();
         String mesto = mesto_field.getText();
         String psc = psc_field.getText();
@@ -689,12 +693,12 @@ public class Rezervace extends javax.swing.JPanel {
         String rezervaceDo = rezervaceDo_field.getText();
         // implicitně je to 0
         int pocetParkovacichMist = 0;
-        if(jmeno.equals("")|| prijimeni.equals("") || adresa.equals("") || mesto.equals("") || 
+        if(jmeno.equals("")|| prijmeni.equals("") || adresa.equals("") || mesto.equals("") || 
            psc.equals("")|| kraj.equals("") || telefon.equals("") || email.equals("")) {
             JOptionPane.showMessageDialog(getParent(), "Všechna pole musí být vyplněna, prosím vyplňte je!","Chyba",JOptionPane.ERROR_MESSAGE);
         } else {
             try {
-                zakaznik_id = modelZakaznik.insert(jmeno, prijimeni, adresa, mesto, psc, kraj, telefon, email);
+                zakaznik_id = modelZakaznik.insert(jmeno, prijmeni, adresa, mesto, psc, kraj, telefon, email);
                 //int[] pokoje = new int[] {1,2};
                 //modelRezervace.vytvoritRezervaci(zakaznik_id, pokoje, "2013-12-15", "2013-12-20");
                 System.out.println("Pro zaakznika id: "+zakaznik_id);
@@ -718,10 +722,13 @@ public class Rezervace extends javax.swing.JPanel {
             //System.out.println(pocetParkovacichMist);
         }
 
-        
-        /*System.out.println("Parkovacich mist: "+pocetParkovacichMist);
+        System.out.println("Souhrne info o rezervaci: ");
+        System.out.println("Jmeno: " + jmeno + " Prijmeni: " + prijmeni);
+        System.out.println("Mesto: "+mesto+" PSC: "+psc + " kraj: " +kraj);
+        System.out.println("Telefon: "+telefon+" email: "+email);
+        System.out.println("Parkovacich mist: "+pocetParkovacichMist);
         System.out.println("Od: "+rezervaceOd);
-        System.out.println("Do: "+rezervaceDo);*/
+        System.out.println("Do: "+rezervaceDo);
         //System.out.println(rezervovanePokoje.toArray());
         
     }//GEN-LAST:event_vlozitRezervaci_buttonActionPerformed
@@ -835,7 +842,7 @@ public class Rezervace extends javax.swing.JPanel {
     private javax.swing.JCheckBox pokoj8_checkbox;
     private javax.swing.JCheckBox pokoj9_checkbox;
     private javax.swing.JButton pridatFotoAuta_button;
-    private javax.swing.JTextField prijimeni_field;
+    private javax.swing.JTextField prijmeni_field;
     private javax.swing.JTextField psc_field;
     private cz.vutbr.fit.pdb.utils.ObservingTextField rezervaceDo_field;
     private cz.vutbr.fit.pdb.utils.ObservingTextField rezervaceOd_field;

@@ -84,7 +84,7 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Component id="jmeno_field" max="32767" attributes="0"/>
-              <Component id="prijimeni_field" alignment="0" max="32767" attributes="0"/>
+              <Component id="prijmeni_field" alignment="0" max="32767" attributes="0"/>
               <Component id="adresa_field" alignment="0" max="32767" attributes="0"/>
               <Component id="mesto_field" alignment="0" max="32767" attributes="0"/>
               <Component id="psc_field" alignment="0" max="32767" attributes="0"/>
@@ -115,7 +115,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="prijimeni_field" min="-2" max="-2" attributes="0"/>
+                  <Component id="prijmeni_field" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
@@ -154,10 +154,10 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel2">
           <Properties>
-            <Property name="text" type="java.lang.String" value="P&#x159;ij&#xed;men&#xed;"/>
+            <Property name="text" type="java.lang.String" value="P&#x159;ijmen&#xed;"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="prijimeni_field">
+        <Component class="javax.swing.JTextField" name="prijmeni_field">
           <Properties>
             <Property name="text" type="java.lang.String" value="Vozembouch"/>
           </Properties>
