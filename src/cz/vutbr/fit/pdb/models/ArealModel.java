@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.awt.Shape;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -66,5 +67,18 @@ public class ArealModel extends BaseModel {
         }
         
         return null;
+    }
+    
+    public void deleteBuildingWithName(String name) throws SQLException {
+        
+        OracleDataSource ods = ServiceLocator.getConnection();
+        try (Connection conn = ods.getConnection(); 
+             PreparedStatement stmt = conn.prepareStatement("DELETE FROM areal WHERE nazev = ?");
+             )
+        {
+            stmt.setString(1, name);
+            stmt.execute();
+        }
+    
     }
 }
