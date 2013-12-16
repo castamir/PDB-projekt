@@ -3,16 +3,11 @@ package cz.vutbr.fit.pdb.gui;
 import cz.vutbr.fit.pdb.models.RezervaceModel;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.io.File;
-import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -77,7 +72,8 @@ public class PrehledRezervaci extends javax.swing.JPanel {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Pokoje"));
 
-        pokoje_combobox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        pokoje_combobox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pokoj 1", "Pokoj 2", "Pokoj 3", "Pokoj 4", "Pokoj 5", "", "Pokoj 6", "Pokoj 7", "Pokoj 8", "Pokoj 9", "Pokoj 10" }));
+        pokoje_combobox.setToolTipText("");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
