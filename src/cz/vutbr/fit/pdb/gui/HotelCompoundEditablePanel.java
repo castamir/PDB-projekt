@@ -174,7 +174,7 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         
         if (objectTypeEllipse.isSelected()) {
         
-            newEllipse = new Ellipse2D.Float(e.getX()-horizontalOffset, e.getY()-verticalOffset, e.getX()-horizontalOffset, e.getY()-verticalOffset);
+            newEllipse = new Ellipse2D.Float(e.getX()-horizontalOffset, e.getY()-verticalOffset, 0, 0);
             
             newShapes.put(currentPolygonName, newEllipse);
         }
@@ -246,7 +246,12 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
        System.out.println("motion");
         
        if (objectTypeEllipse.isSelected()) {
-           newEllipse.setFrame(newEllipse.getX(), newEllipse.getY(), e.getX()-horizontalOffset, e.getY()-verticalOffset);
+           int w, h;
+           
+           w = (int)((e.getX()-horizontalOffset) - newEllipse.getX());
+           h = (int)((e.getY()-verticalOffset) - newEllipse.getY());
+           
+           newEllipse.setFrame(newEllipse.getX(), newEllipse.getY(), w, h);
                    
            newShapes.put(currentPolygonName, newEllipse);
        }
