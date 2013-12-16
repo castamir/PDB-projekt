@@ -9,7 +9,7 @@ INSERT INTO areal VALUES (
 );
 
 INSERT INTO areal VALUES (
-	'Služby u bazénu',
+	'Sluï¿½by u bazï¿½nu',
 	SDO_GEOMETRY(2003, NULL, NULL, -- 2D polygon
 		SDO_ELEM_INFO_ARRAY(1, 1003, 1), -- exterior polygon (clockwise)
 		SDO_ORDINATE_ARRAY(20,220, 140,220, 140,380, 20,380, 20,360, 100,360, 100,240, 20,240, 20,220)
@@ -17,7 +17,7 @@ INSERT INTO areal VALUES (
 );
 
 INSERT INTO areal VALUES (
-	'Bazén',
+	'Bazï¿½n',
 	SDO_GEOMETRY(2003, NULL, NULL, -- 2D polygon
 		SDO_ELEM_INFO_ARRAY(1, 1003, 3), -- exterior rectangle (left-up, right-bottom)
 		SDO_ORDINATE_ARRAY(20,260, 80,340)
@@ -33,7 +33,7 @@ INSERT INTO areal VALUES (
 );
 
 INSERT INTO areal VALUES (
-	'Tenisové kurty',
+	'Tenisovï¿½ kurty',
 	SDO_GEOMETRY(2003, NULL, NULL, -- 2D polygon
 		SDO_ELEM_INFO_ARRAY(1, 1003, 3), -- exterior rectangle (left-up, right-bottom)
 		SDO_ORDINATE_ARRAY(160,100, 280,200)
@@ -50,7 +50,7 @@ INSERT INTO areal VALUES (
 );
 
 INSERT INTO areal VALUES (
-	'Hlídání dìtí',
+	'Hlï¿½dï¿½nï¿½ dï¿½tï¿½',
 	SDO_GEOMETRY(2003, NULL, NULL, -- 2D polygon
 		SDO_ELEM_INFO_ARRAY(1, 1003, 3), -- exterior rectangle (left-up, right-bottom)
 		SDO_ORDINATE_ARRAY(300,200, 380,240)
@@ -58,7 +58,7 @@ INSERT INTO areal VALUES (
 );
 
 INSERT INTO areal VALUES (
-	'Golfové høištì',
+	'Golfovï¿½ hï¿½iï¿½tï¿½',
 	SDO_GEOMETRY(2003, NULL, NULL, -- 2D polygon
 		SDO_ELEM_INFO_ARRAY(1, 1003, 1), -- exterior polygon (clockwise)
 		SDO_ORDINATE_ARRAY(280,260, 380,260, 380,380, 200,380, 200,300, 280,300, 280,260)

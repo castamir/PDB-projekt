@@ -2,6 +2,8 @@ package cz.vutbr.fit.pdb.gui;
 
 import cz.vutbr.fit.pdb.application.InvalidCredentialsException;
 import cz.vutbr.fit.pdb.application.ServiceLocator;
+import cz.vutbr.fit.pdb.models.ReloadDatabaseModel;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -18,11 +20,11 @@ public class Administrace extends javax.swing.JPanel {
     public Administrace() {
         initComponents();
     }
-    
+
     public String getIdentityName() {
         return ServiceLocator.getAuthenticator().getIdentity().getUsername();
     }
-    
+
     public void updateIdentityNameLabel() {
         identity_label.setText(getIdentityName());
     }
@@ -134,7 +136,14 @@ public class Administrace extends javax.swing.JPanel {
     }//GEN-LAST:event_username_inputActionPerformed
 
     private void reset_database_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reset_database_buttonActionPerformed
-        // TODO add your handling code here:
+        int dialogResult = JOptionPane.showConfirmDialog(getParent(), "Opravdu si přejete resetovat databázi?", "Varování", JOptionPane.OK_CANCEL_OPTION);
+        if (dialogResult == JOptionPane.YES_OPTION) {
+            try {
+                ReloadDatabaseModel.resetDatabase();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(getParent(), ex.getMessage(), "Reset datab8ze se nezdařil", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_reset_database_buttonActionPerformed
 
     private void login_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_login_buttonActionPerformed
@@ -146,7 +155,7 @@ public class Administrace extends javax.swing.JPanel {
         } catch (InvalidCredentialsException ex) {
             JOptionPane.showMessageDialog(getParent(), ex.getMessage(), "Přihlášení se nezdařilo", JOptionPane.ERROR_MESSAGE);
         }
-        
+
         updateIdentityNameLabel();
     }//GEN-LAST:event_login_buttonActionPerformed
 
@@ -154,7 +163,6 @@ public class Administrace extends javax.swing.JPanel {
         ServiceLocator.getAuthenticator().logout();
         updateIdentityNameLabel();
     }//GEN-LAST:event_logout_buttonActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel identity_label;
     private javax.swing.JLabel jLabel3;

@@ -18,7 +18,6 @@ DROP SEQUENCE obrazky_seq;
 
 CREATE SEQUENCE obrazky_seq
 START WITH 1 INCREMENT BY 1;
-/****************************************/
 
 COMMIT;
 
@@ -36,7 +35,6 @@ CREATE OR REPLACE PROCEDURE Rotate_image
     (img_id IN NUMBER)
 IS
     obj ORDSYS.ORDImage;
-
 BEGIN
     SELECT img INTO obj FROM obrazky
     WHERE id = img_id FOR UPDATE;
