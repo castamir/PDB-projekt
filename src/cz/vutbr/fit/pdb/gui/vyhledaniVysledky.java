@@ -90,6 +90,7 @@ public class vyhledaniVysledky extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Map<Integer, myIcon> result = null;
         try {
             /*ImageIcon i = new ImageIcon(getClass().getResource("/icons/Badge-cancel.png"));
             myIcon obr = new myIcon(i);
@@ -100,11 +101,18 @@ public class vyhledaniVysledky extends javax.swing.JPanel {
             obr.setText(obr.getScoreAsString());
             vysl_kontejner.add(obr);
             vysl_kontejner.revalidate();*/
+            //Integer usrId = 1005;
             System.out.println("PRO ID: "+usrId);
-            Map<Integer, myIcon> result = modelObr.getTheMostSimilar(usrId, 0.3, 0.3, 0.1, 0.2);
+            result = modelObr.getTheMostSimilar(usrId, 0.3, 0.3, 0.3, 0.1);
+            System.out.println("Nalezeno: "+result.size());
         } catch (SQLException ex) {
             Logger.getLogger(vyhledaniVysledky.class.getName()).log(Level.SEVERE, null, ex);
         }
+        for (Map.Entry<Integer, myIcon> entry : result.entrySet()) {
+            myIcon value = entry.getValue();
+            vysl_kontejner.add(value);
+        }
+            
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private Integer usrId;

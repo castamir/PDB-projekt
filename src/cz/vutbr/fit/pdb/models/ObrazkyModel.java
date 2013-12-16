@@ -169,7 +169,7 @@ public class ObrazkyModel extends BaseModel {
         Map<Integer, myIcon> result = new HashMap<>();
         OracleDataSource ods = ServiceLocator.getConnection();
          try (Connection conn = ods.getConnection();
-               OraclePreparedStatement pstmt = (OraclePreparedStatement)conn.prepareStatement("SELECT id, img, SI_ScoreByFtrList("
+               OraclePreparedStatement pstmt = (OraclePreparedStatement)conn.prepareStatement("SELECT dst.id, dst.img, SI_ScoreByFtrList("
                 + "new SI_FeatureList(src.img_ac,?,src.img_ch,?,src.img_pc,?,src.img_tx,?),dst.img_si)"
                 + " as similarity FROM obrazky src, obrazky dst "
                 + "WHERE src.id = ? ORDER BY similarity ASC")

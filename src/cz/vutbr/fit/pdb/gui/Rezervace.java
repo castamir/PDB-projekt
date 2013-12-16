@@ -54,6 +54,21 @@ public class Rezervace extends javax.swing.JPanel {
         modelRezervace = new RezervaceModel();
         checkBoxlist = new ArrayList<JCheckBox>();
         fc = new JFileChooser();
+        fc.setFileFilter(new FileFilter() {
+
+            @Override
+            public boolean accept(File file) {
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                return file.getName().endsWith(".jpg") || file.getName().endsWith(".jpeg")
+                       || file.getName().endsWith(".png");
+            }
+
+            @Override
+            public String getDescription() {
+                //throw new UnsupportedOperationException("jpeg & png"); //To change body of generated methods, choose Tools | Templates.
+                return "Only jpeg & png files";
+            }
+        });
         iconList = new ArrayList<myIcon>();
         layout = new FlowLayout();
         layout.setAlignment(FlowLayout.LEFT);
@@ -615,21 +630,6 @@ public class Rezervace extends javax.swing.JPanel {
     private void pridatFotoAuta_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pridatFotoAuta_buttonActionPerformed
         fc.setCurrentDirectory(new File(defaultSearchDir));
         fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        fc.setFileFilter(new FileFilter() {
-
-            @Override
-            public boolean accept(File file) {
-                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                return file.getName().endsWith(".jpg") || file.getName().endsWith(".jpeg")
-                       || file.getName().endsWith(".png");
-            }
-
-            @Override
-            public String getDescription() {
-                //throw new UnsupportedOperationException("jpeg & png"); //To change body of generated methods, choose Tools | Templates.
-                return "Only jpeg & png files";
-            }
-        });
         int returnVal = fc.showOpenDialog(fc);
         myIcon ic = null;
         boolean load = true;
