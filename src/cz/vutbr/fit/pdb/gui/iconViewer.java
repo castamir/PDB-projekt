@@ -211,6 +211,8 @@ public class iconViewer extends javax.swing.JPanel {
 
         otoc_button = new javax.swing.JButton();
         smaz_button = new javax.swing.JButton();
+        obrazek_kontejner_parent = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
         obrazek_kontejner = new javax.swing.JPanel();
         user_comboBox = new javax.swing.JComboBox();
         refreshUserList_button = new javax.swing.JButton();
@@ -236,11 +238,24 @@ public class iconViewer extends javax.swing.JPanel {
         obrazek_kontejner.setLayout(obrazek_kontejnerLayout);
         obrazek_kontejnerLayout.setHorizontalGroup(
             obrazek_kontejnerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 598, Short.MAX_VALUE)
         );
         obrazek_kontejnerLayout.setVerticalGroup(
             obrazek_kontejnerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 260, Short.MAX_VALUE)
+            .addGap(0, 458, Short.MAX_VALUE)
+        );
+
+        jScrollPane1.setViewportView(obrazek_kontejner);
+
+        javax.swing.GroupLayout obrazek_kontejner_parentLayout = new javax.swing.GroupLayout(obrazek_kontejner_parent);
+        obrazek_kontejner_parent.setLayout(obrazek_kontejner_parentLayout);
+        obrazek_kontejner_parentLayout.setHorizontalGroup(
+            obrazek_kontejner_parentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1)
+        );
+        obrazek_kontejner_parentLayout.setVerticalGroup(
+            obrazek_kontejner_parentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 460, Short.MAX_VALUE)
         );
 
         user_comboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -286,8 +301,8 @@ public class iconViewer extends javax.swing.JPanel {
                 .addComponent(jButton2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton3)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(obrazek_kontejner, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(84, Short.MAX_VALUE))
+            .addComponent(obrazek_kontejner_parent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -301,7 +316,7 @@ public class iconViewer extends javax.swing.JPanel {
                     .addComponent(jButton2)
                     .addComponent(jButton3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(obrazek_kontejner, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(obrazek_kontejner_parent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -372,7 +387,9 @@ public class iconViewer extends javax.swing.JPanel {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel obrazek_kontejner;
+    private javax.swing.JPanel obrazek_kontejner_parent;
     private javax.swing.JButton otoc_button;
     private javax.swing.JButton refreshUserList_button;
     private javax.swing.JButton smaz_button;

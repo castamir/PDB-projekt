@@ -141,6 +141,10 @@ public class MainWindow extends javax.swing.JFrame {
         if (zdroj.getTitleAt(index).equals("icon_viewer")) {
             iw.updateCombo();
         }
+        if (zdroj.getTitleAt(index).equals("Rezervace")) {
+            //iw.updateCombo();
+            prehledRezervaci1.updateLayout();
+        }
     }//GEN-LAST:event_jTabbedPane1StateChanged
 
     /**
