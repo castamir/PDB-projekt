@@ -128,28 +128,28 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         
         String buildingName = null;
         
-        try {
-            buildingName = arealModel.getBuildingAtPoint(e.getX()-horizontalOffset, e.getY()-verticalOffset);
-        } catch (Exception exc) {
-            exc.printStackTrace();
-        }
+        selectedBuilding = null;
         
-        if (buildingName != null) {
-            selectedBuilding = buildingName;
-        }
-        else {
-            
-            selectedBuilding = null;
-            
-            for (Map.Entry<String, Shape> entry : newShapes.entrySet()) {
+        for (Map.Entry<String, Shape> entry : newShapes.entrySet()) {
                 
-                Shape obj = entry.getValue();
-                
-                if (obj.contains(e.getX()-horizontalOffset, e.getY()-verticalOffset)) {
-                    selectedBuilding = entry.getKey();
-                    break;
-                }
-            } 
+            Shape obj = entry.getValue();
+
+            if (obj.contains(e.getX()-horizontalOffset, e.getY()-verticalOffset)) {
+                selectedBuilding = entry.getKey();
+                break;
+            }
+        } 
+        
+        if (selectedBuilding == null) {
+            try {
+                buildingName = arealModel.getBuildingAtPoint(e.getX()-horizontalOffset, e.getY()-verticalOffset);
+            } catch (Exception exc) {
+                exc.printStackTrace();
+            }
+
+            if (buildingName != null) {
+                selectedBuilding = buildingName;
+            }
         }
         
         repaint();
@@ -217,7 +217,7 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
     @Override
     public void mouseReleased(MouseEvent e) {
         
-        if (objectTypeEllipse.isSelected()) {
+        if (objectTypeEllipse.isSelected() && newEllipse != null) {
         
             if (newEllipse.getWidth() == 0 || newEllipse.getHeight() == 0) {
                 newShapes.remove(currentPolygonName);
@@ -243,8 +243,6 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         if (drawing == false)
             return;
         
-       System.out.println("motion");
-        
        if (!objectTypeEllipse.isSelected()) {
             if (points == null || points.size() == 0)
                 return;
@@ -266,15 +264,24 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
     @Override
     public void mouseDragged(MouseEvent e) {
         
-        if (objectTypeEllipse.isSelected()) {
+        if (objectTypeEllipse.isSelected() && newEllipse != null) {
             int w, h;
+            int x, y, x1, x2, y1, y2;
+            
+            x1 = (int)newEllipse.getX();
+            y1 = (int)newEllipse.getY();
+            x2 = e.getX()-horizontalOffset;
+            y2 = e.getY()-verticalOffset;
            
-            w = (int)((e.getX()-horizontalOffset) - newEllipse.getX());
-            h = (int)((e.getY()-verticalOffset) - newEllipse.getY());
+            w = x2-x1;
+            h = y2-y1;
+            
+            if (w<0 || h<0)
+                return;
 
-            newEllipse.setFrame(newEllipse.getX(), newEllipse.getY(), w, h);
+            newEllipse.setFrame(x1, y1, w, h);
 
-            newShapes.put(currentPolygonName, newEllipse);
+            //newShapes.put(currentPolygonName, newEllipse);
         }
         
         repaint();
