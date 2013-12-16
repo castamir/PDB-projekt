@@ -426,6 +426,7 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         objectTypeButtonGroup = new javax.swing.ButtonGroup();
         jToolBar1 = new javax.swing.JToolBar();
         addBtn = new javax.swing.JButton();
+        filler6 = new javax.swing.Box.Filler(new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 32767));
         removeBtn = new javax.swing.JButton();
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(30, 0), new java.awt.Dimension(30, 0), new java.awt.Dimension(30, 32767));
         objectTypeLine = new javax.swing.JRadioButton();
@@ -433,7 +434,12 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         objectTypeCircle = new javax.swing.JRadioButton();
         filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 0), new java.awt.Dimension(50, 0), new java.awt.Dimension(50, 32767));
         saveBtn = new javax.swing.JButton();
+        filler5 = new javax.swing.Box.Filler(new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 32767));
         cancelChangesBtn = new javax.swing.JButton();
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 0), new java.awt.Dimension(50, 0), new java.awt.Dimension(50, 32767));
+        areaBtn = new javax.swing.JButton();
+        filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(15, 0), new java.awt.Dimension(15, 0), new java.awt.Dimension(15, 32767));
+        lengthBtn = new javax.swing.JButton();
 
         jToolBar1.setRollover(true);
 
@@ -447,6 +453,7 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
             }
         });
         jToolBar1.add(addBtn);
+        jToolBar1.add(filler6);
 
         removeBtn.setText("-");
         removeBtn.setFocusable(false);
@@ -499,6 +506,7 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
             }
         });
         jToolBar1.add(saveBtn);
+        jToolBar1.add(filler5);
 
         cancelChangesBtn.setText("Zrušit změny");
         cancelChangesBtn.setFocusable(false);
@@ -510,6 +518,30 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
             }
         });
         jToolBar1.add(cancelChangesBtn);
+        jToolBar1.add(filler1);
+
+        areaBtn.setText("PLOCHA");
+        areaBtn.setFocusable(false);
+        areaBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        areaBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        areaBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                areaBtnActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(areaBtn);
+        jToolBar1.add(filler4);
+
+        lengthBtn.setText("OBVOD");
+        lengthBtn.setFocusable(false);
+        lengthBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        lengthBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        lengthBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lengthBtnActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(lengthBtn);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -561,13 +593,53 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         saveChanges();
     }//GEN-LAST:event_saveBtnActionPerformed
 
+    private void areaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_areaBtnActionPerformed
+        if (selectedBuilding == null) {
+            JOptionPane.showMessageDialog(getParent(), "Vyberte nejprve objekt.");
+        }
+        else {
+            
+            try {
+                double area = arealModel.getAreaOfBuilding(selectedBuilding);
+                
+                JOptionPane.showMessageDialog(getParent(), "Plocha objektu '"+selectedBuilding+"' je "+area);
+            }
+            catch (SQLException e) {
+                JOptionPane.showMessageDialog(getParent(), "Při výpočtu došlo k chybě.");
+            }
+        }
+    }//GEN-LAST:event_areaBtnActionPerformed
+
+    private void lengthBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lengthBtnActionPerformed
+        if (selectedBuilding == null) {
+            JOptionPane.showMessageDialog(getParent(), "Vyberte nejprve objekt.");
+        }
+        else {
+            
+            try {
+                double length = arealModel.getLengthOfBuilding(selectedBuilding);
+                
+                JOptionPane.showMessageDialog(getParent(), "Obvod/délka objektu '"+selectedBuilding+"' je "+length);
+            }
+            catch (SQLException e) {
+                JOptionPane.showMessageDialog(getParent(), "Při výpočtu došlo k chybě.");
+            }
+        }
+    }//GEN-LAST:event_lengthBtnActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addBtn;
+    private javax.swing.JButton areaBtn;
     private javax.swing.JButton cancelChangesBtn;
+    private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler2;
     private javax.swing.Box.Filler filler3;
+    private javax.swing.Box.Filler filler4;
+    private javax.swing.Box.Filler filler5;
+    private javax.swing.Box.Filler filler6;
     private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JButton lengthBtn;
     private javax.swing.ButtonGroup objectTypeButtonGroup;
     private javax.swing.JRadioButton objectTypeCircle;
     private javax.swing.JRadioButton objectTypeLine;
