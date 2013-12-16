@@ -20,6 +20,8 @@ import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 /**
  *
@@ -185,7 +187,7 @@ public class iconViewer extends javax.swing.JPanel {
         }
     }
     
-    public void myInit() {
+    private void myInit() {
         FlowLayout layout = new FlowLayout();
         layout.setAlignment(FlowLayout.LEFT);
         obrazek_kontejner.setLayout(layout);
@@ -217,7 +219,7 @@ public class iconViewer extends javax.swing.JPanel {
         obrazek_kontejner = new javax.swing.JPanel();
         user_comboBox = new javax.swing.JComboBox();
         refreshUserList_button = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        podobne_button = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
 
@@ -271,7 +273,12 @@ public class iconViewer extends javax.swing.JPanel {
             }
         });
 
-        jButton1.setText("Vyhledej podobné");
+        podobne_button.setText("Vyhledej podobné");
+        podobne_button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                podobne_buttonActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("<");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -300,7 +307,7 @@ public class iconViewer extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(refreshUserList_button)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
+                .addComponent(podobne_button)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -316,7 +323,7 @@ public class iconViewer extends javax.swing.JPanel {
                     .addComponent(smaz_button)
                     .addComponent(user_comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(refreshUserList_button)
-                    .addComponent(jButton1)
+                    .addComponent(podobne_button)
                     .addComponent(jButton2)
                     .addComponent(jButton3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -387,14 +394,22 @@ public class iconViewer extends javax.swing.JPanel {
         getPreviousIcon();
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void podobne_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_podobne_buttonActionPerformed
+        JFrame frame = new JFrame("Nejpodobnejsi vysledky");
+        vyhledaniVysledky vv = new vyhledaniVysledky();
+        frame.add(vv);
+        frame.pack();
+        frame.setVisible(true);
+    }//GEN-LAST:event_podobne_buttonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel obrazek_kontejner;
     private javax.swing.JPanel obrazek_kontejner_parent;
     private javax.swing.JButton otoc_button;
+    private javax.swing.JButton podobne_button;
     private javax.swing.JButton refreshUserList_button;
     private javax.swing.JButton smaz_button;
     private javax.swing.JComboBox user_comboBox;
