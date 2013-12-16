@@ -402,12 +402,14 @@ public class iconViewer extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void podobne_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_podobne_buttonActionPerformed
-        JFrame frame = new JFrame("Nejpodobnejsi vysledky");
-        vyhledaniVysledky vv = new vyhledaniVysledky();
-        vv.setUsrId(lastUserId);
-        frame.add(vv);
-        frame.pack();
-        frame.setVisible(true);
+        if(obrazek.isActive()){
+            JFrame frame = new JFrame("Nejpodobnejsi vysledky");
+            vyhledaniVysledky vv = new vyhledaniVysledky(obrazek.getIndex());
+            //vv.setImageId(obrazek.getIndex());
+            frame.add(vv);
+            frame.pack();
+            frame.setVisible(true);
+        }
     }//GEN-LAST:event_podobne_buttonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

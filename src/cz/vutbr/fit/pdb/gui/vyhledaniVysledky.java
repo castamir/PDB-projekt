@@ -18,13 +18,14 @@ public class vyhledaniVysledky extends javax.swing.JPanel {
     /**
      * Creates new form vyhledaniVysledky
      */
-    public vyhledaniVysledky() {
+    public vyhledaniVysledky(Integer id) {
         initComponents();
+        setImageId(id);
         myInit();
     }
     
-    public void setUsrId(Integer id) {
-        this.usrId = id;
+    public void setImageId(Integer id) {
+        this.imageId = id;
     }
     
     public void myInit(){
@@ -33,6 +34,20 @@ public class vyhledaniVysledky extends javax.swing.JPanel {
         layout.setAlignment(FlowLayout.LEFT);
         vysl_kontejner.setLayout(layout);
         modelObr = new ObrazkyModel();
+        Map<Integer, myIcon> result = null;
+        try {
+            System.out.println("PRO ID: "+imageId);
+            result = modelObr.getTheMostSimilar(imageId, 0.3, 0.3, 0.3, 0.1);
+            System.out.println("Nalezeno: "+result.size());
+        } catch (SQLException ex) {
+            Logger.getLogger(vyhledaniVysledky.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if(result != null){
+            for (Map.Entry<Integer, myIcon> entry : result.entrySet()) {
+                myIcon value = entry.getValue();
+                vysl_kontejner.add(value);
+            }
+        }
     }
 
     /**
@@ -90,32 +105,19 @@ public class vyhledaniVysledky extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Map<Integer, myIcon> result = null;
-        try {
-            /*ImageIcon i = new ImageIcon(getClass().getResource("/icons/Badge-cancel.png"));
-            myIcon obr = new myIcon(i);
-            obr.setIcon(i);
-            obr.setScore(10.00);
-            //MINIATURY
-            //obr.setPreferredSize(new Dimension(150, 150));
-            obr.setText(obr.getScoreAsString());
-            vysl_kontejner.add(obr);
-            vysl_kontejner.revalidate();*/
-            //Integer usrId = 1005;
-            System.out.println("PRO ID: "+usrId);
-            result = modelObr.getTheMostSimilar(usrId, 0.3, 0.3, 0.3, 0.1);
-            System.out.println("Nalezeno: "+result.size());
-        } catch (SQLException ex) {
-            Logger.getLogger(vyhledaniVysledky.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        for (Map.Entry<Integer, myIcon> entry : result.entrySet()) {
-            myIcon value = entry.getValue();
-            vysl_kontejner.add(value);
-        }
-            
+        /*ImageIcon i = new ImageIcon(getClass().getResource("/icons/Badge-cancel.png"));
+        myIcon obr = new myIcon(i);
+        obr.setIcon(i);
+        obr.setScore(10.00);
+        //MINIATURY
+        //obr.setPreferredSize(new Dimension(150, 150));
+        obr.setText(obr.getScoreAsString());
+        vysl_kontejner.add(obr);
+        vysl_kontejner.revalidate();*/
+        //Integer usrId = 1005;            
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private Integer usrId;
+    private Integer imageId;
     private ObrazkyModel modelObr;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
