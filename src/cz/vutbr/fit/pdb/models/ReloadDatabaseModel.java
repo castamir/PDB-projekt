@@ -102,6 +102,25 @@ public class ReloadDatabaseModel {
 
     }
 
+    public static boolean isReloadRequired() {
+        int pocet_tabulek = 0;
+        try {
+            OracleDataSource ods = ServiceLocator.getConnection();
+
+            try (Connection conn = ods.getConnection(); Statement stmt = conn.createStatement(); ResultSet rset = stmt.executeQuery(
+                    "select count(*) as pocet_tabulek from user_tables where table_name in ('REZERVACE', 'ROOMS', 'MAPA', 'SLUZBY_REZERVACE', 'SLUZBY', 'POKOJE', 'ZAKAZNIK', 'OBRAZKY', 'AREAL')")) {
+                while (rset.next()) {
+                    System.out.println("overuju pocet tabulek");
+                    pocet_tabulek = rset.getInt("pocet_tabulek");
+                    System.out.println(pocet_tabulek);
+                }
+            }
+        } catch (SQLException sqlEx) {
+            return false;
+        }
+        return pocet_tabulek != 9;
+    }
+
     public static void main(String[] args) {
         try {
             ReloadDatabaseModel.resetDatabase();

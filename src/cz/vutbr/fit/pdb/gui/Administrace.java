@@ -3,9 +3,8 @@ package cz.vutbr.fit.pdb.gui;
 import cz.vutbr.fit.pdb.application.InvalidCredentialsException;
 import cz.vutbr.fit.pdb.application.ServiceLocator;
 import cz.vutbr.fit.pdb.models.ReloadDatabaseModel;
+import cz.vutbr.fit.pdb.security.IIdentity;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -14,6 +13,8 @@ import javax.swing.JOptionPane;
  */
 public class Administrace extends javax.swing.JPanel {
 
+    private MainWindow mainWindow;
+    
     /**
      * Creates new form Administrace
      */
@@ -21,13 +22,24 @@ public class Administrace extends javax.swing.JPanel {
         initComponents();
     }
 
+    public void setMainWindow(MainWindow mainWindow) {
+        this.mainWindow = mainWindow;
+    }
+
     public String getIdentityName() {
-        return ServiceLocator.getAuthenticator().getIdentity().getUsername();
+        IIdentity identity = ServiceLocator.getAuthenticator().getIdentity();
+        if (identity.isLoggendIn()) {
+            return identity.getUsername();
+        } else {
+            return "Host";
+        }
     }
 
     public void updateIdentityNameLabel() {
         identity_label.setText(getIdentityName());
     }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The
@@ -49,15 +61,21 @@ public class Administrace extends javax.swing.JPanel {
 
         username_label.setText("Uživatelské jméno");
 
-        username_input.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                username_inputActionPerformed(evt);
+        username_input.setText("login");
+        username_input.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                username_inputFocusGained(evt);
             }
         });
 
         password_label.setText("Heslo");
 
         password_input.setText("jPasswor");
+        password_input.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                password_inputFocusGained(evt);
+            }
+        });
 
         jLabel3.setText("Přihlášen jako");
 
@@ -70,7 +88,7 @@ public class Administrace extends javax.swing.JPanel {
             }
         });
 
-        logout_button.setText("Odhlásit");
+        logout_button.setText("Přihlásit jako host");
         logout_button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 logout_buttonActionPerformed(evt);
@@ -131,10 +149,6 @@ public class Administrace extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void username_inputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_username_inputActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_username_inputActionPerformed
-
     private void reset_database_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reset_database_buttonActionPerformed
         int dialogResult = JOptionPane.showConfirmDialog(getParent(), "Opravdu si přejete resetovat databázi?", "Varování", JOptionPane.OK_CANCEL_OPTION);
         if (dialogResult == JOptionPane.YES_OPTION) {
@@ -144,6 +158,7 @@ public class Administrace extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(getParent(), ex.getMessage(), "Reset datab8ze se nezdařil", JOptionPane.ERROR_MESSAGE);
             }
         }
+        mainWindow.checkPanelAvailability();
     }//GEN-LAST:event_reset_database_buttonActionPerformed
 
     private void login_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_login_buttonActionPerformed
@@ -157,12 +172,25 @@ public class Administrace extends javax.swing.JPanel {
         }
 
         updateIdentityNameLabel();
+        password_input.setText("");
+        username_input.setText("");
+        mainWindow.checkPanelAvailability();
     }//GEN-LAST:event_login_buttonActionPerformed
 
     private void logout_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logout_buttonActionPerformed
         ServiceLocator.getAuthenticator().logout();
         updateIdentityNameLabel();
+        mainWindow.checkPanelAvailability();
     }//GEN-LAST:event_logout_buttonActionPerformed
+
+    private void username_inputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_username_inputFocusGained
+        username_input.setText("");
+    }//GEN-LAST:event_username_inputFocusGained
+
+    private void password_inputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_password_inputFocusGained
+        password_input.setText("");
+    }//GEN-LAST:event_password_inputFocusGained
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel identity_label;
     private javax.swing.JLabel jLabel3;
