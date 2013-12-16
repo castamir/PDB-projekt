@@ -21,6 +21,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
+import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JOptionPane;
+import oracle.spatial.geometry.JGeometry;
 
 /**
  *
@@ -54,7 +56,7 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
     
     private Polygon newPolygon;
     private Path2D newPath;
-    private Ellipse2D newEllipse;
+    private Ellipse2D newCircle;
    
     
     private final String tmpLineKey = "tmpLinePDB";
@@ -73,6 +75,34 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         this.addKeyListener(this);
         
         arealModel = new ArealModel();
+    }
+    
+    private void saveChanges() {
+
+        try {
+            for (String name : buildingsToDelete) {
+                arealModel.deleteBuildingWithName(name);
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        
+        // ulozeni novych
+        
+        for (Map.Entry<String, Shape> entry : newShapes.entrySet()) {
+
+            try {
+                arealModel.saveShape(entry.getKey(), entry.getValue());
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        
+        reloadShapes();
+        repaint();        
     }
     
     @Override
@@ -172,11 +202,11 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         newShapes.remove(currentPolygonName);
         newShapes.remove(tmpLineKey);
         
-        if (objectTypeEllipse.isSelected()) {
+        if (objectTypeCircle.isSelected()) {
         
-            newEllipse = new Ellipse2D.Float(e.getX()-horizontalOffset, e.getY()-verticalOffset, 0, 0);
+            newCircle = new Ellipse2D.Float(e.getX()-horizontalOffset, e.getY()-verticalOffset, 0, 0);
             
-            newShapes.put(currentPolygonName, newEllipse);
+            newShapes.put(currentPolygonName, newCircle);
         }
         
         else {
@@ -217,15 +247,15 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
     @Override
     public void mouseReleased(MouseEvent e) {
         
-        if (objectTypeEllipse.isSelected() && newEllipse != null) {
+        if (objectTypeCircle.isSelected() && newCircle != null) {
         
-            if (newEllipse.getWidth() == 0 || newEllipse.getHeight() == 0) {
+            if (newCircle.getWidth() == 0 || newCircle.getHeight() == 0) {
                 newShapes.remove(currentPolygonName);
                 return;
             }
             
             drawing = false;
-            newEllipse = null;
+            newCircle = null;
             
             repaint();
         }
@@ -243,7 +273,7 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         if (drawing == false)
             return;
         
-       if (!objectTypeEllipse.isSelected()) {
+       if (!objectTypeCircle.isSelected()) {
             if (points == null || points.size() == 0)
                 return;
 
@@ -264,27 +294,27 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
     @Override
     public void mouseDragged(MouseEvent e) {
         
-        if (objectTypeEllipse.isSelected() && newEllipse != null) {
-            int w, h;
+        if (objectTypeCircle.isSelected() && newCircle != null) {
+            int w, h, r;
             int x, y, x1, x2, y1, y2;
             
-            x1 = (int)newEllipse.getX();
-            y1 = (int)newEllipse.getY();
+            x1 = (int)newCircle.getX();
+            y1 = (int)newCircle.getY();
             x2 = e.getX()-horizontalOffset;
             y2 = e.getY()-verticalOffset;
            
             w = x2-x1;
             h = y2-y1;
             
-            if (w<0 || h<0)
+            r = (w > h) ? w : h;
+            
+            if (r < 0)
                 return;
 
-            newEllipse.setFrame(x1, y1, w, h);
-
-            //newShapes.put(currentPolygonName, newEllipse);
+            newCircle.setFrame(x1, y1, r, r);
+            
+            repaint();
         }
-        
-        repaint();
     }
     
     // </editor-fold> 
@@ -400,7 +430,7 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(30, 0), new java.awt.Dimension(30, 0), new java.awt.Dimension(30, 32767));
         objectTypeLine = new javax.swing.JRadioButton();
         objectTypePolygon = new javax.swing.JRadioButton();
-        objectTypeEllipse = new javax.swing.JRadioButton();
+        objectTypeCircle = new javax.swing.JRadioButton();
         filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 0), new java.awt.Dimension(50, 0), new java.awt.Dimension(50, 32767));
         saveBtn = new javax.swing.JButton();
         cancelChangesBtn = new javax.swing.JButton();
@@ -449,20 +479,25 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         objectTypePolygon.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(objectTypePolygon);
 
-        objectTypeButtonGroup.add(objectTypeEllipse);
-        objectTypeEllipse.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
-        objectTypeEllipse.setText("Ellipse");
-        objectTypeEllipse.setFocusable(false);
-        objectTypeEllipse.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        objectTypeEllipse.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        objectTypeEllipse.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(objectTypeEllipse);
+        objectTypeButtonGroup.add(objectTypeCircle);
+        objectTypeCircle.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
+        objectTypeCircle.setText("Circle");
+        objectTypeCircle.setFocusable(false);
+        objectTypeCircle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        objectTypeCircle.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        objectTypeCircle.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(objectTypeCircle);
         jToolBar1.add(filler3);
 
         saveBtn.setText("Uložit");
         saveBtn.setFocusable(false);
         saveBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         saveBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        saveBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveBtnActionPerformed(evt);
+            }
+        });
         jToolBar1.add(saveBtn);
 
         cancelChangesBtn.setText("Zrušit změny");
@@ -514,17 +549,6 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
             selectedBuilding = null;
             
             repaint();
-            
-            /*try {
-                arealModel.deleteBuildingWithName(selectedBuilding);
-                
-                reloadShapes();
-                
-                repaint();
-            }
-            catch (SQLException e) {
-                e.printStackTrace();
-            }*/
         }
     }//GEN-LAST:event_removeBtnActionPerformed
 
@@ -532,6 +556,10 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         reloadShapes();
         repaint();
     }//GEN-LAST:event_cancelChangesBtnActionPerformed
+
+    private void saveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBtnActionPerformed
+        saveChanges();
+    }//GEN-LAST:event_saveBtnActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -541,7 +569,7 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
     private javax.swing.Box.Filler filler3;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.ButtonGroup objectTypeButtonGroup;
-    private javax.swing.JRadioButton objectTypeEllipse;
+    private javax.swing.JRadioButton objectTypeCircle;
     private javax.swing.JRadioButton objectTypeLine;
     private javax.swing.JRadioButton objectTypePolygon;
     private javax.swing.JButton removeBtn;
