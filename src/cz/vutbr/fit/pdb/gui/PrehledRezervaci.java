@@ -42,11 +42,6 @@ public class PrehledRezervaci extends javax.swing.JPanel {
             //seznamPokoju.add(vsechnyPokoje.get(key));
             //System.out.println(vsechnyPokoje.get(key)); //jedna dva tri (serazene podle klice)
         }
-        try {
-            System.out.println(new File("").getCanonicalPath()+"/sql/");
-        } catch (IOException ex) {
-            Logger.getLogger(PrehledRezervaci.class.getName()).log(Level.SEVERE, null, ex);
-        }
 
     }
     
