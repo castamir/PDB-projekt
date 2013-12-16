@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -438,8 +439,10 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         cancelChangesBtn = new javax.swing.JButton();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 0), new java.awt.Dimension(50, 0), new java.awt.Dimension(50, 32767));
         areaBtn = new javax.swing.JButton();
-        filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(15, 0), new java.awt.Dimension(15, 0), new java.awt.Dimension(15, 32767));
+        filler8 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
         lengthBtn = new javax.swing.JButton();
+        filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
+        distancesBtn = new javax.swing.JButton();
 
         jToolBar1.setRollover(true);
 
@@ -530,7 +533,7 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
             }
         });
         jToolBar1.add(areaBtn);
-        jToolBar1.add(filler4);
+        jToolBar1.add(filler8);
 
         lengthBtn.setText("OBVOD");
         lengthBtn.setFocusable(false);
@@ -542,6 +545,18 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
             }
         });
         jToolBar1.add(lengthBtn);
+        jToolBar1.add(filler7);
+
+        distancesBtn.setText("VZDÁLENOSTI");
+        distancesBtn.setFocusable(false);
+        distancesBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        distancesBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        distancesBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                distancesBtnActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(distancesBtn);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -610,7 +625,31 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         }
     }//GEN-LAST:event_areaBtnActionPerformed
 
-    private void lengthBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lengthBtnActionPerformed
+    private void distancesBtnActionPerformed(java.awt.event.ActionEvent evt) {                                             
+        if (selectedBuilding == null) {
+            JOptionPane.showMessageDialog(getParent(), "Vyberte nejprve objekt.");
+        }
+        else {
+            
+            try {
+                Map<String, Float> distances = arealModel.getDistancesFromBuilding(selectedBuilding);
+                
+                String msg = "Vzdálenost objektu '"+selectedBuilding+"' od objektu:\n";
+                
+                for (Map.Entry<String, Float> entry : distances.entrySet()) {
+                
+                    msg += "'"+entry.getKey()+"'" + " je " + entry.getValue().toString() + "\n";
+                }
+                
+                JOptionPane.showMessageDialog(getParent(), msg);
+            }
+            catch (SQLException e) {
+                JOptionPane.showMessageDialog(getParent(), "Při výpočtu došlo k chybě.");
+            }
+        }
+    }                                                                                 
+
+    private void lengthBtnActionPerformed(java.awt.event.ActionEvent evt) {                                          
         if (selectedBuilding == null) {
             JOptionPane.showMessageDialog(getParent(), "Vyberte nejprve objekt.");
         }
@@ -619,25 +658,26 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
             try {
                 double length = arealModel.getLengthOfBuilding(selectedBuilding);
                 
-                JOptionPane.showMessageDialog(getParent(), "Obvod/délka objektu '"+selectedBuilding+"' je "+length);
+                JOptionPane.showMessageDialog(getParent(), "Obvod objektu '"+selectedBuilding+"' je "+length);
             }
             catch (SQLException e) {
                 JOptionPane.showMessageDialog(getParent(), "Při výpočtu došlo k chybě.");
             }
         }
-    }//GEN-LAST:event_lengthBtnActionPerformed
-
+    }                                         
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addBtn;
     private javax.swing.JButton areaBtn;
     private javax.swing.JButton cancelChangesBtn;
+    private javax.swing.JButton distancesBtn;
     private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler2;
     private javax.swing.Box.Filler filler3;
-    private javax.swing.Box.Filler filler4;
     private javax.swing.Box.Filler filler5;
     private javax.swing.Box.Filler filler6;
+    private javax.swing.Box.Filler filler7;
+    private javax.swing.Box.Filler filler8;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JButton lengthBtn;
     private javax.swing.ButtonGroup objectTypeButtonGroup;

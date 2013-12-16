@@ -17,6 +17,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import oracle.sql.STRUCT;
 import oracle.jdbc.pool.OracleDataSource;
@@ -220,5 +221,25 @@ public class ArealModel extends BaseModel {
                     return 0;
             }
         }
+    }
+    
+    public Map<String, Float> getDistancesFromBuilding(String name) throws SQLException {
+        
+        Map<String, Float> result = new LinkedHashMap<>();
+        
+        OracleDataSource ods = ServiceLocator.getConnection();
+        try (Connection conn = ods.getConnection(); 
+             PreparedStatement stmt = conn.prepareStatement("select a1.nazev as n1, a2.nazev as n2, SDO_GEOM.SDO_DISTANCE(a1.geometrie, a2.geometrie, 0.005) as distance from areal a1, areal a2 where a1.nazev = ? AND a1.nazev <> a2.nazev ORDER BY distance")) 
+        {
+            stmt.setString(1, name);
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    result.put(rs.getString("n2"), rs.getFloat("distance"));
+                }
+            }
+        }
+        
+        return result;
     }
 }
