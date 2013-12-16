@@ -3,6 +3,10 @@ package cz.vutbr.fit.pdb.gui;
 import cz.vutbr.fit.pdb.models.ObrazkyModel;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.sql.SQLException;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 
 /**
@@ -86,15 +90,21 @@ public class vyhledaniVysledky extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        /*ImageIcon i = new ImageIcon(getClass().getResource("/icons/Badge-cancel.png"));
-        myIcon obr = new myIcon(i);
-        obr.setIcon(i);
-        obr.setScore(10.00);
-        //MINIATURY
-        //obr.setPreferredSize(new Dimension(150, 150));
-        obr.setText(obr.getScoreAsString());
-        vysl_kontejner.add(obr);
-        vysl_kontejner.revalidate();*/
+        try {
+            /*ImageIcon i = new ImageIcon(getClass().getResource("/icons/Badge-cancel.png"));
+            myIcon obr = new myIcon(i);
+            obr.setIcon(i);
+            obr.setScore(10.00);
+            //MINIATURY
+            //obr.setPreferredSize(new Dimension(150, 150));
+            obr.setText(obr.getScoreAsString());
+            vysl_kontejner.add(obr);
+            vysl_kontejner.revalidate();*/
+            System.out.println("PRO ID: "+usrId);
+            Map<Integer, myIcon> result = modelObr.getTheMostSimilar(usrId, 0.3, 0.3, 0.1, 0.2);
+        } catch (SQLException ex) {
+            Logger.getLogger(vyhledaniVysledky.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private Integer usrId;

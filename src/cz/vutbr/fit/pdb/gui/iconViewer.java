@@ -404,6 +404,7 @@ public class iconViewer extends javax.swing.JPanel {
     private void podobne_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_podobne_buttonActionPerformed
         JFrame frame = new JFrame("Nejpodobnejsi vysledky");
         vyhledaniVysledky vv = new vyhledaniVysledky();
+        vv.setUsrId(lastUserId);
         frame.add(vv);
         frame.pack();
         frame.setVisible(true);
