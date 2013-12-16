@@ -172,7 +172,7 @@ public class ObrazkyModel extends BaseModel {
                OraclePreparedStatement pstmt = (OraclePreparedStatement)conn.prepareStatement("SELECT dst.id, dst.img, SI_ScoreByFtrList("
                 + "new SI_FeatureList(src.img_ac,?,src.img_ch,?,src.img_pc,?,src.img_tx,?),dst.img_si)"
                 + " as similarity FROM obrazky src, obrazky dst "
-                + "WHERE src.id = ? ORDER BY similarity ASC")
+                + "WHERE src.id != ? ORDER BY similarity ASC")
               )
         {
             //pstmt.setInt(1, customer);
