@@ -1,11 +1,11 @@
-DROP TABLE sluzby_rezervace CASCADE CONSTRAINTS;
-DROP TABLE sluzby CASCADE CONSTRAINTS;
-DROP TABLE areal CASCADE CONSTRAINTS;
-DROP TABLE rezervace CASCADE CONSTRAINTS;
-DROP TABLE obrazky CASCADE CONSTRAINTS;
-DROP TABLE zakaznik CASCADE CONSTRAINTS;
-DROP TABLE pokoje CASCADE CONSTRAINTS;
-DROP TABLE mapa CASCADE CONSTRAINTS;
+DROP TABLE sluzby_rezervace;
+DROP TABLE sluzby;
+DROP TABLE areal;
+DROP TABLE rezervace;
+DROP TABLE obrazky;
+DROP TABLE zakaznik;
+DROP TABLE pokoje;
+DROP TABLE mapa;
 
 --==========================================
 -- mapa
@@ -46,12 +46,16 @@ CREATE TABLE pokoje (
 	nazev VARCHAR(32),
 	CONSTRAINT pk_pokoje PRIMARY KEY (id)
 );
+
+commit;
 --==========================================
 -- zakaznik
 --==========================================
+DROP SEQUENCE "ZAK_SEQ";
+CREATE SEQUENCE  "ZAK_SEQ"   INCREMENT BY 1 START WITH 1001;
 
 CREATE TABLE zakaznik (
-  id NUMBER NOT null,
+        id NUMBER NOT null,
 	jmeno VARCHAR(32) NOT null,
 	prijmeni VARCHAR(32) NOT null,
 	adresa VARCHAR(32) NOT null,
@@ -62,11 +66,6 @@ CREATE TABLE zakaznik (
 	email VARCHAR(32) NOT null,
 	CONSTRAINT pk_zakaznik PRIMARY KEY (id)
 );
-
-DROP SEQUENCE zakaznik_seq;
-
-CREATE SEQUENCE zakaznik_seq
-START WITH 1001 INCREMENT BY 1;
 --==========================================
 -- obrazky
 --==========================================
