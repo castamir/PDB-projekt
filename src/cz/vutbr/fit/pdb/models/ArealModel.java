@@ -34,6 +34,7 @@ public class ArealModel extends BaseModel {
             while (resultSet.next()) {
                 byte[] image = resultSet.getBytes("geometrie");
                 JGeometry jGeometry = JGeometry.load(image);
+                
                 Shape shape = jGeometry2Shape(jGeometry);
                 if (shape != null) {
                     shapes.put(resultSet.getString("nazev"), shape);

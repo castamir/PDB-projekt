@@ -18,10 +18,13 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
+import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JOptionPane;
@@ -33,6 +36,9 @@ import javax.swing.JOptionPane;
 public class HotelCompoundEditablePanel extends javax.swing.JPanel implements MouseListener, MouseMotionListener, KeyListener {
 
     private Map<String, Shape> shapes;
+    private Map<String, Shape> newShapes;
+    
+    private List<String> buildingsToDelete;
     
     private String selectedBuilding;
 
@@ -40,11 +46,21 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
     
     private ArealModel arealModel;
     
-    /* aktualne vytvareny polygon */
-    private Polygon newPolygon;
+    
+    /* aktualne vytvareny tvar */
     private List<Point2D> points;
-    private Line2D.Float currentLine;
+    private Line2D.Float currentLine;    
     private String currentPolygonName;
+    
+    private Polygon newPolygon;
+    private Path2D newPath;
+    private Ellipse2D newEllipse;
+   
+    
+    private final String tmpLineKey = "tmpLinePDB";
+    
+    private final int verticalOffset = 30;
+    private final int horizontalOffset = 0;
     
     /**
      * Creates new form HotelCompoundEditablePanel
@@ -66,55 +82,74 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
 
         Graphics2D g2D = (Graphics2D) g;
         
-        if (shapes == null) {
-            try {
-                shapes = arealModel.loadShapes();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
+        g2D.translate(horizontalOffset, verticalOffset);
+        
+        loadShapes();
 
         for (Map.Entry<String, Shape> entry : shapes.entrySet()) {
-            //Shape shape = iterator.next();
-            //g2D.setTransform(a);
-            Color background = Color.darkGray;
-            Color fontColor = Color.lightGray;
-            Color borderColor = Color.black;
-            
-            if (selectedBuilding != null && selectedBuilding.equals(entry.getKey())) {
-                background = Color.green;
-                fontColor = Color.darkGray;
-            }
-            
-            g2D.setPaint(background);
-            g2D.fill(entry.getValue());
-            g2D.setPaint(borderColor);
-            g2D.draw(entry.getValue());
-            g2D.setColor(fontColor);
-            g2D.setFont(new Font("Verdana", Font.BOLD, 11));
-            g2D.drawString(entry.getKey(), (int) entry.getValue().getBounds2D().getMinX() + 5, (int) entry.getValue().getBounds2D().getMaxY() - 5);
+            drawShape(g2D, entry, false);
         }
+        
+        for (Map.Entry<String, Shape> entry : newShapes.entrySet()) {
+            drawShape(g2D, entry, true);
+        }
+    }
+    
+    private void drawShape(Graphics2D g2D, Map.Entry<String, Shape> entry, boolean newShape) {
+        Color background = Color.darkGray;
+        Color fontColor = Color.lightGray;
+        Color borderColor = Color.black;
+
+        if (selectedBuilding != null && selectedBuilding.equals(entry.getKey())) {
+            background = Color.green;
+            fontColor = Color.darkGray;
+        }
+        else if (newShape) {
+            background = Color.yellow;
+        }
+
+        g2D.setPaint(background);
+        g2D.fill(entry.getValue());
+        g2D.setPaint(borderColor);
+        g2D.draw(entry.getValue());
+        g2D.setColor(fontColor);
+        g2D.setFont(new Font("Verdana", Font.BOLD, 11));
+
+        if (!entry.getKey().equals(tmpLineKey))
+            g2D.drawString(entry.getKey(), (int) entry.getValue().getBounds2D().getMinX() + 5, (int) entry.getValue().getBounds2D().getMaxY() - 5);
     }
 
     // <editor-fold defaultstate="collapsed" desc="Mouse listener methods">   
     @Override
     public void mouseClicked(MouseEvent e) {
+        
+        if (drawing)
+            return;
+        
         String buildingName = null;
         
         try {
-            buildingName = arealModel.getBuildingAtPoint(e.getX(), e.getY());
+            buildingName = arealModel.getBuildingAtPoint(e.getX()-horizontalOffset, e.getY()-verticalOffset);
         } catch (Exception exc) {
             exc.printStackTrace();
         }
         
         if (buildingName != null) {
-            
-            //parentPanel.updateTitle(buildingName);    
             selectedBuilding = buildingName;
         }
         else {
+            
             selectedBuilding = null;
+            
+            for (Map.Entry<String, Shape> entry : newShapes.entrySet()) {
+                
+                Shape obj = entry.getValue();
+                
+                if (obj.contains(e.getX()-horizontalOffset, e.getY()-verticalOffset)) {
+                    selectedBuilding = entry.getKey();
+                    break;
+                }
+            } 
         }
         
         repaint();
@@ -130,40 +165,70 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         
         if (drawing == false)
             return;
-        
-        
+         
         System.out.println("pressed");
         
-        if (points == null) {
-            points = new ArrayList<>();
+
+        newShapes.remove(currentPolygonName);
+        newShapes.remove(tmpLineKey);
+        
+        if (objectTypeEllipse.isSelected()) {
+        
+            newEllipse = new Ellipse2D.Float(e.getX()-horizontalOffset, e.getY()-verticalOffset, e.getX()-horizontalOffset, e.getY()-verticalOffset);
+            
+            newShapes.put(currentPolygonName, newEllipse);
         }
         
-        points.add(new Point2D.Float(e.getX(), e.getY()));
-        // polygon
-        
-        int i=0;
-        int npoints = points.size();
-        int[] xpoints = new int[npoints];
-        int[] ypoints = new int[npoints];
-        for (Point2D point : points) {
-            xpoints[i] = (int)point.getX();
-            ypoints[i] = (int)point.getY();
-            i++;
+        else {
+            if (points == null) {
+                points = new ArrayList<>();
+            }
+
+            points.add(new Point2D.Float(e.getX()-horizontalOffset, e.getY()-verticalOffset));
+            // polygon
+
+            int i=0;
+            int npoints = points.size();
+            int[] xpoints = new int[npoints];
+            int[] ypoints = new int[npoints];
+            for (Point2D point : points) {
+                xpoints[i] = (int)point.getX();
+                ypoints[i] = (int)point.getY();
+                i++;
+            }
+
+            newPolygon = new Polygon(xpoints, ypoints, npoints);
+
+            if (objectTypeLine.isSelected()) {
+                newPath = new Path2D.Float(newPolygon);
+            }
+
+            if (objectTypeLine.isSelected()) {
+                newShapes.put(currentPolygonName, newPath);
+                System.out.println("line");
+            }
+            else
+                newShapes.put(currentPolygonName, newPolygon);
         }
-        newPolygon = new Polygon(xpoints, ypoints, npoints);
-        
-        if (shapes.get(currentPolygonName) != null) {
-            shapes.remove(currentPolygonName);
-        }
-        shapes.remove("line");
-        
-        shapes.put(currentPolygonName, newPolygon);
         
         repaint();
     }
     
     @Override
     public void mouseReleased(MouseEvent e) {
+        
+        if (objectTypeEllipse.isSelected()) {
+        
+            if (newEllipse.getWidth() == 0 || newEllipse.getHeight() == 0) {
+                newShapes.remove(currentPolygonName);
+                return;
+            }
+            
+            drawing = false;
+            newEllipse = null;
+            
+            repaint();
+        }
     }
 
     @Override
@@ -178,20 +243,28 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         if (drawing == false)
             return;
         
-        System.out.println("motion");
+       System.out.println("motion");
         
-       if (points == null || points.size() == 0)
-           return;
+       if (objectTypeEllipse.isSelected()) {
+           newEllipse.setFrame(newEllipse.getX(), newEllipse.getY(), e.getX()-horizontalOffset, e.getY()-verticalOffset);
+                   
+           newShapes.put(currentPolygonName, newEllipse);
+       }
+       else {
+            if (points == null || points.size() == 0)
+                return;
+
+             Point2D point = points.get(points.size()-1);
+             Point2D point2 = new Point2D.Float((float)e.getX()-horizontalOffset, (float)e.getY()-verticalOffset);
+
+             currentLine = new Line2D.Float(point, point2);
+             if (newShapes.get(tmpLineKey) != null) {
+                 newShapes.remove(tmpLineKey);
+             }
+
+             newShapes.put(tmpLineKey, currentLine);
+       }
         
-        Point2D point = points.get(points.size()-1);
-        Point2D point2 = new Point2D.Float((float)e.getX(), (float)e.getY());
-        
-        currentLine = new Line2D.Float(point, point2);
-        if (shapes.get("line") != null) {
-            shapes.remove("line");
-        }
-        
-        shapes.put("line", currentLine);
         repaint();
     }
     
@@ -209,8 +282,8 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
             System.out.println("esc");
             if (points.size() > 0) {
                 points.removeAll(points);
-                shapes.remove(currentPolygonName);
-                shapes.remove("line");   
+                newShapes.remove(currentPolygonName);
+                newShapes.remove(tmpLineKey);   
             }
             
             drawing = false;
@@ -218,7 +291,7 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
             
             points.removeAll(points);
-            shapes.remove("line");
+            newShapes.remove(tmpLineKey);
             drawing = false;
         }
         
@@ -250,9 +323,50 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
                     "Nový objekt");
         
         if (s != null) {
-            currentPolygonName = s;
-            drawing = true;
+            
+            if (shapes.get(s) != null || newShapes.get(s) != null) {
+                JOptionPane.showMessageDialog(getParent(), "Objekt se zadaným názvem již existuje. Zvolte jiný název.");
+                
+                newObjectNameDialog();
+            }
+            else {
+                currentPolygonName = s;
+                drawing = true;
+            }
         }
+    }
+    
+    
+    private void loadShapes() {
+        if (shapes == null) {
+            try {
+                shapes = arealModel.loadShapes();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        
+        if (newShapes == null) {
+            newShapes = new LinkedHashMap<>();
+        }
+        
+        if (buildingsToDelete == null) {
+            buildingsToDelete = new ArrayList<>();
+        }
+    }
+    
+    private void reloadShapes() {
+        shapes.clear();
+        shapes = null;
+        
+        newShapes.clear();
+        newShapes = null;
+        
+        buildingsToDelete.removeAll(buildingsToDelete);
+        
+        selectedBuilding = null;
+        
+        loadShapes();
     }
     
     /**
@@ -264,9 +378,17 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        objectTypeButtonGroup = new javax.swing.ButtonGroup();
         jToolBar1 = new javax.swing.JToolBar();
         addBtn = new javax.swing.JButton();
         removeBtn = new javax.swing.JButton();
+        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(30, 0), new java.awt.Dimension(30, 0), new java.awt.Dimension(30, 32767));
+        objectTypeLine = new javax.swing.JRadioButton();
+        objectTypePolygon = new javax.swing.JRadioButton();
+        objectTypeEllipse = new javax.swing.JRadioButton();
+        filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 0), new java.awt.Dimension(50, 0), new java.awt.Dimension(50, 32767));
+        saveBtn = new javax.swing.JButton();
+        cancelChangesBtn = new javax.swing.JButton();
 
         jToolBar1.setRollover(true);
 
@@ -291,6 +413,53 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
             }
         });
         jToolBar1.add(removeBtn);
+        jToolBar1.add(filler2);
+
+        objectTypeButtonGroup.add(objectTypeLine);
+        objectTypeLine.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
+        objectTypeLine.setText("Line");
+        objectTypeLine.setFocusable(false);
+        objectTypeLine.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        objectTypeLine.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        objectTypeLine.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(objectTypeLine);
+
+        objectTypeButtonGroup.add(objectTypePolygon);
+        objectTypePolygon.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
+        objectTypePolygon.setSelected(true);
+        objectTypePolygon.setText("Polygon");
+        objectTypePolygon.setFocusable(false);
+        objectTypePolygon.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        objectTypePolygon.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        objectTypePolygon.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(objectTypePolygon);
+
+        objectTypeButtonGroup.add(objectTypeEllipse);
+        objectTypeEllipse.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
+        objectTypeEllipse.setText("Ellipse");
+        objectTypeEllipse.setFocusable(false);
+        objectTypeEllipse.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        objectTypeEllipse.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        objectTypeEllipse.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(objectTypeEllipse);
+        jToolBar1.add(filler3);
+
+        saveBtn.setText("Uložit");
+        saveBtn.setFocusable(false);
+        saveBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        saveBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(saveBtn);
+
+        cancelChangesBtn.setText("Zrušit změny");
+        cancelChangesBtn.setFocusable(false);
+        cancelChangesBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        cancelChangesBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        cancelChangesBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelChangesBtnActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(cancelChangesBtn);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -303,10 +472,10 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(510, Short.MAX_VALUE)
-                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(508, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -319,24 +488,48 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
             JOptionPane.showMessageDialog(getParent(), "Vyberte nejprve objekt ke smazání.");
         }
         else {
-            try {
+            
+            if (shapes.get(selectedBuilding) != null) {
+                shapes.remove(selectedBuilding);
+                buildingsToDelete.add(selectedBuilding);
+            }
+            else if (newShapes.get(selectedBuilding) != null)
+                newShapes.remove(selectedBuilding);
+            
+            selectedBuilding = null;
+            
+            repaint();
+            
+            /*try {
                 arealModel.deleteBuildingWithName(selectedBuilding);
                 
-                shapes.clear();
-                shapes = null;
+                reloadShapes();
                 
                 repaint();
             }
             catch (SQLException e) {
                 e.printStackTrace();
-            }
+            }*/
         }
     }//GEN-LAST:event_removeBtnActionPerformed
+
+    private void cancelChangesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelChangesBtnActionPerformed
+        reloadShapes();
+        repaint();
+    }//GEN-LAST:event_cancelChangesBtnActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addBtn;
+    private javax.swing.JButton cancelChangesBtn;
+    private javax.swing.Box.Filler filler2;
+    private javax.swing.Box.Filler filler3;
     private javax.swing.JToolBar jToolBar1;
+    private javax.swing.ButtonGroup objectTypeButtonGroup;
+    private javax.swing.JRadioButton objectTypeEllipse;
+    private javax.swing.JRadioButton objectTypeLine;
+    private javax.swing.JRadioButton objectTypePolygon;
     private javax.swing.JButton removeBtn;
+    private javax.swing.JButton saveBtn;
     // End of variables declaration//GEN-END:variables
 }
