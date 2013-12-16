@@ -627,7 +627,7 @@ public class Rezervace extends javax.swing.JPanel {
             @Override
             public String getDescription() {
                 //throw new UnsupportedOperationException("jpeg & png"); //To change body of generated methods, choose Tools | Templates.
-                return "jpeg & png";
+                return "Only jpeg & png files";
             }
         });
         int returnVal = fc.showOpenDialog(fc);
