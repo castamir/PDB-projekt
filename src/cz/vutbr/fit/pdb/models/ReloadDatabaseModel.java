@@ -91,7 +91,6 @@ public class ReloadDatabaseModel {
                         } else {
                             stmt.executeQuery(instrukce);
                         }
-                        System.out.println(">>" + instrukce + "<<");
                     } catch (SQLException ex) {
                         System.out.println(">>" + instrukce + "<<");
                         Logger.getLogger(ReloadDatabaseModel.class.getName()).log(Level.SEVERE, null, ex);

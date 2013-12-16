@@ -34,10 +34,8 @@ public class MainWindow extends javax.swing.JFrame {
 
     public void checkPanelAvailability() {
         if (ReloadDatabaseModel.isReloadRequired()) {
-            System.out.println("reset je potreba");
             jTabbedPane1.setEnabled(false);
         } else {
-            System.out.println("reset NENI potreba");
             jTabbedPane1.setEnabled(true);
         }
     }

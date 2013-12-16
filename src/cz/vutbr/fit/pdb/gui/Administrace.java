@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
 public class Administrace extends javax.swing.JPanel {
 
     private MainWindow mainWindow;
-    
+
     /**
      * Creates new form Administrace
      */
@@ -39,8 +39,6 @@ public class Administrace extends javax.swing.JPanel {
     public void updateIdentityNameLabel() {
         identity_label.setText(getIdentityName());
     }
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The
@@ -165,17 +163,18 @@ public class Administrace extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void reset_database_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reset_database_buttonActionPerformed
+
+        reset_database_spinner.setVisible(true);
         int dialogResult = JOptionPane.showConfirmDialog(getParent(), "Opravdu si přejete resetovat databázi?", "Varování", JOptionPane.OK_CANCEL_OPTION);
+
         if (dialogResult == JOptionPane.YES_OPTION) {
             try {
-                reset_database_spinner.setVisible(true);
                 ReloadDatabaseModel.resetDatabase();
             } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(getParent(), ex.getMessage(), "Reset datab8ze se nezdařil", JOptionPane.ERROR_MESSAGE);
-            } finally {
-                reset_database_spinner.setVisible(false);
+                JOptionPane.showMessageDialog(getParent(), ex.getMessage(), "Reset databáze se nezdařil", JOptionPane.ERROR_MESSAGE);
             }
         }
+        reset_database_spinner.setVisible(false);
         mainWindow.checkPanelAvailability();
     }//GEN-LAST:event_reset_database_buttonActionPerformed
 
@@ -208,7 +207,6 @@ public class Administrace extends javax.swing.JPanel {
     private void password_inputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_password_inputFocusGained
         password_input.setText("");
     }//GEN-LAST:event_password_inputFocusGained
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel identity_label;
     private javax.swing.JLabel jLabel3;
