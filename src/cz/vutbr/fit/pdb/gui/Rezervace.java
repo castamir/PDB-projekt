@@ -7,6 +7,7 @@ import cz.vutbr.fit.pdb.utils.DatePicker;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -660,7 +661,11 @@ public class Rezervace extends javax.swing.JPanel {
             loadImagesFromDb();
         }*/
         if(icon != null && load){
-            ic.setIcon(icon);
+            //Jen pro zobrazeni, stejne se do DB ulozi cely obrazek
+            Image img = icon.getImage();
+            Image scaledImg = img.getScaledInstance(60, 60,  java.awt.Image.SCALE_SMOOTH);
+            ic.setIcon(new ImageIcon(scaledImg));
+            //ic.setIcon(icon);
             iconList.add(ic);
             vozidla_kontejner.add(iconList.get(iconList.size()-1));
             vozidla_kontejner.revalidate();
