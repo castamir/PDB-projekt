@@ -71,6 +71,8 @@ public class iconViewer extends javax.swing.JPanel {
             otoc_button.setEnabled(true);
             obrazek.setIndex(novy.getKey());
             setNewIcon(i, false);
+            //obrazek.setActive(false);
+            //obrazek.setBorder(null);
         }
     }
     
@@ -83,6 +85,8 @@ public class iconViewer extends javax.swing.JPanel {
             otoc_button.setEnabled(true);
             obrazek.setIndex(novy.getKey());
             setNewIcon(i, false);
+            //obrazek.setActive(false);
+            //obrazek.setBorder(null);
         }
         
     }
@@ -375,10 +379,7 @@ public class iconViewer extends javax.swing.JPanel {
                 ImageIcon ic = new ImageIcon(modelObr.getImage(obrazek.getIndex()));
                 obrazek.setNewIcon(ic);
                 setNewIcon(ic, false);
-                //item = 
-                //obrazkyAktualnihoUz.put(obrazek.getIndex(), obrazek);
                 Entry<Integer, myIcon> en = new AbstractMap.SimpleEntry<Integer, myIcon>(obrazek.getIndex(), obrazek); 
-                //it.
                 it.set(en);
             } catch (SQLException ex) {
                 Logger.getLogger(iconViewer.class.getName()).log(Level.SEVERE, null, ex);

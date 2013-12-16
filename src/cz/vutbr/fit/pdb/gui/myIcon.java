@@ -107,4 +107,8 @@ public class myIcon extends JLabel{
     public String getScoreAsString(){
         return String.valueOf(this.score);
     }
+    
+    public void setActive(boolean a) {
+        this.active = a;
+    }
 }
