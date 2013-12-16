@@ -41,11 +41,12 @@ public class ReloadDatabaseModel {
         String originalLine, path, modifiedString, pattern, instrukce;
         StringBuilder sb = new StringBuilder();
 
-        path = ReloadDatabaseModel.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-
+        path = ReloadDatabaseModel.class.getClassLoader().getResource("").toString();
 
         // umisteni sql skriptu relativne vuci prelozene tride
         path = path.concat("../../sql/" + filename);
+        path = path.substring(6);
+        System.out.println(path);
         FileReader fr;
         try {
             fr = new FileReader(new File(path));
@@ -90,7 +91,6 @@ public class ReloadDatabaseModel {
                         } else {
                             stmt.executeQuery(instrukce);
                         }
-                        System.out.println(">>" + instrukce + "<<");
                     } catch (SQLException ex) {
                         System.out.println(">>" + instrukce + "<<");
                         Logger.getLogger(ReloadDatabaseModel.class.getName()).log(Level.SEVERE, null, ex);
