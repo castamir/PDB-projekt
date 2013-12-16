@@ -186,4 +186,39 @@ public class ArealModel extends BaseModel {
         }
     
     }
+    
+    
+    public double getAreaOfBuilding(String name) throws SQLException {
+        OracleDataSource ods = ServiceLocator.getConnection();
+        try (Connection conn = ods.getConnection(); 
+             PreparedStatement stmt = conn.prepareStatement("select SDO_GEOM.SDO_AREA(geometrie, 0.005) as area from areal where nazev = ?")) 
+        {
+            stmt.setString(1, name);
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getFloat("area");
+                }
+                else 
+                    return 0;
+            }
+        }
+    }
+    
+    public double getLengthOfBuilding(String name) throws SQLException {
+        OracleDataSource ods = ServiceLocator.getConnection();
+        try (Connection conn = ods.getConnection(); 
+             PreparedStatement stmt = conn.prepareStatement("select SDO_GEOM.SDO_LENGTH(geometrie, 0.005) as length from areal where nazev = ?")) 
+        {
+            stmt.setString(1, name);
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getFloat("length");
+                }
+                else 
+                    return 0;
+            }
+        }
+    }
 }
