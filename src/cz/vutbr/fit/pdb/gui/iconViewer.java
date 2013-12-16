@@ -368,6 +368,12 @@ public class iconViewer extends javax.swing.JPanel {
            getNextIcon();
         } else if(it != null && it.hasPrevious()) {
            getPreviousIcon();
+        } else {
+            String path = "/icons/Badge-cancel.png";
+            ImageIcon ic = new ImageIcon(getClass().getResource(path));
+            smaz_button.setEnabled(false);
+            otoc_button.setEnabled(false);
+            setNewIcon(ic, true);
         }
         //getNextIcon();
     }//GEN-LAST:event_smaz_buttonActionPerformed
@@ -424,5 +430,5 @@ public class iconViewer extends javax.swing.JPanel {
     private Map<Integer, myIcon> obrazkyAktualnihoUz;
     private Map.Entry<Integer, myIcon> item;
     private ListIterator<Map.Entry<Integer, myIcon>> it = null;
-    Map.Entry<Integer, myIcon>  novy;
+    private Map.Entry<Integer, myIcon>  novy;
 }

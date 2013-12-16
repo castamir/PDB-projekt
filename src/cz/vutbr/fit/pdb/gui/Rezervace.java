@@ -31,6 +31,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -613,6 +615,21 @@ public class Rezervace extends javax.swing.JPanel {
     private void pridatFotoAuta_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pridatFotoAuta_buttonActionPerformed
         fc.setCurrentDirectory(new File(defaultSearchDir));
         fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fc.setFileFilter(new FileFilter() {
+
+            @Override
+            public boolean accept(File file) {
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                return file.getName().endsWith(".jpg") || file.getName().endsWith(".jpeg")
+                       || file.getName().endsWith(".png");
+            }
+
+            @Override
+            public String getDescription() {
+                //throw new UnsupportedOperationException("jpeg & png"); //To change body of generated methods, choose Tools | Templates.
+                return "jpeg & png";
+            }
+        });
         int returnVal = fc.showOpenDialog(fc);
         myIcon ic = null;
         boolean load = true;
