@@ -24,16 +24,19 @@ import oracle.jdbc.pool.OracleDataSource;
  */
 public class ReloadDatabaseModel {
 
+    private static final String COMMANDS_DELIMITER = ";";
+    private static final String COMMANDS_TRIGGER = "; /";
+
     public static void resetDatabase() throws SQLException {
         ReloadDatabaseModel.loadSqlScript("table_init.sql");
-        ReloadDatabaseModel.loadSqlScript(";\n/","triggers_init.sql");
+        ReloadDatabaseModel.loadSqlScript(ReloadDatabaseModel.COMMANDS_TRIGGER, "triggers_init.sql");
         ReloadDatabaseModel.loadSqlScript("data_init.sql");
     }
 
     private static void loadSqlScript(String filename) throws SQLException {
-        ReloadDatabaseModel.loadSqlScript(";", filename);
+        ReloadDatabaseModel.loadSqlScript(ReloadDatabaseModel.COMMANDS_DELIMITER, filename);
     }
-     
+
     private static void loadSqlScript(String delimiter, String filename) throws SQLException {
         String originalLine, path, modifiedString, pattern, instrukce;
         StringBuilder sb = new StringBuilder();
@@ -81,7 +84,13 @@ public class ReloadDatabaseModel {
                 instrukce = inst[i].trim();
                 if (!instrukce.equals("")) {
                     try (Statement stmt = conn.createStatement()) {
-                        ResultSet resultSet = stmt.executeQuery(instrukce);
+                        if (delimiter.equals(ReloadDatabaseModel.COMMANDS_TRIGGER)) {
+                            instrukce = instrukce.concat(ReloadDatabaseModel.COMMANDS_DELIMITER);
+                            stmt.executeUpdate(instrukce);
+                        } else {
+                            stmt.executeQuery(instrukce);
+                        }
+                        System.out.println(">>" + instrukce + "<<");
                     } catch (SQLException ex) {
                         System.out.println(">>" + instrukce + "<<");
                         Logger.getLogger(ReloadDatabaseModel.class.getName()).log(Level.SEVERE, null, ex);

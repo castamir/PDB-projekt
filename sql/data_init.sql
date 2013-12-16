@@ -9,7 +9,7 @@ INSERT INTO areal VALUES (
 );
 
 INSERT INTO areal VALUES (
-	'Služby u bazénu',
+	'SluÅ¾by bazÃ©nu',
 	SDO_GEOMETRY(2003, NULL, NULL, -- 2D polygon
 		SDO_ELEM_INFO_ARRAY(1, 1003, 1), -- exterior polygon (clockwise)
 		SDO_ORDINATE_ARRAY(20,220, 140,220, 140,380, 20,380, 20,360, 100,360, 100,240, 20,240, 20,220)
@@ -17,7 +17,7 @@ INSERT INTO areal VALUES (
 );
 
 INSERT INTO areal VALUES (
-	'Bazén',
+	'BazÃ©n',
 	SDO_GEOMETRY(2003, NULL, NULL, -- 2D polygon
 		SDO_ELEM_INFO_ARRAY(1, 1003, 3), -- exterior rectangle (left-up, right-bottom)
 		SDO_ORDINATE_ARRAY(20,260, 80,340)
@@ -33,7 +33,7 @@ INSERT INTO areal VALUES (
 );
 
 INSERT INTO areal VALUES (
-	'Tenisové kurty',
+	'TenisovÃ© kurty',
 	SDO_GEOMETRY(2003, NULL, NULL, -- 2D polygon
 		SDO_ELEM_INFO_ARRAY(1, 1003, 3), -- exterior rectangle (left-up, right-bottom)
 		SDO_ORDINATE_ARRAY(160,100, 280,200)
@@ -50,7 +50,7 @@ INSERT INTO areal VALUES (
 );
 
 INSERT INTO areal VALUES (
-	'Hlídání dìtí',
+	'HlÃ­dÃ¡nÃ­ dÄ›tÃ­',
 	SDO_GEOMETRY(2003, NULL, NULL, -- 2D polygon
 		SDO_ELEM_INFO_ARRAY(1, 1003, 3), -- exterior rectangle (left-up, right-bottom)
 		SDO_ORDINATE_ARRAY(300,200, 380,240)
@@ -58,7 +58,7 @@ INSERT INTO areal VALUES (
 );
 
 INSERT INTO areal VALUES (
-	'Golfové høištì',
+	'GolfovÃ© hÅ™iÅ¡tÄ›',
 	SDO_GEOMETRY(2003, NULL, NULL, -- 2D polygon
 		SDO_ELEM_INFO_ARRAY(1, 1003, 1), -- exterior polygon (clockwise)
 		SDO_ORDINATE_ARRAY(280,260, 380,260, 380,380, 200,380, 200,300, 280,300, 280,260)
@@ -260,35 +260,35 @@ INSERT INTO pokoje (id, nazev) VALUES (9, 'Pokoj 9');
 INSERT INTO pokoje (id, nazev) VALUES (10, 'Pokoj 10');
 
 
-INSERT INTO zakaznik (jmeno, prijmeni, adresa, mesto, psc, kraj, telefon, email) VALUES ('Mira', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
-INSERT INTO zakaznik (jmeno, prijmeni, adresa, mesto, psc, kraj, telefon, email) VALUES ('Tom', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
-INSERT INTO zakaznik (jmeno, prijmeni, adresa, mesto, psc, kraj, telefon, email) VALUES ('Pavel', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
+INSERT INTO zakaznik (jmeno, prijmeni, adresa, mesto, psc, kraj, telefon, email) VALUES ('Mira', 'x', 'x', 'x', 'x', 'x', 'x', 'x');
+INSERT INTO zakaznik (jmeno, prijmeni, adresa, mesto, psc, kraj, telefon, email) VALUES ('Tom', 'x', 'x', 'x', 'x', 'x', 'x', 'x');
+INSERT INTO zakaznik (jmeno, prijmeni, adresa, mesto, psc, kraj, telefon, email) VALUES ('Pavel', 'x', 'x', 'x', 'x', 'x', 'x', 'x');
 
 COMMIT;
 
 INSERT INTO sluzby (nazev, objekt, dostupnost_od, dostupnost_do)
-VALUES ('Tenisové kurty', 'Tenisové kurty', 8, 18);
+VALUES ('TenisovÃ© kurty', 'TenisovÃ© kurty', 8, 18);
 
 INSERT INTO sluzby (nazev, objekt, dostupnost_od, dostupnost_do)
 VALUES ('Wellness', 'Wellness', 12, 18);
 
 INSERT INTO sluzby (nazev, objekt, dostupnost_od, dostupnost_do)
-VALUES ('Hlídání dìtí', 'Hlídání dìtí', 6, 14);
+VALUES ('HlÃ­dÃ¡nÃ­ dÄ›tÃ­', 'HlÃ­dÃ¡nÃ­ dÄ›tÃ­', 6, 14);
 
 INSERT INTO sluzby (nazev, objekt, dostupnost_od, dostupnost_do)
-VALUES ('Golfové høištì', 'Golfové høištì', 11, 17);
+VALUES ('GolfovÃ© hÅ™iÅ¡tÄ›', 'GolfovÃ© hÅ™iÅ¡tÄ›', 11, 17);
 
 
 COMMIT;
 
 INSERT INTO sluzby_rezervace (sluzba, zakaznik, den, hodina)
-VALUES ('Tenisové kurty', 1002, TO_DATE('2013-12-13', 'yyyy-mm-dd'), '11');
+VALUES ('TenisovÃ© kurty', 1002, TO_DATE('2013-12-13', 'yyyy-mm-dd'), '11');
 
 INSERT INTO sluzby_rezervace (sluzba, zakaznik, den, hodina)
-VALUES ('Tenisové kurty', 1001, '14.12.13', 12);
+VALUES ('TenisovÃ© kurty', 1001, TO_DATE('2013-12-14', 'yyyy-mm-dd'), 12);
 
 INSERT INTO sluzby_rezervace (sluzba, zakaznik, den, hodina)
-VALUES ('Tenisové kurty', 1003, '13.12.13', 14);
+VALUES ('TenisovÃ© kurty', 1003, TO_DATE('2013-12-13', 'yyyy-mm-dd'), 14);
 
 
 COMMIT;
