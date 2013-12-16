@@ -1,5 +1,6 @@
 package cz.vutbr.fit.pdb.gui;
 
+import cz.vutbr.fit.pdb.models.ObrazkyModel;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import javax.swing.ImageIcon;
@@ -18,11 +19,16 @@ public class vyhledaniVysledky extends javax.swing.JPanel {
         myInit();
     }
     
+    public void setUsrId(Integer id) {
+        this.usrId = id;
+    }
+    
     public void myInit(){
         //label.setHorizontalAlignment(SwingConstants.LEFT);
         FlowLayout layout = new FlowLayout();
         layout.setAlignment(FlowLayout.LEFT);
         vysl_kontejner.setLayout(layout);
+        modelObr = new ObrazkyModel();
     }
 
     /**
@@ -80,7 +86,7 @@ public class vyhledaniVysledky extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        ImageIcon i = new ImageIcon(getClass().getResource("/icons/Badge-cancel.png"));
+        /*ImageIcon i = new ImageIcon(getClass().getResource("/icons/Badge-cancel.png"));
         myIcon obr = new myIcon(i);
         obr.setIcon(i);
         obr.setScore(10.00);
@@ -88,9 +94,11 @@ public class vyhledaniVysledky extends javax.swing.JPanel {
         //obr.setPreferredSize(new Dimension(150, 150));
         obr.setText(obr.getScoreAsString());
         vysl_kontejner.add(obr);
-        vysl_kontejner.revalidate();
+        vysl_kontejner.revalidate();*/
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private Integer usrId;
+    private ObrazkyModel modelObr;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
