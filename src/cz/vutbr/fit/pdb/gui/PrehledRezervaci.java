@@ -3,6 +3,8 @@ package cz.vutbr.fit.pdb.gui;
 import cz.vutbr.fit.pdb.models.RezervaceModel;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +41,11 @@ public class PrehledRezervaci extends javax.swing.JPanel {
         for(Integer key : vsechnyPokoje.keySet()){
             //seznamPokoju.add(vsechnyPokoje.get(key));
             //System.out.println(vsechnyPokoje.get(key)); //jedna dva tri (serazene podle klice)
+        }
+        try {
+            System.out.println(new File("").getCanonicalPath()+"/sql/");
+        } catch (IOException ex) {
+            Logger.getLogger(PrehledRezervaci.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
