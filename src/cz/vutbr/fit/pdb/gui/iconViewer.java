@@ -32,7 +32,7 @@ public class iconViewer extends javax.swing.JPanel {
      */
     public iconViewer() {
         initComponents();
-        //myInit();
+        myInit();
     }
     
     public void updateCombo(){
@@ -55,6 +55,7 @@ public class iconViewer extends javax.swing.JPanel {
             comboBoxItems = new String[]{"chyba při načítání.."};
         }
         user_comboBox.setModel(new DefaultComboBoxModel(comboBoxItems));
+        user_comboBox.setSelectedIndex(0);
         obrazek.setVisible(false);
         obrazek.setIcon(null);
     }
@@ -234,6 +235,9 @@ public class iconViewer extends javax.swing.JPanel {
             }
         });
 
+        jScrollPane1.setMaximumSize(new java.awt.Dimension(600, 500));
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(600, 500));
+
         javax.swing.GroupLayout obrazek_kontejnerLayout = new javax.swing.GroupLayout(obrazek_kontejner);
         obrazek_kontejner.setLayout(obrazek_kontejnerLayout);
         obrazek_kontejnerLayout.setHorizontalGroup(
@@ -251,7 +255,7 @@ public class iconViewer extends javax.swing.JPanel {
         obrazek_kontejner_parent.setLayout(obrazek_kontejner_parentLayout);
         obrazek_kontejner_parentLayout.setHorizontalGroup(
             obrazek_kontejner_parentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         obrazek_kontejner_parentLayout.setVerticalGroup(
             obrazek_kontejner_parentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -301,7 +305,7 @@ public class iconViewer extends javax.swing.JPanel {
                 .addComponent(jButton2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton3)
-                .addContainerGap(84, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addComponent(obrazek_kontejner_parent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(

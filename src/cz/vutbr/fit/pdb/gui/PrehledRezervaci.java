@@ -199,9 +199,6 @@ public class PrehledRezervaci extends javax.swing.JPanel {
         frame.pack();             
     }//GEN-LAST:event_novaRezervace_buttonActionPerformed
 
-    public void updateLayout(){
-        prehledRezervaci_kontejner.revalidate();
-    }
     
     private RezervaceModel modelRez;
     private Map<Integer, String> vsechnyPokoje;

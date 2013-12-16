@@ -24,7 +24,7 @@ public class MainWindow extends javax.swing.JFrame {
         layout.setAlignment(FlowLayout.LEFT);
         icon_kontejner.setLayout(layout);
         iw = new iconViewer();
-        iw.myInit();
+        //iw.myInit();
         iw.setVisible(true);
         icon_kontejner.add(iw);
         //icon_kontejner.revalidate();
@@ -140,10 +140,6 @@ public class MainWindow extends javax.swing.JFrame {
         System.out.println("Tab changed to: " + zdroj.getTitleAt(index));
         if (zdroj.getTitleAt(index).equals("icon_viewer")) {
             iw.updateCombo();
-        }
-        if (zdroj.getTitleAt(index).equals("Rezervace")) {
-            //iw.updateCombo();
-            prehledRezervaci1.updateLayout();
         }
     }//GEN-LAST:event_jTabbedPane1StateChanged
 
