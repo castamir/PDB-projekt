@@ -245,17 +245,7 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         
        System.out.println("motion");
         
-       if (objectTypeEllipse.isSelected()) {
-           int w, h;
-           
-           w = (int)((e.getX()-horizontalOffset) - newEllipse.getX());
-           h = (int)((e.getY()-verticalOffset) - newEllipse.getY());
-           
-           newEllipse.setFrame(newEllipse.getX(), newEllipse.getY(), w, h);
-                   
-           newShapes.put(currentPolygonName, newEllipse);
-       }
-       else {
+       if (!objectTypeEllipse.isSelected()) {
             if (points == null || points.size() == 0)
                 return;
 
@@ -276,7 +266,20 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
     @Override
     public void mouseDragged(MouseEvent e) {
         
+        if (objectTypeEllipse.isSelected()) {
+            int w, h;
+           
+            w = (int)((e.getX()-horizontalOffset) - newEllipse.getX());
+            h = (int)((e.getY()-verticalOffset) - newEllipse.getY());
+
+            newEllipse.setFrame(newEllipse.getX(), newEllipse.getY(), w, h);
+
+            newShapes.put(currentPolygonName, newEllipse);
+        }
+        
+        repaint();
     }
+    
     // </editor-fold> 
     
     // <editor-fold defaultstate="collapsed" desc="Key listener methods">   
