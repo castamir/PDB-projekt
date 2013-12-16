@@ -133,7 +133,7 @@
           <Properties>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                <TitledBorder title="Stav pokoje"/>
+                <TitledBorder title="P&#x159;ehled rezervac&#xed; zvolen&#xe9;ho pokoje"/>
               </Border>
             </Property>
           </Properties>

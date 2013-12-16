@@ -40,17 +40,13 @@ public class ReloadDatabaseModel {
     private static void loadSqlScript(String delimiter, String filename) throws SQLException {
         String originalLine, path, modifiedString, pattern, instrukce;
         StringBuilder sb = new StringBuilder();
-
-        path = ReloadDatabaseModel.class.getClassLoader().getResource("").toString();
-
-        // umisteni sql skriptu relativne vuci prelozene tride
-        path = path.concat("../../sql/" + filename);
-        path = path.substring(6);
-        System.out.println(path);
         FileReader fr;
         try {
+            path = new File("").getCanonicalPath();
+            path = path.concat("/sql/" + filename);
+            System.out.println(path);
             fr = new FileReader(new File(path));
-        } catch (FileNotFoundException ex) {
+        } catch (IOException ex) {
             Logger.getLogger(ReloadDatabaseModel.class.getName()).log(Level.SEVERE, null, ex);
             return;
         }

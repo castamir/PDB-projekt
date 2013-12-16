@@ -101,7 +101,7 @@ public class PrehledRezervaci extends javax.swing.JPanel {
                 .addContainerGap(21, Short.MAX_VALUE))
         );
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Stav pokoje"));
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Přehled rezervací zvoleného pokoje"));
 
         pokoje_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
