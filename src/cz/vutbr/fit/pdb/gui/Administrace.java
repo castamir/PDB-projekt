@@ -20,6 +20,7 @@ public class Administrace extends javax.swing.JPanel {
      */
     public Administrace() {
         initComponents();
+        reset_database_spinner.setVisible(false);
     }
 
     public void setMainWindow(MainWindow mainWindow) {
@@ -58,6 +59,10 @@ public class Administrace extends javax.swing.JPanel {
         login_button = new javax.swing.JButton();
         logout_button = new javax.swing.JButton();
         reset_database_button = new javax.swing.JButton();
+        reset_database_spinner = new javax.swing.JLabel();
+
+        setMaximumSize(new java.awt.Dimension(923, 665));
+        setPreferredSize(new java.awt.Dimension(923, 665));
 
         username_label.setText("Uživatelské jméno");
 
@@ -102,29 +107,37 @@ public class Administrace extends javax.swing.JPanel {
             }
         });
 
+        reset_database_spinner.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/throbber.gif"))); // NOI18N
+        reset_database_spinner.setText("probíhá reset databáze...");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(53, 53, 53)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(username_label)
-                    .addComponent(password_label)
-                    .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(username_input, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(53, 53, 53)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(password_input, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(identity_label))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(reset_database_button, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(logout_button, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(login_button, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(username_label)
+                            .addComponent(password_label)
+                            .addComponent(jLabel3))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(username_input, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(password_input, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(identity_label))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(reset_database_button, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(logout_button, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(login_button, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(379, 379, 379)
+                        .addComponent(reset_database_spinner, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(382, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -145,7 +158,9 @@ public class Administrace extends javax.swing.JPanel {
                     .addComponent(identity_label))
                 .addGap(18, 18, 18)
                 .addComponent(reset_database_button)
-                .addContainerGap(110, Short.MAX_VALUE))
+                .addGap(115, 115, 115)
+                .addComponent(reset_database_spinner, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(304, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -153,9 +168,12 @@ public class Administrace extends javax.swing.JPanel {
         int dialogResult = JOptionPane.showConfirmDialog(getParent(), "Opravdu si přejete resetovat databázi?", "Varování", JOptionPane.OK_CANCEL_OPTION);
         if (dialogResult == JOptionPane.YES_OPTION) {
             try {
+                reset_database_spinner.setVisible(true);
                 ReloadDatabaseModel.resetDatabase();
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(getParent(), ex.getMessage(), "Reset datab8ze se nezdařil", JOptionPane.ERROR_MESSAGE);
+            } finally {
+                reset_database_spinner.setVisible(false);
             }
         }
         mainWindow.checkPanelAvailability();
@@ -199,6 +217,7 @@ public class Administrace extends javax.swing.JPanel {
     private javax.swing.JPasswordField password_input;
     private javax.swing.JLabel password_label;
     private javax.swing.JButton reset_database_button;
+    private javax.swing.JLabel reset_database_spinner;
     private javax.swing.JTextField username_input;
     private javax.swing.JLabel username_label;
     // End of variables declaration//GEN-END:variables
