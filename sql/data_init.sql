@@ -303,15 +303,15 @@ INSERT INTO rezervace (id,zakaznik,pokoj,od,do)
 VALUES (1,1004,1,TO_DATE('2013-12-20', 'yyyy-mm-dd'),TO_DATE('2013-12-27', 'yyyy-mm-dd'));
 
 INSERT INTO rezervace (id,zakaznik,pokoj,od,do)
-VALUES (1,1005,1,TO_DATE('2013-12-20', 'yyyy-mm-dd'),TO_DATE('2013-12-25', 'yyyy-mm-dd'));
+VALUES (1,1005,2,TO_DATE('2013-12-20', 'yyyy-mm-dd'),TO_DATE('2013-12-25', 'yyyy-mm-dd'));
 
 INSERT INTO rezervace (id,zakaznik,pokoj,od,do)
-VALUES (1,1006,1,TO_DATE('2013-12-24', 'yyyy-mm-dd'),TO_DATE('2013-12-25', 'yyyy-mm-dd'));
+VALUES (1,1006,3,TO_DATE('2013-12-24', 'yyyy-mm-dd'),TO_DATE('2013-12-25', 'yyyy-mm-dd'));
 
 INSERT INTO rezervace (id,zakaznik,pokoj,od,do)
-VALUES (1,1007,1,TO_DATE('2013-12-20', 'yyyy-mm-dd'),TO_DATE('2013-12-24', 'yyyy-mm-dd'));
+VALUES (1,1007,4,TO_DATE('2013-12-20', 'yyyy-mm-dd'),TO_DATE('2013-12-24', 'yyyy-mm-dd'));
 
 INSERT INTO rezervace (id,zakaznik,pokoj,od,do)
-VALUES (1,1008,1,TO_DATE('2013-12-24', 'yyyy-mm-dd'),TO_DATE('2013-12-27', 'yyyy-mm-dd'));
+VALUES (1,1008,5,TO_DATE('2013-12-24', 'yyyy-mm-dd'),TO_DATE('2013-12-27', 'yyyy-mm-dd'));
 
 COMMIT;
