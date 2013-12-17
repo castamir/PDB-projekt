@@ -53,6 +53,10 @@ public class Sluzby extends javax.swing.JPanel {
             Logger.getLogger(Sluzby.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public void panelDidAppear() {
+        hotelCompoundPanel1.update();
+    }
 
     public static String now() {
         Calendar cal = Calendar.getInstance();

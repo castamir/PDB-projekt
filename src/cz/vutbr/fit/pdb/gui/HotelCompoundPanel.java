@@ -10,6 +10,7 @@ import java.awt.Shape;
 import javax.swing.JPanel;
 
 import cz.vutbr.fit.pdb.models.ArealModel;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -50,13 +51,7 @@ public class HotelCompoundPanel extends JPanel implements MouseListener {
         Graphics2D g2D = (Graphics2D) g;
         //super.paint(g2D);
 
-        if (shapes == null) {
-            try {
-                shapes = arealModel.loadShapes();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        loadShapes();
 
 
         for (Map.Entry<String, Shape> entry : shapes.entrySet()) {
@@ -86,6 +81,29 @@ public class HotelCompoundPanel extends JPanel implements MouseListener {
 
     public void setParentPanel(Sluzby panel) {
         parentPanel = panel;
+    }
+    
+    public void update() {
+        reloadShapes();
+    }
+    
+    private void loadShapes() {
+        if (shapes == null) {
+            try {
+                shapes = arealModel.loadShapes();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    private void reloadShapes() {
+        shapes.clear();
+        shapes = null;
+        
+        selectedBuilding = null;
+        
+        loadShapes();
     }
 
 
