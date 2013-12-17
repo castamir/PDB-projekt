@@ -640,6 +640,7 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
             reloadShapes();
             repaint();
         } catch (SQLException e) {
+            e.printStackTrace();
             JOptionPane.showMessageDialog(getParent(), "Při operaci došlo k chybě.");
         }
     }//GEN-LAST:event_unionBtnActionPerformed
