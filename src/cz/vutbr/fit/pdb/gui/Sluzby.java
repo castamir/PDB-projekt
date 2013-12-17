@@ -271,6 +271,7 @@ public class Sluzby extends javax.swing.JPanel {
 
         panel_sluzby = new javax.swing.JPanel();
         zoom_panel = new javax.swing.JPanel();
+        sluzbyScroll_kontejner = new javax.swing.JScrollPane();
         hotelCompoundPanel1 = new cz.vutbr.fit.pdb.gui.HotelCompoundPanel();
         wrapper = new javax.swing.JPanel();
         nazev_sluzby = new javax.swing.JLabel();
@@ -285,26 +286,31 @@ public class Sluzby extends javax.swing.JPanel {
 
         panel_sluzby.setBorder(javax.swing.BorderFactory.createTitledBorder("Vyberte službu"));
 
+        sluzbyScroll_kontejner.setMaximumSize(new java.awt.Dimension(403, 610));
+        sluzbyScroll_kontejner.setPreferredSize(new java.awt.Dimension(403, 610));
+
         javax.swing.GroupLayout hotelCompoundPanel1Layout = new javax.swing.GroupLayout(hotelCompoundPanel1);
         hotelCompoundPanel1.setLayout(hotelCompoundPanel1Layout);
         hotelCompoundPanel1Layout.setHorizontalGroup(
             hotelCompoundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 401, Short.MAX_VALUE)
+            .addGap(0, 413, Short.MAX_VALUE)
         );
         hotelCompoundPanel1Layout.setVerticalGroup(
             hotelCompoundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 608, Short.MAX_VALUE)
         );
 
+        sluzbyScroll_kontejner.setViewportView(hotelCompoundPanel1);
+
         javax.swing.GroupLayout zoom_panelLayout = new javax.swing.GroupLayout(zoom_panel);
         zoom_panel.setLayout(zoom_panelLayout);
         zoom_panelLayout.setHorizontalGroup(
             zoom_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(hotelCompoundPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(sluzbyScroll_kontejner, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 415, Short.MAX_VALUE)
         );
         zoom_panelLayout.setVerticalGroup(
             zoom_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(hotelCompoundPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(sluzbyScroll_kontejner, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout panel_sluzbyLayout = new javax.swing.GroupLayout(panel_sluzby);
@@ -404,7 +410,7 @@ public class Sluzby extends javax.swing.JPanel {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(ulozitZmena_button)
-                .addContainerGap(291, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -415,7 +421,7 @@ public class Sluzby extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(panel_sluzby, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(wrapper, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(wrapper, javax.swing.GroupLayout.PREFERRED_SIZE, 472, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -425,7 +431,7 @@ public class Sluzby extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(wrapper, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panel_sluzby, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -476,6 +482,7 @@ public class Sluzby extends javax.swing.JPanel {
     private javax.swing.JLabel kalendar;
     private javax.swing.JLabel nazev_sluzby;
     private javax.swing.JPanel panel_sluzby;
+    private javax.swing.JScrollPane sluzbyScroll_kontejner;
     private javax.swing.JButton ulozitZmena_button;
     private javax.swing.JPanel wrapper;
     private javax.swing.JPanel zoom_panel;

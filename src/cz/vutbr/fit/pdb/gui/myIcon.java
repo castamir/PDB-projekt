@@ -5,6 +5,7 @@ import java.awt.Color;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 /**
  *
@@ -19,6 +20,7 @@ public class myIcon extends JLabel{
     private String path = null;
     private boolean focusable = true;
     private ImageIcon ic;
+    private Double score = 0.0;
     
     public myIcon(){
         addMouseListener(new java.awt.event.MouseAdapter() {
@@ -26,6 +28,8 @@ public class myIcon extends JLabel{
                 myIconMouseClicked(evt);
             }
         });
+        setVerticalTextPosition(JLabel.BOTTOM);
+        setHorizontalTextPosition(JLabel.CENTER);
         setText("");
         //setSize(60, 60);
     }
@@ -37,6 +41,8 @@ public class myIcon extends JLabel{
             }
         });
         setText("");
+        setVerticalTextPosition(JLabel.BOTTOM);
+        setHorizontalTextPosition(JLabel.CENTER);
         //setIcon(i);
         ic = i;
     }
@@ -44,6 +50,7 @@ public class myIcon extends JLabel{
     public void setNewIcon(ImageIcon i){
         ic = i;
     }
+    
     
     public void myIconMouseClicked(java.awt.event.MouseEvent evt){
         //System.out.println("Klik my Icon");
@@ -88,5 +95,21 @@ public class myIcon extends JLabel{
     
     public ImageIcon getMyIcon(){
         return this.ic;
+    }
+    
+    public void setScore(Double s){
+        this.score = s;
+    }
+    
+    public Double getScore(){
+        return this.score;
+    }
+    
+    public String getScoreAsString(){
+        return String.valueOf(this.score);
+    }
+    
+    public void setActive(boolean a) {
+        this.active = a;
     }
 }

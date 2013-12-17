@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -21,6 +22,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
+import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -28,6 +30,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JOptionPane;
+import oracle.spatial.geometry.JGeometry;
 
 /**
  *
@@ -54,7 +57,7 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
     
     private Polygon newPolygon;
     private Path2D newPath;
-    private Ellipse2D newEllipse;
+    private Ellipse2D newCircle;
    
     
     private final String tmpLineKey = "tmpLinePDB";
@@ -73,6 +76,34 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         this.addKeyListener(this);
         
         arealModel = new ArealModel();
+    }
+    
+    private void saveChanges() {
+
+        try {
+            for (String name : buildingsToDelete) {
+                arealModel.deleteBuildingWithName(name);
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        
+        // ulozeni novych
+        
+        for (Map.Entry<String, Shape> entry : newShapes.entrySet()) {
+
+            try {
+                arealModel.saveShape(entry.getKey(), entry.getValue());
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        
+        reloadShapes();
+        repaint();        
     }
     
     @Override
@@ -128,28 +159,28 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         
         String buildingName = null;
         
-        try {
-            buildingName = arealModel.getBuildingAtPoint(e.getX()-horizontalOffset, e.getY()-verticalOffset);
-        } catch (Exception exc) {
-            exc.printStackTrace();
-        }
+        selectedBuilding = null;
         
-        if (buildingName != null) {
-            selectedBuilding = buildingName;
-        }
-        else {
-            
-            selectedBuilding = null;
-            
-            for (Map.Entry<String, Shape> entry : newShapes.entrySet()) {
+        for (Map.Entry<String, Shape> entry : newShapes.entrySet()) {
                 
-                Shape obj = entry.getValue();
-                
-                if (obj.contains(e.getX()-horizontalOffset, e.getY()-verticalOffset)) {
-                    selectedBuilding = entry.getKey();
-                    break;
-                }
-            } 
+            Shape obj = entry.getValue();
+
+            if (obj.contains(e.getX()-horizontalOffset, e.getY()-verticalOffset)) {
+                selectedBuilding = entry.getKey();
+                break;
+            }
+        } 
+        
+        if (selectedBuilding == null) {
+            try {
+                buildingName = arealModel.getBuildingAtPoint(e.getX()-horizontalOffset, e.getY()-verticalOffset);
+            } catch (Exception exc) {
+                exc.printStackTrace();
+            }
+
+            if (buildingName != null) {
+                selectedBuilding = buildingName;
+            }
         }
         
         repaint();
@@ -172,11 +203,11 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         newShapes.remove(currentPolygonName);
         newShapes.remove(tmpLineKey);
         
-        if (objectTypeEllipse.isSelected()) {
+        if (objectTypeCircle.isSelected()) {
         
-            newEllipse = new Ellipse2D.Float(e.getX()-horizontalOffset, e.getY()-verticalOffset, 0, 0);
+            newCircle = new Ellipse2D.Float(e.getX()-horizontalOffset, e.getY()-verticalOffset, 0, 0);
             
-            newShapes.put(currentPolygonName, newEllipse);
+            newShapes.put(currentPolygonName, newCircle);
         }
         
         else {
@@ -217,15 +248,15 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
     @Override
     public void mouseReleased(MouseEvent e) {
         
-        if (objectTypeEllipse.isSelected()) {
+        if (objectTypeCircle.isSelected() && newCircle != null) {
         
-            if (newEllipse.getWidth() == 0 || newEllipse.getHeight() == 0) {
+            if (newCircle.getWidth() == 0 || newCircle.getHeight() == 0) {
                 newShapes.remove(currentPolygonName);
                 return;
             }
             
             drawing = false;
-            newEllipse = null;
+            newCircle = null;
             
             repaint();
         }
@@ -243,9 +274,7 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         if (drawing == false)
             return;
         
-       System.out.println("motion");
-        
-       if (!objectTypeEllipse.isSelected()) {
+       if (!objectTypeCircle.isSelected()) {
             if (points == null || points.size() == 0)
                 return;
 
@@ -266,18 +295,27 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
     @Override
     public void mouseDragged(MouseEvent e) {
         
-        if (objectTypeEllipse.isSelected()) {
-            int w, h;
+        if (objectTypeCircle.isSelected() && newCircle != null) {
+            int w, h, r;
+            int x, y, x1, x2, y1, y2;
+            
+            x1 = (int)newCircle.getX();
+            y1 = (int)newCircle.getY();
+            x2 = e.getX()-horizontalOffset;
+            y2 = e.getY()-verticalOffset;
            
-            w = (int)((e.getX()-horizontalOffset) - newEllipse.getX());
-            h = (int)((e.getY()-verticalOffset) - newEllipse.getY());
+            w = x2-x1;
+            h = y2-y1;
+            
+            r = (w > h) ? w : h;
+            
+            if (r < 0)
+                return;
 
-            newEllipse.setFrame(newEllipse.getX(), newEllipse.getY(), w, h);
-
-            newShapes.put(currentPolygonName, newEllipse);
+            newCircle.setFrame(x1, y1, r, r);
+            
+            repaint();
         }
-        
-        repaint();
     }
     
     // </editor-fold> 
@@ -389,14 +427,22 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         objectTypeButtonGroup = new javax.swing.ButtonGroup();
         jToolBar1 = new javax.swing.JToolBar();
         addBtn = new javax.swing.JButton();
+        filler6 = new javax.swing.Box.Filler(new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 32767));
         removeBtn = new javax.swing.JButton();
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(30, 0), new java.awt.Dimension(30, 0), new java.awt.Dimension(30, 32767));
         objectTypeLine = new javax.swing.JRadioButton();
         objectTypePolygon = new javax.swing.JRadioButton();
-        objectTypeEllipse = new javax.swing.JRadioButton();
+        objectTypeCircle = new javax.swing.JRadioButton();
         filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 0), new java.awt.Dimension(50, 0), new java.awt.Dimension(50, 32767));
         saveBtn = new javax.swing.JButton();
+        filler5 = new javax.swing.Box.Filler(new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 32767));
         cancelChangesBtn = new javax.swing.JButton();
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 0), new java.awt.Dimension(50, 0), new java.awt.Dimension(50, 32767));
+        areaBtn = new javax.swing.JButton();
+        filler8 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
+        lengthBtn = new javax.swing.JButton();
+        filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
+        distancesBtn = new javax.swing.JButton();
 
         jToolBar1.setRollover(true);
 
@@ -410,6 +456,7 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
             }
         });
         jToolBar1.add(addBtn);
+        jToolBar1.add(filler6);
 
         removeBtn.setText("-");
         removeBtn.setFocusable(false);
@@ -442,21 +489,27 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         objectTypePolygon.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(objectTypePolygon);
 
-        objectTypeButtonGroup.add(objectTypeEllipse);
-        objectTypeEllipse.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
-        objectTypeEllipse.setText("Ellipse");
-        objectTypeEllipse.setFocusable(false);
-        objectTypeEllipse.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        objectTypeEllipse.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        objectTypeEllipse.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(objectTypeEllipse);
+        objectTypeButtonGroup.add(objectTypeCircle);
+        objectTypeCircle.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
+        objectTypeCircle.setText("Circle");
+        objectTypeCircle.setFocusable(false);
+        objectTypeCircle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        objectTypeCircle.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        objectTypeCircle.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(objectTypeCircle);
         jToolBar1.add(filler3);
 
         saveBtn.setText("Uložit");
         saveBtn.setFocusable(false);
         saveBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         saveBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        saveBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveBtnActionPerformed(evt);
+            }
+        });
         jToolBar1.add(saveBtn);
+        jToolBar1.add(filler5);
 
         cancelChangesBtn.setText("Zrušit změny");
         cancelChangesBtn.setFocusable(false);
@@ -468,6 +521,42 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
             }
         });
         jToolBar1.add(cancelChangesBtn);
+        jToolBar1.add(filler1);
+
+        areaBtn.setText("PLOCHA");
+        areaBtn.setFocusable(false);
+        areaBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        areaBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        areaBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                areaBtnActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(areaBtn);
+        jToolBar1.add(filler8);
+
+        lengthBtn.setText("OBVOD");
+        lengthBtn.setFocusable(false);
+        lengthBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        lengthBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        lengthBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lengthBtnActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(lengthBtn);
+        jToolBar1.add(filler7);
+
+        distancesBtn.setText("VZDÁLENOSTI");
+        distancesBtn.setFocusable(false);
+        distancesBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        distancesBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        distancesBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                distancesBtnActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(distancesBtn);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -507,17 +596,6 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
             selectedBuilding = null;
             
             repaint();
-            
-            /*try {
-                arealModel.deleteBuildingWithName(selectedBuilding);
-                
-                reloadShapes();
-                
-                repaint();
-            }
-            catch (SQLException e) {
-                e.printStackTrace();
-            }*/
         }
     }//GEN-LAST:event_removeBtnActionPerformed
 
@@ -526,15 +604,84 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         repaint();
     }//GEN-LAST:event_cancelChangesBtnActionPerformed
 
+    private void saveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBtnActionPerformed
+        saveChanges();
+    }//GEN-LAST:event_saveBtnActionPerformed
+
+    private void areaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_areaBtnActionPerformed
+        if (selectedBuilding == null) {
+            JOptionPane.showMessageDialog(getParent(), "Vyberte nejprve objekt.");
+        }
+        else {
+            
+            try {
+                double area = arealModel.getAreaOfBuilding(selectedBuilding);
+                
+                JOptionPane.showMessageDialog(getParent(), "Plocha objektu '"+selectedBuilding+"' je "+area);
+            }
+            catch (SQLException e) {
+                JOptionPane.showMessageDialog(getParent(), "Při výpočtu došlo k chybě.");
+            }
+        }
+    }//GEN-LAST:event_areaBtnActionPerformed
+
+    private void distancesBtnActionPerformed(java.awt.event.ActionEvent evt) {                                             
+        if (selectedBuilding == null) {
+            JOptionPane.showMessageDialog(getParent(), "Vyberte nejprve objekt.");
+        }
+        else {
+            
+            try {
+                Map<String, Float> distances = arealModel.getDistancesFromBuilding(selectedBuilding);
+                
+                String msg = "Vzdálenost objektu '"+selectedBuilding+"' od objektu:\n";
+                
+                for (Map.Entry<String, Float> entry : distances.entrySet()) {
+                
+                    msg += "'"+entry.getKey()+"'" + " je " + entry.getValue().toString() + "\n";
+                }
+                
+                JOptionPane.showMessageDialog(getParent(), msg);
+            }
+            catch (SQLException e) {
+                JOptionPane.showMessageDialog(getParent(), "Při výpočtu došlo k chybě.");
+            }
+        }
+    }                                                                                 
+
+    private void lengthBtnActionPerformed(java.awt.event.ActionEvent evt) {                                          
+        if (selectedBuilding == null) {
+            JOptionPane.showMessageDialog(getParent(), "Vyberte nejprve objekt.");
+        }
+        else {
+            
+            try {
+                double length = arealModel.getLengthOfBuilding(selectedBuilding);
+                
+                JOptionPane.showMessageDialog(getParent(), "Obvod objektu '"+selectedBuilding+"' je "+length);
+            }
+            catch (SQLException e) {
+                JOptionPane.showMessageDialog(getParent(), "Při výpočtu došlo k chybě.");
+            }
+        }
+    }                                         
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addBtn;
+    private javax.swing.JButton areaBtn;
     private javax.swing.JButton cancelChangesBtn;
+    private javax.swing.JButton distancesBtn;
+    private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler2;
     private javax.swing.Box.Filler filler3;
+    private javax.swing.Box.Filler filler5;
+    private javax.swing.Box.Filler filler6;
+    private javax.swing.Box.Filler filler7;
+    private javax.swing.Box.Filler filler8;
     private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JButton lengthBtn;
     private javax.swing.ButtonGroup objectTypeButtonGroup;
-    private javax.swing.JRadioButton objectTypeEllipse;
+    private javax.swing.JRadioButton objectTypeCircle;
     private javax.swing.JRadioButton objectTypeLine;
     private javax.swing.JRadioButton objectTypePolygon;
     private javax.swing.JButton removeBtn;

@@ -4,11 +4,10 @@ import cz.vutbr.fit.pdb.models.ObrazkyModel;
 import cz.vutbr.fit.pdb.models.ZakaznikModel;
 import cz.vutbr.fit.pdb.models.RezervaceModel;
 import cz.vutbr.fit.pdb.utils.DatePicker;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -29,9 +28,9 @@ import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.filechooser.FileFilter;
 
 /**
  *
@@ -51,9 +50,23 @@ public class Rezervace extends javax.swing.JPanel {
         modelObr = new ObrazkyModel();
         modelZakaznik = new ZakaznikModel();
         modelRezervace = new RezervaceModel();
-        checkBoxlist = new ArrayList<JCheckBox>();
+        checkBoxlist = new ArrayList<>();
         fc = new JFileChooser();
-        iconList = new ArrayList<myIcon>();
+        fc.setFileFilter(new FileFilter() {
+            @Override
+            public boolean accept(File file) {
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                return file.getName().endsWith(".jpg") || file.getName().endsWith(".jpeg")
+                        || file.getName().endsWith(".png");
+            }
+
+            @Override
+            public String getDescription() {
+                //throw new UnsupportedOperationException("jpeg & png"); //To change body of generated methods, choose Tools | Templates.
+                return "Only jpeg & png files";
+            }
+        });
+        iconList = new ArrayList<>();
         layout = new FlowLayout();
         layout.setAlignment(FlowLayout.LEFT);
         defaultSearchDir = "src/icons/";
@@ -106,9 +119,7 @@ public class Rezervace extends javax.swing.JPanel {
         //System.out.println("Update checkboxes od: " + _od+" do: "+_do);
         try {
             rezervovanePokoje = modelRezervace.rezervovanePokojeVObdobi(_od, _do);
-        } catch (SQLException ex) {
-            Logger.getLogger(Rezervace.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ParseException ex) {
+        } catch (SQLException | ParseException ex) {
             Logger.getLogger(Rezervace.class.getName()).log(Level.SEVERE, null, ex);
         }
         boolean allFree = true;
@@ -655,10 +666,15 @@ public class Rezervace extends javax.swing.JPanel {
         }
         //Load z DB!
         /*if(load){
+
          loadImagesFromDb();
          }*/
         if (icon != null && load) {
-            ic.setIcon(icon);
+            //Jen pro zobrazeni, stejne se do DB ulozi cely obrazek
+            Image img = icon.getImage();
+            Image scaledImg = img.getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH);
+            ic.setIcon(new ImageIcon(scaledImg));
+            //ic.setIcon(icon);
             iconList.add(ic);
             vozidla_kontejner.add(iconList.get(iconList.size() - 1));
             vozidla_kontejner.revalidate();
