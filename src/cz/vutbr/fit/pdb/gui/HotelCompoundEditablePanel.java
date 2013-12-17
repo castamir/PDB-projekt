@@ -132,7 +132,7 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
 
         g2D.setPaint(background);
         
-        if ((entry.getValue() instanceof Rectangle2D) || (entry.getValue() instanceof GeneralPath)) {
+        if ((entry.getValue() instanceof Rectangle2D) || (entry.getValue() instanceof GeneralPath) || (entry.getValue() instanceof Ellipse2D)) {
             g2D.fill(entry.getValue());
         }
         
