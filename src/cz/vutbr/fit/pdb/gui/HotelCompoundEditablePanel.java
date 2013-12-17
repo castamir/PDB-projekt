@@ -61,6 +61,10 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         arealModel = new ArealModel();
     }
 
+    private boolean areChangesSaved() {
+        return (newShapes == null || newShapes.isEmpty());
+    }
+    
     private void saveChanges() {
 
 
@@ -615,6 +619,13 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
     }//GEN-LAST:event_areaBtnActionPerformed
 
     private void unionBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unionBtnActionPerformed
+        
+        if (!areChangesSaved()) {
+        
+            JOptionPane.showMessageDialog(getParent(), "Uložte prosím změny a pak operaci opakujte.");
+            
+            return;
+        }
         
         int confirm = JOptionPane.showConfirmDialog(getParent(), "Tato operace vyhledá překrývající se objekty a spojí je do jednoho. Opravdu chcete operaci provést?");
         
