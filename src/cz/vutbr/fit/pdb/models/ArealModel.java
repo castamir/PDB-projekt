@@ -286,4 +286,71 @@ public class ArealModel extends BaseModel {
         
         return result;
     }
+    
+    public Map<String, Float> getNNearestNeighboursFromBuilding(String name, int n) throws SQLException {
+        
+        Map<String, Float> result = new LinkedHashMap<>();
+        
+        OracleDataSource ods = ServiceLocator.getConnection();
+        try (Connection conn = ods.getConnection(); 
+             PreparedStatement stmt = conn.prepareStatement("select nazev, SDO_NN_DISTANCE(10) as distance from areal where SDO_NN(geometrie, (SELECT x.geometrie FROM areal x WHERE x.nazev='{"+name+"}'), '', 10) = 'TRUE' ORDER BY distance")) 
+        {
+            //stmt.setString(1, name);
+            //stmt.setInt(2, n);
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    result.put(rs.getString("nazev"), rs.getFloat("distance"));
+                }
+            }
+        }
+        
+        return result;
+    }
+    
+    
+    public void doUnionOperation() throws SQLException {
+    
+        OracleDataSource ods = ServiceLocator.getConnection();
+        try (Connection conn = ods.getConnection(); 
+             PreparedStatement stmt = conn.prepareStatement("select distinct a1.nazev n1, a2.nazev n2 from areal a1, areal a2 WHERE a1.nazev<>a2.nazev AND SDO_RELATE(a1.geometrie, a2.geometrie,'MASK=OVERLAPBDYINTERSECT+CONTAINS+INSIDE') = 'TRUE' ORDER BY a1.nazev")) 
+        {
+            //stmt.setString(1, name);
+            //stmt.setInt(2, n);
+            
+            boolean shouldEnd = false;
+            
+            while (!shouldEnd) {
+                try (ResultSet rs = stmt.executeQuery()) {
+                    if (rs.next()) {
+                        String n1 = rs.getString("n1");
+                        String n2 = rs.getString("n2");
+
+                        String newName = n1+"+"+n2;
+
+                        PreparedStatement insertStmt = conn.prepareStatement("insert into areal (nazev, geometrie) VALUES (?, SDO_GEOM.SDO_UNION((SELECT geometrie FROM areal WHERE nazev=?),(SELECT geometrie FROM areal WHERE nazev=?),0.005))");
+                        PreparedStatement deleteStmt = conn.prepareStatement("delete from areal where nazev IN (?,?)");
+                        try {
+                            insertStmt.setString(1, newName);
+                            insertStmt.setString(2, n1);
+                            insertStmt.setString(3, n2);
+
+                            deleteStmt.setString(1, n1);
+                            deleteStmt.setString(2, n2);
+
+                            insertStmt.execute();
+                            deleteStmt.execute();
+                        }
+                        finally {
+                            insertStmt.close();
+                            deleteStmt.close();
+                        }
+                    }
+                    else {
+                        shouldEnd = true;
+                    }
+                }
+            }
+        }
+    }
 }

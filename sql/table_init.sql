@@ -111,7 +111,7 @@ START WITH 1 INCREMENT BY 1;
 -- areal
 --==========================================
 CREATE TABLE areal (
-	nazev VARCHAR(32),
+	nazev VARCHAR(255),
 	geometrie SDO_GEOMETRY,
 	CONSTRAINT pk_areal_nazev
 	PRIMARY KEY (nazev)
