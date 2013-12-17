@@ -19,6 +19,10 @@ public class Authenticator {
 
     private IIdentity identity = null;
 
+    /**
+     *
+     * @return
+     */
     public IIdentity getIdentity() {
         if (identity == null) {
             Properties current_properties = ServiceLocator.getProperties();
@@ -27,6 +31,13 @@ public class Authenticator {
         return identity;
     }
 
+    /**
+     *
+     * @param username
+     * @param password
+     * @return
+     * @throws InvalidCredentialsException
+     */
     public IIdentity login(String username, String password) throws InvalidCredentialsException {
 
         identity = new Identity(username, password);
@@ -37,6 +48,9 @@ public class Authenticator {
         return getIdentity();
     }
 
+    /**
+     *
+     */
     public void logout() {
         identity = null;
     }

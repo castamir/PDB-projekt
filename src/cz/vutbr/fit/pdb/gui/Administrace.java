@@ -23,10 +23,18 @@ public class Administrace extends javax.swing.JPanel {
         reset_database_spinner.setVisible(false);
     }
 
+    /**
+     *
+     * @param mainWindow
+     */
     public void setMainWindow(MainWindow mainWindow) {
         this.mainWindow = mainWindow;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getIdentityName() {
         IIdentity identity = ServiceLocator.getAuthenticator().getIdentity();
         if (identity.isLoggendIn()) {
@@ -36,6 +44,9 @@ public class Administrace extends javax.swing.JPanel {
         }
     }
 
+    /**
+     *
+     */
     public void updateIdentityNameLabel() {
         identity_label.setText(getIdentityName());
     }

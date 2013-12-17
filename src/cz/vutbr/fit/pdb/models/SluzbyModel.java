@@ -28,10 +28,20 @@ public class SluzbyModel extends BaseModel {
 
     private ZakaznikModel zakaznikModel;
 
+    /**
+     *
+     */
     public SluzbyModel() {
         zakaznikModel = new ZakaznikModel();
     }
 
+    /**
+     *
+     * @param jmeno
+     * @return
+     * @throws SQLException
+     * @throws Exception
+     */
     public Map<String, Object> getSluzba(String jmeno) throws SQLException, Exception {
 
         Map<String, Object> row = new HashMap<String, Object>();
@@ -56,6 +66,14 @@ public class SluzbyModel extends BaseModel {
         return row;
     }
 
+    /**
+     *
+     * @param sluzba
+     * @param datum
+     * @return
+     * @throws SQLException
+     * @throws Exception
+     */
     public List<Map<String, Object>> getRezervace(String sluzba, String datum) throws SQLException, Exception {
         Map<String, Object> sluzbaInfo = this.getSluzba(sluzba);
 
@@ -97,6 +115,17 @@ public class SluzbyModel extends BaseModel {
         return result;
     }
 
+    /**
+     *
+     * @param zakaznik
+     * @param sluzba
+     * @param datum
+     * @param hodina
+     * @param poznamka
+     * @return
+     * @throws SQLException
+     * @throws Exception
+     */
     public boolean novaRezervace(int zakaznik, String sluzba, String datum, int hodina, String poznamka) throws SQLException, Exception {
         OracleDataSource ods = ServiceLocator.getConnection();
         try (Connection conn = ods.getConnection();
@@ -114,6 +143,18 @@ public class SluzbyModel extends BaseModel {
         }
     }
 
+    /**
+     *
+     * @param id
+     * @param zakaznik
+     * @param sluzba
+     * @param datum
+     * @param hodina
+     * @param poznamka
+     * @return
+     * @throws SQLException
+     * @throws Exception
+     */
     public boolean upravitRezervaci(int id, int zakaznik, String sluzba, String datum, int hodina, String poznamka) throws SQLException, Exception {
         OracleDataSource ods = ServiceLocator.getConnection();
         try (Connection conn = ods.getConnection();
@@ -133,6 +174,12 @@ public class SluzbyModel extends BaseModel {
         }
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     * @throws SQLException
+     */
     public boolean smazatRezervaci(int id) throws SQLException {
         OracleDataSource ods = ServiceLocator.getConnection();
         try (Connection conn = ods.getConnection();

@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -29,11 +30,17 @@ public class PrehledRezervaci extends javax.swing.JPanel {
      * Creates new form PrehledRezervaci
      */
     public PrehledRezervaci() {
+        this.cellRenderer = new DefaultTableCellRenderer();
+        cellRenderer.setToolTipText("Jméno a příjmení zákazníka (interní ID)");
+        
         initComponents();
         myInit();
         initTable();
     }
 
+    /**
+     *
+     */
     public void myInit() {
         modelRez = new RezervaceModel();
         try {
@@ -62,10 +69,16 @@ public class PrehledRezervaci extends javax.swing.JPanel {
         }
     }
 
+    /**
+     *
+     */
     public void initTable() {
         updateTable();
     }
 
+    /**
+     *
+     */
     public void updateTable() {
         model = (DefaultTableModel) pokoje_table.getModel();
         model.getDataVector().removeAllElements();
@@ -188,7 +201,13 @@ public class PrehledRezervaci extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        pokoje_table.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(pokoje_table);
+        pokoje_table.getColumnModel().getColumn(0).setPreferredWidth(300);
+        pokoje_table.getColumnModel().getColumn(0).setCellRenderer(cellRenderer);
+        pokoje_table.getColumnModel().getColumn(1).setPreferredWidth(100);
+        pokoje_table.getColumnModel().getColumn(2).setPreferredWidth(200);
+        pokoje_table.getColumnModel().getColumn(3).setPreferredWidth(200);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -219,7 +238,7 @@ public class PrehledRezervaci extends javax.swing.JPanel {
 
         jLabel10.setText("Od");
 
-        rezervaceOd_field.setText("observingTextField1");
+        rezervaceOd_field.setText(DateTime.now());
         rezervaceOd_field.addCaretListener(new javax.swing.event.CaretListener() {
             public void caretUpdate(javax.swing.event.CaretEvent evt) {
                 rezervaceOd_fieldCaretUpdate(evt);
@@ -227,6 +246,7 @@ public class PrehledRezervaci extends javax.swing.JPanel {
         });
 
         kalendar_od.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Calender Month.png"))); // NOI18N
+        kalendar_od.setToolTipText("Vyberte datum dne, od kterého chcete pokoj rezervovat");
         kalendar_od.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 kalendar_odMouseClicked(evt);
@@ -235,7 +255,7 @@ public class PrehledRezervaci extends javax.swing.JPanel {
 
         jLabel12.setText("Do");
 
-        rezervaceDo_field.setText("observingTextField2");
+        rezervaceDo_field.setText(DateTime.now());
         rezervaceDo_field.addCaretListener(new javax.swing.event.CaretListener() {
             public void caretUpdate(javax.swing.event.CaretEvent evt) {
                 rezervaceDo_fieldCaretUpdate(evt);
@@ -243,6 +263,7 @@ public class PrehledRezervaci extends javax.swing.JPanel {
         });
 
         kalendar_do.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Calender Month.png"))); // NOI18N
+        kalendar_do.setToolTipText("Vyberte datum dne, do kdy chcete pokoj rezervovat");
         kalendar_do.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 kalendar_doMouseClicked(evt);
@@ -257,16 +278,16 @@ public class PrehledRezervaci extends javax.swing.JPanel {
                 .addGap(45, 45, 45)
                 .addComponent(jLabel10)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(rezervaceOd_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(rezervaceOd_field, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(kalendar_od)
-                .addGap(26, 26, 26)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel12)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(rezervaceDo_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(rezervaceDo_field, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(kalendar_do)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(58, 58, 58))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -413,6 +434,7 @@ public class PrehledRezervaci extends javax.swing.JPanel {
     private DefaultTableModel model;
     private RezervaceModel modelRezervace;
     private Map<Integer, Integer> table_data;
+    private DefaultTableCellRenderer cellRenderer;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;

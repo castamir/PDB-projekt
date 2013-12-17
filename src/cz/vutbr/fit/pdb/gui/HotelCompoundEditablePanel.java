@@ -88,6 +88,10 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         repaint();
     }
 
+    /**
+     *
+     * @param g
+     */
     @Override
     public void paint(Graphics g) {
 
@@ -133,6 +137,10 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
     }
 
     // <editor-fold defaultstate="collapsed" desc="Mouse listener methods">   
+    /**
+     *
+     * @param e
+     */
     @Override
     public void mouseClicked(MouseEvent e) {
 
@@ -169,11 +177,19 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         repaint();
     }
 
+    /**
+     *
+     * @param e
+     */
     @Override
     public void mouseEntered(MouseEvent e) {
         requestFocus();
     }
 
+    /**
+     *
+     * @param e
+     */
     @Override
     public void mousePressed(MouseEvent e) {
 
@@ -227,6 +243,10 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         repaint();
     }
 
+    /**
+     *
+     * @param e
+     */
     @Override
     public void mouseReleased(MouseEvent e) {
 
@@ -244,12 +264,20 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         }
     }
 
+    /**
+     *
+     * @param e
+     */
     @Override
     public void mouseExited(MouseEvent e) {
     }
     // </editor-fold> 
 
     // <editor-fold defaultstate="collapsed" desc="Mouse Motion listener methods">   
+    /**
+     *
+     * @param e
+     */
     @Override
     public void mouseMoved(MouseEvent e) {
 
@@ -276,6 +304,10 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         repaint();
     }
 
+    /**
+     *
+     * @param e
+     */
     @Override
     public void mouseDragged(MouseEvent e) {
 
@@ -305,6 +337,10 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
 
     // </editor-fold> 
     // <editor-fold defaultstate="collapsed" desc="Key listener methods">   
+    /**
+     *
+     * @param e
+     */
     @Override
     public void keyPressed(KeyEvent e) {
         System.out.println("pressed");
@@ -327,16 +363,27 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         repaint();
     }
 
+    /**
+     *
+     * @param e
+     */
     @Override
     public void keyTyped(KeyEvent e) {
     }
 
+    /**
+     *
+     * @param e
+     */
     @Override
     public void keyReleased(KeyEvent e) {
     }
 
     // </editor-fold>
     /* dialog pro ziskani nazvu kresleneho objektu */
+    /**
+     *
+     */
     public void newObjectNameDialog() {
 
         String s = (String) JOptionPane.showInputDialog(

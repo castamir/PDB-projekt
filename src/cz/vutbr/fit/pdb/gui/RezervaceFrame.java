@@ -15,6 +15,11 @@ public class RezervaceFrame extends JFrame {
 
     private PrehledRezervaci pz;
 
+    /**
+     *
+     * @param prehledRezervaci
+     * @throws HeadlessException
+     */
     public RezervaceFrame(PrehledRezervaci prehledRezervaci) throws HeadlessException {
         pz = prehledRezervaci;
         addWindowListener(new WindowAdapter() {

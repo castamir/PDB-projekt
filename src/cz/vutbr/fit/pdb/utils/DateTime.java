@@ -18,16 +18,35 @@ public class DateTime {
      */
     public static final String DEFAULT = "yyyy-MM-dd";
 
+    /**
+     *
+     * @return
+     */
     public static String now() {
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         return sdf.format(cal.getTime());
     }
 
+    /**
+     *
+     * @param original
+     * @param from_format
+     * @return
+     * @throws ParseException
+     */
     public static String format(String original, String from_format) throws ParseException {
         return format(original, from_format, DEFAULT);
     }
 
+    /**
+     *
+     * @param original
+     * @param from_format
+     * @param to_format
+     * @return
+     * @throws ParseException
+     */
     public static String format(String original, String from_format, String to_format) throws ParseException {
         SimpleDateFormat sdf_from = new SimpleDateFormat(from_format);
         SimpleDateFormat sdf_to = new SimpleDateFormat(to_format);

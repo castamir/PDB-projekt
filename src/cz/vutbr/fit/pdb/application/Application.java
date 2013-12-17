@@ -10,9 +10,16 @@ import cz.vutbr.fit.pdb.gui.MainWindow;
  */
 public class Application{
 
+    /**
+     *
+     */
     public Application() {
     }
     
+    /**
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         /*JFrame frame = new JFrame();
          Application myApp = new Application();

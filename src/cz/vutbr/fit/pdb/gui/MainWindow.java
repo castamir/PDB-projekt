@@ -32,6 +32,9 @@ public class MainWindow extends javax.swing.JFrame {
         administrace1.setMainWindow(this);
     }
 
+    /**
+     *
+     */
     public void checkPanelAvailability() {
         if (ReloadDatabaseModel.isReloadRequired()) {
             jTabbedPane1.setEnabled(false);

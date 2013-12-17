@@ -46,6 +46,9 @@ public class Rezervace extends javax.swing.JPanel {
         myInit();
     }
 
+    /**
+     *
+     */
     public void myInit() {
         modelObr = new ObrazkyModel();
         modelZakaznik = new ZakaznikModel();
@@ -115,6 +118,11 @@ public class Rezervace extends javax.swing.JPanel {
     /*
      * Pokud je obsazeno, tak uncheck..
      */
+    /**
+     *
+     * @param _od
+     * @param _do
+     */
     public void updateCheckBoxes(String _od, String _do) {
         try {
             rezervovanePokoje = modelRezervace.rezervovanePokojeVObdobi(_od, _do);
@@ -140,6 +148,9 @@ public class Rezervace extends javax.swing.JPanel {
         }
     }
 
+    /**
+     *
+     */
     public void loadImagesFromDb() {
         //System.out.println("load");
         try {
@@ -152,6 +163,11 @@ public class Rezervace extends javax.swing.JPanel {
         }
     }
 
+    /**
+     *
+     * @param i
+     * @return
+     */
     public ImageIcon updateIcon(int i) {
         ImageIcon tmp = null;
         try {
@@ -857,12 +873,20 @@ public class Rezervace extends javax.swing.JPanel {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public static String now() {
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         return sdf.format(cal.getTime());
     }
 
+    /**
+     *
+     * @param p
+     */
     public void setParentFrame(JFrame p) {
         pFrame = p;
     }

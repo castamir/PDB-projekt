@@ -31,6 +31,13 @@ import oracle.ord.im.OrdImage;
  */
 public class ObrazkyModel extends BaseModel {
     
+    /**
+     *
+     * @param path
+     * @param zakaznik
+     * @return
+     * @throws SQLException
+     */
     public Integer insertImage(String path, int zakaznik) throws SQLException {
         
         Integer id;
@@ -99,6 +106,12 @@ public class ObrazkyModel extends BaseModel {
         return id;
     }
     
+    /**
+     *
+     * @param customer
+     * @return
+     * @throws SQLException
+     */
     public Map<Integer, myIcon> getImagesOfCustomer(int customer) throws SQLException {
     
         Map<Integer, myIcon> result = new HashMap<>();
@@ -127,6 +140,12 @@ public class ObrazkyModel extends BaseModel {
         return result;
     }
     
+    /**
+     *
+     * @param id
+     * @return
+     * @throws SQLException
+     */
     public byte[] getImage(Integer id) throws SQLException {
         
 
@@ -157,6 +176,12 @@ public class ObrazkyModel extends BaseModel {
         return result;
     }
     
+    /**
+     *
+     * @param id
+     * @return
+     * @throws SQLException
+     */
     public boolean delete(Integer id) throws SQLException {
         OracleDataSource ods = ServiceLocator.getConnection();
         try (Connection conn = ods.getConnection(); 
@@ -168,6 +193,11 @@ public class ObrazkyModel extends BaseModel {
         }
     }
     
+    /**
+     *
+     * @param id
+     * @throws SQLException
+     */
     public void rotateImage(int id) throws SQLException {
         
         OracleDataSource ods = ServiceLocator.getConnection();
@@ -180,6 +210,16 @@ public class ObrazkyModel extends BaseModel {
         }
     }
     
+    /**
+     *
+     * @param id
+     * @param weightAC
+     * @param weightCH
+     * @param weightPC
+     * @param weightTX
+     * @return
+     * @throws SQLException
+     */
     public Map<Integer, myIcon> getTheMostSimilar(Integer id, double weightAC, double weightCH, double weightPC, double weightTX) throws SQLException {
         Map<Integer, myIcon> result = new HashMap<>();
         OracleDataSource ods = ServiceLocator.getConnection();

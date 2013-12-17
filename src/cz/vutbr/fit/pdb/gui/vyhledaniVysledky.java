@@ -19,6 +19,7 @@ public class vyhledaniVysledky extends javax.swing.JPanel {
 
     /**
      * Creates new form vyhledaniVysledky
+     * @param id 
      */
     public vyhledaniVysledky(Integer id) {
         initComponents();
@@ -26,10 +27,17 @@ public class vyhledaniVysledky extends javax.swing.JPanel {
         myInit();
     }
     
+    /**
+     *
+     * @param id
+     */
     public void setImageId(Integer id) {
         this.imageId = id;
     }
     
+    /**
+     *
+     */
     public void myInit(){
         //label.setHorizontalAlignment(SwingConstants.LEFT);
         //FlowLayout layout = new FlowLayout();

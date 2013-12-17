@@ -23,19 +23,47 @@ import oracle.jdbc.pool.OracleDataSource;
  */
 public class RezervaceModel extends BaseModel {
 
+    /**
+     *
+     * @param datum_od
+     * @param datum_do
+     * @param pokoj
+     * @return
+     * @throws SQLException
+     * @throws ParseException
+     */
     public Map<Integer, Map<String, Object>> getRezervaceVObdobi(String datum_od, String datum_do, Integer pokoj) throws SQLException, ParseException {
         String[] pokoje = {pokoj.toString()};
         return getRezervaceVObdobi(datum_od, datum_do, pokoje);
     }
 
+    /**
+     *
+     * @param datum_od
+     * @param datum_do
+     * @return
+     * @throws SQLException
+     * @throws ParseException
+     */
     public Map<Integer, Map<String, Object>> getRezervaceVObdobi(String datum_od, String datum_do) throws SQLException, ParseException {
         String[] pokoje = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
         return getRezervaceVObdobi(datum_od, datum_do, pokoje);
     }
 
+    /**
+     *
+     * @param datum_od
+     * @param datum_do
+     * @param pokoje
+     * @return
+     * @throws SQLException
+     * @throws ParseException
+     */
     public Map<Integer, Map<String, Object>> getRezervaceVObdobi(String datum_od, String datum_do, String[] pokoje) throws SQLException, ParseException {
 
-        String query = "SELECT * FROM rezervace WHERE ((od BETWEEN ? AND ?) OR (do BETWEEN ? AND ?) OR (? BETWEEN od AND do) OR (? BETWEEN od AND do))";
+        String query = "SELECT r.id as id, r.pokoj as pokoj, r.do as do, r.od as od, z.jmeno || ' ' || z.prijmeni || ' (' || z.id || ')' as zakaznik "
+                + "FROM rezervace r join zakaznik z on (z.id = r.zakaznik) WHERE "
+                + "((od BETWEEN ? AND ?) OR (do BETWEEN ? AND ?) OR (? BETWEEN od AND do) OR (? BETWEEN od AND do))";
 
         if (pokoje.length > 0) {
             StringBuilder builder = new StringBuilder();
@@ -70,7 +98,7 @@ public class RezervaceModel extends BaseModel {
                     Map<String, Object> value = new HashMap<>();
 
                     value.put("id", rs.getInt("id"));
-                    value.put("zakaznik", rs.getInt("zakaznik"));
+                    value.put("zakaznik", rs.getString("zakaznik"));
                     value.put("pokoj", rs.getInt("pokoj"));
                     value.put("od", DateTime.format(rs.getString("od"), "yyyy-MM-dd kk:mm:ss.S"));
                     value.put("do", DateTime.format(rs.getString("do"), "yyyy-MM-dd kk:mm:ss.S"));
@@ -83,6 +111,15 @@ public class RezervaceModel extends BaseModel {
         return result;
     }
 
+    /**
+     *
+     * @param zakaznik
+     * @param pokoje
+     * @param datum_od
+     * @param datum_do
+     * @throws SQLException
+     * @throws ParseException
+     */
     public void vytvoritRezervaci(int zakaznik, List<Integer> pokoje, java.util.Date datum_od, java.util.Date datum_do) throws SQLException, ParseException {
 
         OracleDataSource ods = ServiceLocator.getConnection();
@@ -109,6 +146,12 @@ public class RezervaceModel extends BaseModel {
         }
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     * @throws SQLException
+     */
     public boolean smazatRezervaci(int id) throws SQLException {
         OracleDataSource ods = ServiceLocator.getConnection();
         try (Connection conn = ods.getConnection();
@@ -118,6 +161,14 @@ public class RezervaceModel extends BaseModel {
         }
     }
 
+    /**
+     *
+     * @param datum_od
+     * @param datum_do
+     * @return
+     * @throws SQLException
+     * @throws ParseException
+     */
     public List<Integer> rezervovanePokojeVObdobi(String datum_od, String datum_do) throws SQLException, ParseException {
 
         List<Integer> pokoje = new ArrayList<>();
@@ -148,6 +199,11 @@ public class RezervaceModel extends BaseModel {
         return pokoje;
     }
 
+    /**
+     *
+     * @return
+     * @throws SQLException
+     */
     public Map<Integer, String> getPokoje() throws SQLException {
 
         Map<Integer, String> pokoje = new LinkedHashMap<>();

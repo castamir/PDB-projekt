@@ -18,11 +18,19 @@ public class ServiceLocator {
     private static Properties properties = null;
     private static Authenticator authenticator = null;
 
+    /**
+     *
+     */
     public ServiceLocator() {
         Loader loader = new Loader();
         ServiceLocator.properties = loader.getProperties();
     }
 
+    /**
+     *
+     * @return
+     * @throws SQLException
+     */
     public static OracleDataSource getConnection() throws SQLException {
         OracleDataSource ods = new OracleDataSource();
         IIdentity identity = ServiceLocator.getAuthenticator().getIdentity();
@@ -35,6 +43,10 @@ public class ServiceLocator {
         return ods;
     }
 
+    /**
+     *
+     * @return
+     */
     public static Properties getProperties() {
         if (ServiceLocator.properties == null) {
             Loader loader = new Loader();
@@ -43,6 +55,10 @@ public class ServiceLocator {
         return ServiceLocator.properties;
     }
 
+    /**
+     *
+     * @return
+     */
     public static Authenticator getAuthenticator() {
         if (ServiceLocator.authenticator == null) {
             ServiceLocator.authenticator = new Authenticator();

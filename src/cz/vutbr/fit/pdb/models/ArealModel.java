@@ -31,6 +31,13 @@ import oracle.spatial.geometry.JGeometry;
  */
 public class ArealModel extends BaseModel {
     
+    /**
+     *
+     * @param name
+     * @param shape
+     * @throws SQLException
+     * @throws Exception
+     */
     public void saveShape(String name, Shape shape) throws SQLException, Exception {
                 
         OracleDataSource ods = ServiceLocator.getConnection();
@@ -47,6 +54,12 @@ public class ArealModel extends BaseModel {
         }        
     }
     
+    /**
+     *
+     * @return
+     * @throws SQLException
+     * @throws Exception
+     */
     public Map<String, Shape> loadShapes() throws SQLException, Exception {
     
         Map<String, Shape> shapes = new HashMap<String, Shape>();
@@ -163,6 +176,14 @@ public class ArealModel extends BaseModel {
     }
     
     
+    /**
+     *
+     * @param x
+     * @param y
+     * @return
+     * @throws SQLException
+     * @throws Exception
+     */
     public String getBuildingAtPoint(int x, int y) throws SQLException, Exception {
     
         OracleDataSource ods = ServiceLocator.getConnection();
@@ -175,6 +196,11 @@ public class ArealModel extends BaseModel {
         return null;
     }
     
+    /**
+     *
+     * @param name
+     * @throws SQLException
+     */
     public void deleteBuildingWithName(String name) throws SQLException {
         
         OracleDataSource ods = ServiceLocator.getConnection();
@@ -189,6 +215,12 @@ public class ArealModel extends BaseModel {
     }
     
     
+    /**
+     *
+     * @param name
+     * @return
+     * @throws SQLException
+     */
     public double getAreaOfBuilding(String name) throws SQLException {
         OracleDataSource ods = ServiceLocator.getConnection();
         try (Connection conn = ods.getConnection(); 
@@ -206,6 +238,12 @@ public class ArealModel extends BaseModel {
         }
     }
     
+    /**
+     *
+     * @param name
+     * @return
+     * @throws SQLException
+     */
     public double getLengthOfBuilding(String name) throws SQLException {
         OracleDataSource ods = ServiceLocator.getConnection();
         try (Connection conn = ods.getConnection(); 
@@ -223,6 +261,12 @@ public class ArealModel extends BaseModel {
         }
     }
     
+    /**
+     *
+     * @param name
+     * @return
+     * @throws SQLException
+     */
     public Map<String, Float> getDistancesFromBuilding(String name) throws SQLException {
         
         Map<String, Float> result = new LinkedHashMap<>();

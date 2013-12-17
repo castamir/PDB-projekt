@@ -8,9 +8,7 @@ import java.awt.event.*;
 import java.util.Map;
 import java.awt.Shape;
 import javax.swing.JPanel;
-
 import cz.vutbr.fit.pdb.models.ArealModel;
-import java.util.ArrayList;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.logging.Level;
@@ -32,11 +30,18 @@ public class HotelCompoundPanel extends JPanel implements MouseListener {
     private String selectedBuilding;
     private static final String[] excludeBuildings = {"Hotel", "Bazén", "Bar+Disko", "Služby u bazénu"};
 
+    /**
+     *
+     */
     public HotelCompoundPanel() {
         this.addMouseListener(this);
         arealModel = new ArealModel();
     }
 
+    /**
+     *
+     * @param g
+     */
     @Override
     public void paint(Graphics g) {
         //g.clearRect(0, 0, getWidth(), getHeight());
@@ -78,10 +83,17 @@ public class HotelCompoundPanel extends JPanel implements MouseListener {
         }
     }
 
+    /**
+     *
+     * @param panel
+     */
     public void setParentPanel(Sluzby panel) {
         parentPanel = panel;
     }
     
+    /**
+     *
+     */
     public void update() {
         reloadShapes();
     }
@@ -109,6 +121,10 @@ public class HotelCompoundPanel extends JPanel implements MouseListener {
 
 
     /* MouseListener methods */
+    /**
+     *
+     * @param e
+     */
     @Override
     public void mouseClicked(MouseEvent e) {
         String buildingName = null;
@@ -131,25 +147,35 @@ public class HotelCompoundPanel extends JPanel implements MouseListener {
         }
     }
 
-    // povinna implementace metod
+    /**
+     *
+     * @param e
+     */
     @Override
     public void mouseEntered(MouseEvent e) {
     }
 
+    /**
+     *
+     * @param e
+     */
     @Override
     public void mousePressed(MouseEvent e) {
     }
 
+    /**
+     *
+     * @param e
+     */
     @Override
     public void mouseReleased(MouseEvent e) {
     }
 
+    /**
+     *
+     * @param e
+     */
     @Override
     public void mouseExited(MouseEvent e) {
     }
-    /*
-     public void setZoom(double zoomFactor) {
-     zoom = zoomFactor;
-     repaint();
-     }*/
 }

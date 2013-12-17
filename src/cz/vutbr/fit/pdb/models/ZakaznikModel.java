@@ -23,6 +23,13 @@ import oracle.jdbc.pool.OracleDataSource;
  */
 public class ZakaznikModel extends BaseModel {
     
+    /**
+     *
+     * @param id
+     * @return
+     * @throws SQLException
+     * @throws Exception
+     */
     public Map<String,Object> get(int id) throws SQLException, Exception {
         
         Map<String,Object> row = new HashMap<>();
@@ -50,6 +57,11 @@ public class ZakaznikModel extends BaseModel {
     
     }
     
+    /**
+     *
+     * @return
+     * @throws SQLException
+     */
     public Map<Integer, String> getList() throws SQLException {
         
         Map<Integer,String> listOfCustomers = new LinkedHashMap<>();
@@ -71,6 +83,19 @@ public class ZakaznikModel extends BaseModel {
         return listOfCustomers;
     }
     
+    /**
+     *
+     * @param name
+     * @param surname
+     * @param address
+     * @param city
+     * @param postalCode
+     * @param region
+     * @param phone
+     * @param email
+     * @return
+     * @throws SQLException
+     */
     public int insert(String name, String surname, String address, String city, String postalCode, String region, String phone, String email) throws SQLException {
     
         OracleDataSource ods = ServiceLocator.getConnection();

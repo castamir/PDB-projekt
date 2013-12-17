@@ -53,10 +53,17 @@ public class Sluzby extends javax.swing.JPanel {
         }
     }
     
+    /**
+     *
+     */
     public void panelDidAppear() {
         hotelCompoundPanel1.update();
     }
 
+    /**
+     *
+     * @return
+     */
     public static String now() {
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -146,11 +153,20 @@ public class Sluzby extends javax.swing.JPanel {
         }
     }
 
+    /**
+     *
+     * @param name
+     */
     public void updateTitle(String name) {
         nazev_sluzby.setText(name);
         updateTable(name, date_field.getText());
     }
 
+    /**
+     *
+     * @param serviceName
+     * @param formatedDate
+     */
     public void updateTable(String serviceName, String formatedDate) {
         model = (DefaultTableModel) detail_dne_table.getModel();
         model.getDataVector().removeAllElements();

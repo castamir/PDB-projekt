@@ -38,6 +38,9 @@ public class iconViewer extends javax.swing.JPanel {
         myInit();
     }
     
+    /**
+     *
+     */
     public void updateCombo(){
         customer_databaseIdToComboBoxId = new HashMap<>();
         ZakaznikModel modelZakaznik = new ZakaznikModel();
@@ -130,6 +133,11 @@ public class iconViewer extends javax.swing.JPanel {
     }
     
     
+    /**
+     *
+     * @param i
+     * @param notFound
+     */
     public void setNewIcon(ImageIcon i, boolean notFound){
         if(i != null){
             if(notFound) {
@@ -180,6 +188,10 @@ public class iconViewer extends javax.swing.JPanel {
         }
    }*/
     
+    /**
+     *
+     * @param ae
+     */
     public void comboBoxAction(ActionEvent ae) {
         JComboBox cb = (JComboBox) ae.getSource();
         String comboBoxitem = (String) cb.getSelectedItem();

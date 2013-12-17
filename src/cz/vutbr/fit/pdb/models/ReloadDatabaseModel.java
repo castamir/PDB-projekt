@@ -27,6 +27,10 @@ public class ReloadDatabaseModel {
     private static final String COMMANDS_DELIMITER = ";";
     private static final String COMMANDS_TRIGGER = "; /";
 
+    /**
+     *
+     * @throws SQLException
+     */
     public static void resetDatabase() throws SQLException {
         ReloadDatabaseModel.loadSqlScript("table_init.sql");
         ReloadDatabaseModel.loadSqlScript(ReloadDatabaseModel.COMMANDS_TRIGGER, "triggers_init.sql");
@@ -98,6 +102,10 @@ public class ReloadDatabaseModel {
 
     }
 
+    /**
+     *
+     * @return
+     */
     public static boolean isReloadRequired() {
         int pocet_tabulek = 0;
         try {
@@ -115,6 +123,10 @@ public class ReloadDatabaseModel {
         return pocet_tabulek != 8;
     }
 
+    /**
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         try {
             ReloadDatabaseModel.resetDatabase();

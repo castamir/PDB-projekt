@@ -8,10 +8,17 @@ package cz.vutbr.fit.pdb.application;
  */
 public class InvalidCredentialsException extends Exception {
 
+    /**
+     *
+     */
     public InvalidCredentialsException() {
         super();
     }
 
+    /**
+     *
+     * @param message
+     */
     public InvalidCredentialsException(String message) {
         super(message);
     }
