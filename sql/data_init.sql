@@ -263,6 +263,12 @@ INSERT INTO pokoje (id, nazev) VALUES (10, 'Pokoj 10');
 INSERT INTO zakaznik (jmeno, prijmeni, adresa, mesto, psc, kraj, telefon, email) VALUES ('Mira', 'x', 'x', 'x', 'x', 'x', 'x', 'x');
 INSERT INTO zakaznik (jmeno, prijmeni, adresa, mesto, psc, kraj, telefon, email) VALUES ('Tom', 'x', 'x', 'x', 'x', 'x', 'x', 'x');
 INSERT INTO zakaznik (jmeno, prijmeni, adresa, mesto, psc, kraj, telefon, email) VALUES ('Pavel', 'x', 'x', 'x', 'x', 'x', 'x', 'x');
+INSERT INTO zakaznik (jmeno, prijmeni, adresa, mesto, psc, kraj, telefon, email) VALUES ('pred-Vanoce-po-26', 'x', 'x', 'x', 'x', 'x', 'x', 'x');
+INSERT INTO zakaznik (jmeno, prijmeni, adresa, mesto, psc, kraj, telefon, email) VALUES ('pred-Vanoce-o-svatcich', 'x', 'x', 'x', 'x', 'x', 'x', 'x');
+INSERT INTO zakaznik (jmeno, prijmeni, adresa, mesto, psc, kraj, telefon, email) VALUES ('o-svatcich-o-svatcich', 'x', 'x', 'x', 'x', 'x', 'x', 'x');
+INSERT INTO zakaznik (jmeno, prijmeni, adresa, mesto, psc, kraj, telefon, email) VALUES ('pred-svatky-uprostred', 'x', 'x', 'x', 'x', 'x', 'x', 'x');
+INSERT INTO zakaznik (jmeno, prijmeni, adresa, mesto, psc, kraj, telefon, email) VALUES ('uprostred-po', 'x', 'x', 'x', 'x', 'x', 'x', 'x');
+
 
 COMMIT;
 
@@ -290,5 +296,22 @@ VALUES ('Tenisové kurty', 1001, TO_DATE('2013-12-14', 'yyyy-mm-dd'), 12);
 INSERT INTO sluzby_rezervace (sluzba, zakaznik, den, hodina)
 VALUES ('Tenisové kurty', 1003, TO_DATE('2013-12-13', 'yyyy-mm-dd'), 14);
 
+
+COMMIT;
+
+INSERT INTO rezervace (id,zakaznik,pokoj,od,do)
+VALUES (1,1004,1,TO_DATE('2013-12-20', 'yyyy-mm-dd'),TO_DATE('2013-12-27', 'yyyy-mm-dd'));
+
+INSERT INTO rezervace (id,zakaznik,pokoj,od,do)
+VALUES (1,1005,1,TO_DATE('2013-12-20', 'yyyy-mm-dd'),TO_DATE('2013-12-25', 'yyyy-mm-dd'));
+
+INSERT INTO rezervace (id,zakaznik,pokoj,od,do)
+VALUES (1,1006,1,TO_DATE('2013-12-24', 'yyyy-mm-dd'),TO_DATE('2013-12-25', 'yyyy-mm-dd'));
+
+INSERT INTO rezervace (id,zakaznik,pokoj,od,do)
+VALUES (1,1007,1,TO_DATE('2013-12-20', 'yyyy-mm-dd'),TO_DATE('2013-12-24', 'yyyy-mm-dd'));
+
+INSERT INTO rezervace (id,zakaznik,pokoj,od,do)
+VALUES (1,1008,1,TO_DATE('2013-12-24', 'yyyy-mm-dd'),TO_DATE('2013-12-27', 'yyyy-mm-dd'));
 
 COMMIT;
