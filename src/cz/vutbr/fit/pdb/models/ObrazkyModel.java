@@ -75,7 +75,22 @@ public class ObrazkyModel extends BaseModel {
                     pstmt.executeUpdate();
                 }
                 
-                // TODO - dodelat vlasntosti obrazku
+                try (OraclePreparedStatement pstmt = (OraclePreparedStatement) conn.prepareStatement("UPDATE obrazky o SET o.img_si = SI_StillImage(o.img.getContent()) WHERE id = ?"))
+                {
+                    pstmt.setInt(1, id);
+                    pstmt.executeUpdate();
+                }
+                
+                try (OraclePreparedStatement pstmt = (OraclePreparedStatement) conn.prepareStatement("UPDATE obrazky SET "
+                        + "img_ac = SI_AverageColor(img_si), "
+                        + "img_ch = SI_ColorHistogram(img_si), "
+                        + "img_pc = SI_PositionalColor(img_si), "
+                        + "img_tx = SI_Texture(img_si) "
+                        + "WHERE id = ?"))
+                {
+                    pstmt.setInt(1, id);
+                    pstmt.executeUpdate();
+                }
             }
             
             conn.commit();
@@ -172,7 +187,7 @@ public class ObrazkyModel extends BaseModel {
                OraclePreparedStatement pstmt = (OraclePreparedStatement)conn.prepareStatement("SELECT dst.id, dst.img, SI_ScoreByFtrList("
                 + "new SI_FeatureList(src.img_ac,?,src.img_ch,?,src.img_pc,?,src.img_tx,?),dst.img_si)"
                 + " as similarity FROM obrazky src, obrazky dst "
-                + "WHERE src.id != ? ORDER BY similarity ASC")
+                + "WHERE src.id = ? AND dst.id <> src.id ORDER BY similarity ASC")
               )
         {
             //pstmt.setInt(1, customer);
@@ -181,6 +196,7 @@ public class ObrazkyModel extends BaseModel {
             pstmt.setDouble(3, weightPC);
             pstmt.setDouble(4, weightTX);
             pstmt.setInt(5, id);
+            
             OracleResultSet rs = (OracleResultSet) pstmt.executeQuery();
             
             while (rs.next()) {
