@@ -35,12 +35,11 @@ public class vyhledaniVysledky extends javax.swing.JPanel {
         layout.setAlignment(FlowLayout.LEFT);
         vysl_kontejner.setLayout(layout);
         modelObr = new ObrazkyModel();
-        jButton1.setVisible(false);
         Map<Integer, myIcon> result = null;
         try {
-            System.out.println("PRO ID: "+imageId);
+            //System.out.println("PRO ID: "+imageId);
             result = modelObr.getTheMostSimilar(imageId, 0.5, 0.5, 0.5, 0.1);
-            System.out.println("Nalezeno: "+result.size());
+            //System.out.println("Nalezeno: "+result.size());
         } catch (SQLException ex) {
             Logger.getLogger(vyhledaniVysledky.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -66,33 +65,21 @@ public class vyhledaniVysledky extends javax.swing.JPanel {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         vysl_kontejner = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(612, 600));
 
         jScrollPane1.setMaximumSize(new java.awt.Dimension(600, 600));
         jScrollPane1.setPreferredSize(new java.awt.Dimension(600, 600));
 
-        jButton1.setText("jButton1");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout vysl_kontejnerLayout = new javax.swing.GroupLayout(vysl_kontejner);
         vysl_kontejner.setLayout(vysl_kontejnerLayout);
         vysl_kontejnerLayout.setHorizontalGroup(
             vysl_kontejnerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(vysl_kontejnerLayout.createSequentialGroup()
-                .addComponent(jButton1)
-                .addGap(0, 537, Short.MAX_VALUE))
+            .addGap(0, 610, Short.MAX_VALUE)
         );
         vysl_kontejnerLayout.setVerticalGroup(
             vysl_kontejnerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(vysl_kontejnerLayout.createSequentialGroup()
-                .addComponent(jButton1)
-                .addGap(0, 275, Short.MAX_VALUE))
+            .addGap(0, 298, Short.MAX_VALUE)
         );
 
         jScrollPane1.setViewportView(vysl_kontejner);
@@ -109,23 +96,9 @@ public class vyhledaniVysledky extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        /*ImageIcon i = new ImageIcon(getClass().getResource("/icons/Badge-cancel.png"));
-        myIcon obr = new myIcon(i);
-        obr.setIcon(i);
-        obr.setScore(10.00);
-        //MINIATURY
-        //obr.setPreferredSize(new Dimension(150, 150));
-        obr.setText(obr.getScoreAsString());
-        vysl_kontejner.add(obr);
-        vysl_kontejner.revalidate();*/
-        //Integer usrId = 1005;            
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     private Integer imageId;
     private ObrazkyModel modelObr;
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel vysl_kontejner;
     // End of variables declaration//GEN-END:variables
