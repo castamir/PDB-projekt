@@ -47,8 +47,9 @@ public class vyhledaniVysledky extends javax.swing.JPanel {
         if(result != null){
             for (Map.Entry<Integer, myIcon> entry : result.entrySet()) {
                 myIcon value = entry.getValue();
-                JLabel tm = new JLabel(value.getMyIcon());
-                vysl_kontejner.add(tm);
+                //JLabel tm = new JLabel(value.getMyIcon());
+                value.setIcon(value.getMyIcon());
+                vysl_kontejner.add(value);
             }
         }
     }
