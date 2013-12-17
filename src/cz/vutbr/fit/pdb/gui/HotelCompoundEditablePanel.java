@@ -421,6 +421,8 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         lengthBtn = new javax.swing.JButton();
         filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
         distancesBtn = new javax.swing.JButton();
+        filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
+        unionBtn = new javax.swing.JButton();
 
         jToolBar1.setRollover(true);
 
@@ -535,6 +537,18 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
             }
         });
         jToolBar1.add(distancesBtn);
+        jToolBar1.add(filler4);
+
+        unionBtn.setText("SPOJIT");
+        unionBtn.setFocusable(false);
+        unionBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        unionBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        unionBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                unionBtnActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(unionBtn);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -542,7 +556,7 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 757, Short.MAX_VALUE)
+                .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 967, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -550,7 +564,7 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(508, Short.MAX_VALUE))
+                .addContainerGap(534, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -600,6 +614,25 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         }
     }//GEN-LAST:event_areaBtnActionPerformed
 
+    private void unionBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unionBtnActionPerformed
+        
+        int confirm = JOptionPane.showConfirmDialog(getParent(), "Tato operace vyhledá překrývající se objekty a spojí je do jednoho. Opravdu chcete operaci provést?");
+        
+        if (confirm != JOptionPane.YES_OPTION) {
+            System.out.println("konec");
+            return;
+        }
+        
+        try {
+            arealModel.doUnionOperation();
+            
+            reloadShapes();
+            repaint();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(getParent(), "Při operaci došlo k chybě.");
+        }
+    }//GEN-LAST:event_unionBtnActionPerformed
+
     private void distancesBtnActionPerformed(java.awt.event.ActionEvent evt) {
         if (selectedBuilding == null) {
             JOptionPane.showMessageDialog(getParent(), "Vyberte nejprve objekt.");
@@ -617,6 +650,7 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
 
                 JOptionPane.showMessageDialog(getParent(), msg);
             } catch (SQLException e) {
+                e.printStackTrace();
                 JOptionPane.showMessageDialog(getParent(), "Při výpočtu došlo k chybě.");
             }
         }
@@ -644,6 +678,7 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
     private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler2;
     private javax.swing.Box.Filler filler3;
+    private javax.swing.Box.Filler filler4;
     private javax.swing.Box.Filler filler5;
     private javax.swing.Box.Filler filler6;
     private javax.swing.Box.Filler filler7;
@@ -656,5 +691,6 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
     private javax.swing.JRadioButton objectTypePolygon;
     private javax.swing.JButton removeBtn;
     private javax.swing.JButton saveBtn;
+    private javax.swing.JButton unionBtn;
     // End of variables declaration//GEN-END:variables
 }
