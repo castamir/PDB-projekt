@@ -2,7 +2,6 @@ package cz.vutbr.fit.pdb.models;
 
 import cz.vutbr.fit.pdb.application.ServiceLocator;
 import cz.vutbr.fit.pdb.utils.DateTime;
-import java.sql.Array;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;

@@ -10,7 +10,10 @@ import java.awt.Shape;
 import javax.swing.JPanel;
 
 import cz.vutbr.fit.pdb.models.ArealModel;
+import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -24,12 +27,9 @@ public class HotelCompoundPanel extends JPanel implements MouseListener {
     //private double zoom = 1.0;
     private Sluzby parentPanel;
     private Map<String, Shape> shapes;
-    
     private ArealModel arealModel;
-    
     private String selectedBuilding;
-    
-    private static final String[] excludeBuildings = {"Hotel","Bazén","Bar+Disko","Služby u bazénu"};
+    private static final String[] excludeBuildings = {"Hotel", "Bazén", "Bar+Disko", "Služby u bazénu"};
 
     public HotelCompoundPanel() {
         this.addMouseListener(this);
@@ -53,8 +53,10 @@ public class HotelCompoundPanel extends JPanel implements MouseListener {
         if (shapes == null) {
             try {
                 shapes = arealModel.loadShapes();
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (SQLException ex) {
+                Logger.getLogger(HotelCompoundPanel.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                Logger.getLogger(HotelCompoundPanel.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 
@@ -65,15 +67,14 @@ public class HotelCompoundPanel extends JPanel implements MouseListener {
             Color background = Color.darkGray;
             Color fontColor = Color.lightGray;
             Color borderColor = Color.black;
-            
+
             if (Arrays.asList(excludeBuildings).contains(entry.getKey())) {
                 background = Color.gray;
-            }
-            else if (selectedBuilding != null && selectedBuilding.equals(entry.getKey())) {
+            } else if (selectedBuilding != null && selectedBuilding.equals(entry.getKey())) {
                 background = Color.green;
                 fontColor = Color.darkGray;
             }
-            
+
             g2D.setPaint(background);
             g2D.fill(entry.getValue());
             g2D.setPaint(borderColor);
@@ -93,20 +94,21 @@ public class HotelCompoundPanel extends JPanel implements MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
         String buildingName = null;
-        
         try {
             buildingName = arealModel.getBuildingAtPoint(e.getX(), e.getY());
-        } catch (Exception exc) {
-            exc.printStackTrace();
+        } catch (SQLException ex) {
+            Logger.getLogger(HotelCompoundPanel.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(HotelCompoundPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         if (buildingName != null) {
-            
+
             if (!Arrays.asList(excludeBuildings).contains(buildingName)) {
-                parentPanel.updateTitle(buildingName);    
+                parentPanel.updateTitle(buildingName);
                 selectedBuilding = buildingName;
             }
-            
+
             this.repaint();
         }
     }

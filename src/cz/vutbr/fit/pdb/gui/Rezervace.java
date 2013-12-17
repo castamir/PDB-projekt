@@ -116,7 +116,6 @@ public class Rezervace extends javax.swing.JPanel {
      * Pokud je obsazeno, tak uncheck..
      */
     public void updateCheckBoxes(String _od, String _do) {
-        //System.out.println("Update checkboxes od: " + _od+" do: "+_do);
         try {
             rezervovanePokoje = modelRezervace.rezervovanePokojeVObdobi(_od, _do);
         } catch (SQLException | ParseException ex) {
@@ -124,7 +123,6 @@ public class Rezervace extends javax.swing.JPanel {
         }
         boolean allFree = true;
         for (Integer val : rezervovanePokoje) {
-            //System.out.println(val);
             for (int i = 0; i < checkBoxlist.size(); i++) {
                 JCheckBox tmp = checkBoxlist.get(i);
                 if (tmp.getText().equals(pokoje.get(val))) {
@@ -135,7 +133,7 @@ public class Rezervace extends javax.swing.JPanel {
             }
         }
         if (allFree) {
-            allFree = true;
+            //allFree = true;
             for (int i = 0; i < checkBoxlist.size(); i++) {
                 checkBoxlist.get(i).setEnabled(true);
             }
@@ -714,7 +712,7 @@ public class Rezervace extends javax.swing.JPanel {
     private void vlozitRezervaci_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vlozitRezervaci_buttonActionPerformed
         // TODO add your handling code here:
 
-        int zakaznik_id = -1;
+        int zakaznik_id;
         boolean again = false;
         String jmeno = jmeno_field.getText();
         String prijmeni = prijmeni_field.getText();
@@ -789,17 +787,7 @@ public class Rezervace extends javax.swing.JPanel {
         }
         if (parkovaciMisto_checkbox.isSelected()) {
             pocetParkovacichMist = (int) pocetParkovacihMist_spinner.getValue();
-            //System.out.println(pocetParkovacichMist);
         }
-        /*
-         System.out.println("Souhrne info o rezervaci: ");
-         System.out.println("Jmeno: " + jmeno + " Prijmeni: " + prijmeni);
-         System.out.println("Mesto: "+mesto+" PSC: "+psc + " kraj: " +kraj);
-         System.out.println("Telefon: "+telefon+" email: "+email);
-         System.out.println("Parkovacich mist: "+pocetParkovacichMist);
-         System.out.println("Od: "+rezervaceOd);
-         System.out.println("Do: "+rezervaceDo);*/
-        //System.out.println(rezervovanePokoje.toArray());
         if (!again) {
             getToolkit().getSystemEventQueue().postEvent(new WindowEvent(pFrame, WindowEvent.WINDOW_CLOSING));
         }
@@ -949,13 +937,4 @@ public class Rezervace extends javax.swing.JPanel {
     private javax.swing.JPanel vozidla_kontejner;
     private javax.swing.JButton zpet;
     // End of variables declaration//GEN-END:variables
-//        String value = rezervaceOd_field.getText();
-//
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-//        try {
-//            Date date = sdf.parse(value);
-//        } catch (ParseException ex) {
-//            JOptionPane.showMessageDialog(getParent(), "Chybné nebo žádné datum. Očekávaný formát datumu je yyyy-MM-dd.", "Chybné nebo žádné datum", JOptionPane.ERROR_MESSAGE);
-//            Logger.getLogger(Rezervace.class.getName()).log(Level.SEVERE, null, ex);
-//        }
 }

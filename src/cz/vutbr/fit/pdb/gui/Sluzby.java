@@ -2,7 +2,6 @@ package cz.vutbr.fit.pdb.gui;
 
 import cz.vutbr.fit.pdb.models.SluzbyModel;
 import cz.vutbr.fit.pdb.models.ZakaznikModel;
-
 import cz.vutbr.fit.pdb.utils.DatePicker;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -60,6 +59,11 @@ public class Sluzby extends javax.swing.JPanel {
         return sdf.format(cal.getTime());
     }
 
+    /**
+     * TODO smazat?
+     *
+     * @param evt
+     */
     private void comboBoxAction(ActionEvent evt) {
         JComboBox cb = (JComboBox) evt.getSource();
         item = (String) cb.getSelectedItem();
@@ -95,10 +99,6 @@ public class Sluzby extends javax.swing.JPanel {
         renderer.setToolTipText("Vyberte jméno");
         tc.setCellRenderer(renderer);
         refTableData = new ArrayList<>();
-
-        //hodina.toString();
-        //model.addRow(new Object[]{hodina.toString(),"Lala",(String)comboBox.getItemAt(2)});
-
     }
 
     private void initComboBoxItems() {
@@ -198,13 +198,10 @@ public class Sluzby extends javax.swing.JPanel {
             List<Object> row = v.get(i);
             Map<Object, Object[]> mapItem = refTableData.get(i);
             Object id = mapItem.keySet().iterator().next(); // VODO magic, do not touch !!!
-            System.out.print("id");
-            System.out.println(id);
             Object[] refRow = mapItem.get(id);
             try {
                 if (id == null && !areRowsEqual(row, refRow) && row.get(2) != null && !row.get(2).toString().equals("")) {
                     // insert
-                    System.out.println("insert");
                     modified = true;
                     Integer zakID = parseCustomerIdFromString(row.get(2).toString());
                     String sluzba = nazev_sluzby.getText();
@@ -215,12 +212,10 @@ public class Sluzby extends javax.swing.JPanel {
                 } else if (id != null) {
                     if (row.get(2).toString().equals("")) {
                         // delete
-                        System.out.println("delete");
                         modified = true;
                         modelSluzby.smazatRezervaci(Integer.parseInt(id.toString()));
                     } else if (!areRowsEqual(row, refRow)) {
                         // update
-                        System.out.println("update");
                         modified = true;
                         Integer zakID = parseCustomerIdFromString(row.get(2).toString());
                         String sluzba = nazev_sluzby.getText();
@@ -252,9 +247,6 @@ public class Sluzby extends javax.swing.JPanel {
     private boolean areRowsEqual(List<Object> row, Object[] refRow) {
         for (int i = 0; i < row.size(); i++) {
             if (row.get(i) != refRow[i]) {
-                System.out.println("refRow[i]");
-                System.out.println(row.get(i));
-                System.out.println(refRow[i]);
                 return false;
             }
         }
@@ -344,11 +336,6 @@ public class Sluzby extends javax.swing.JPanel {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
-            }
-        });
-        detail_dne_table.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                detail_dne_tableMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(detail_dne_table);
@@ -444,12 +431,6 @@ public class Sluzby extends javax.swing.JPanel {
         dp.setSelectedDate(selectedDate);
         dp.start(date_field);
     }//GEN-LAST:event_kalendarMouseClicked
-
-    private void detail_dne_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_detail_dne_tableMouseClicked
-        //int row = detail_dne_table.rowAtPoint(evt.getPoint());
-        //int col = detail_dne_table.columnAtPoint(evt.getPoint());
-        //System.out.println("row: "+row+" col: "+col);
-    }//GEN-LAST:event_detail_dne_tableMouseClicked
 
     private void ulozitZmena_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ulozitZmena_buttonActionPerformed
         if (checkChangesInTable()) {

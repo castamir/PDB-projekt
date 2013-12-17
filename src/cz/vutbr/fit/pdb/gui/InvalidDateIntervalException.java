@@ -1,4 +1,3 @@
-
 package cz.vutbr.fit.pdb.gui;
 
 /**
@@ -15,8 +14,8 @@ public class InvalidDateIntervalException extends Exception {
     public String getMessage() {
         return this.message;
     }
+
     public InvalidDateIntervalException(String message, int i) {
         this.message = message;
     }
-
 }

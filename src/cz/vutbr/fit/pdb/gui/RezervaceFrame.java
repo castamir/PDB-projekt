@@ -20,7 +20,6 @@ public class RezervaceFrame extends JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                System.out.println("zaviram okno");
                 pz.updateTable();
             }
         });

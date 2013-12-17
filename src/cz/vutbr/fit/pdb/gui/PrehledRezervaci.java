@@ -7,18 +7,13 @@ import cz.vutbr.fit.pdb.utils.ObservingTextField;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -390,7 +385,6 @@ public class PrehledRezervaci extends javax.swing.JPanel {
         model = (DefaultTableModel) pokoje_table.getModel();
         int rows[] = pokoje_table.getSelectedRows();
         for (int i : rows) {
-            System.out.println("row: " + i + ", id: " + table_data.get(i));
             try {
                 modelRez.smazatRezervaci(table_data.get(i));
             } catch (SQLException ex) {
