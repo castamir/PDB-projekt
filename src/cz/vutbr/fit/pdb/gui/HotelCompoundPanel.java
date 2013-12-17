@@ -98,8 +98,10 @@ public class HotelCompoundPanel extends JPanel implements MouseListener {
     }
     
     private void reloadShapes() {
-        shapes.clear();
-        shapes = null;
+        if (shapes != null) {
+            shapes.clear();
+            shapes = null;
+        }
         
         selectedBuilding = null;
         
