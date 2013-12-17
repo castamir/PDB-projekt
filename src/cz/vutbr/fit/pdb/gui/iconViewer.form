@@ -27,9 +27,11 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="podobne_button" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jButton2" min="-2" max="-2" attributes="0"/>
+              <Component id="zpet_button" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jButton3" min="-2" max="-2" attributes="0"/>
+              <Component id="dalsi_button" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="aktIndex_label" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
           <Component id="obrazek_kontejner_parent" alignment="0" max="32767" attributes="0"/>
@@ -44,8 +46,9 @@
                   <Component id="user_comboBox" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="refreshUserList_button" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="podobne_button" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jButton2" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jButton3" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="zpet_button" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="dalsi_button" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="aktIndex_label" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="obrazek_kontejner_parent" max="32767" attributes="0"/>
@@ -145,21 +148,26 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="podobne_buttonActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton2">
+    <Component class="javax.swing.JButton" name="zpet_button">
       <Properties>
         <Property name="text" type="java.lang.String" value="&lt;"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="zpet_buttonActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton3">
+    <Component class="javax.swing.JButton" name="dalsi_button">
       <Properties>
         <Property name="text" type="java.lang.String" value="&gt;"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton3ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="dalsi_buttonActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="aktIndex_label">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Index: 0/0"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>
