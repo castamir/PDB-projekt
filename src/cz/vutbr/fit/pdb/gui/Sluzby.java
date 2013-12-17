@@ -289,11 +289,11 @@ public class Sluzby extends javax.swing.JPanel {
         hotelCompoundPanel1.setLayout(hotelCompoundPanel1Layout);
         hotelCompoundPanel1Layout.setHorizontalGroup(
             hotelCompoundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 413, Short.MAX_VALUE)
+            .addGap(0, 1000, Short.MAX_VALUE)
         );
         hotelCompoundPanel1Layout.setVerticalGroup(
             hotelCompoundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 608, Short.MAX_VALUE)
+            .addGap(0, 1000, Short.MAX_VALUE)
         );
 
         sluzbyScroll_kontejner.setViewportView(hotelCompoundPanel1);

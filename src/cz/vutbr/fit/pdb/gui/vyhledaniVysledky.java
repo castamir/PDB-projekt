@@ -12,8 +12,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 /**
- *
- * @author Doma
+ * Zobrazi vysledky vyhledani
+ * @author Paulík Miroslav
+ * @author Mikulica Tomáš
+ * @author Gajdoš Pavel
  */
 public class vyhledaniVysledky extends javax.swing.JPanel {
 
