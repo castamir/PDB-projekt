@@ -139,6 +139,7 @@ public class RezervaceModel extends BaseModel {
                 stmt.setDate(4, d_do);
                 stmt.addBatch();
             }
+            System.out.println(stmt);
 
             int[] result = stmt.executeBatch();
 
