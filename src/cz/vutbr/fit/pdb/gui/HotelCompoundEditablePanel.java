@@ -13,9 +13,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -129,7 +131,13 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         }
 
         g2D.setPaint(background);
-        g2D.fill(entry.getValue());
+        
+        if ((entry.getValue() instanceof Rectangle2D) || (entry.getValue() instanceof GeneralPath)) {
+            g2D.fill(entry.getValue());
+        }
+        
+        System.out.println(entry.getKey()+" je trida: "+ entry.getValue().getClass().toString());
+        
         g2D.setPaint(borderColor);
         g2D.draw(entry.getValue());
         g2D.setColor(fontColor);
@@ -203,20 +211,20 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
 
         System.out.println("pressed");
 
-
-        newShapes.remove(currentPolygonName);
-        newShapes.remove(tmpLineKey);
-
         if (objectTypeCircle.isSelected()) {
 
             newCircle = new Ellipse2D.Float(e.getX() - horizontalOffset, e.getY() - verticalOffset, 0, 0);
 
             newShapes.put(currentPolygonName, newCircle);
-        } else {
+        } else if (objectTypePolygon.isSelected()) {
+            
+            newShapes.remove(tmpLineKey);
+            newShapes.remove(currentPolygonName);
+              
             if (points == null) {
                 points = new ArrayList<>();
             }
-
+            
             points.add(new Point2D.Float(e.getX() - horizontalOffset, e.getY() - verticalOffset));
             // polygon
 
@@ -231,16 +239,20 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
             }
 
             newPolygon = new Polygon(xpoints, ypoints, npoints);
-
-            if (objectTypeLine.isSelected()) {
-                newPath = new Path2D.Float(newPolygon);
-            }
-
-            if (objectTypeLine.isSelected()) {
+            
+            newShapes.put(currentPolygonName, newPolygon);
+        }
+        else if (objectTypeLine.isSelected()) {
+            newShapes.remove(tmpLineKey);
+            
+            if (newPath == null) {
+                newPath = new Path2D.Float();
+                newPath.moveTo(e.getX() - horizontalOffset, e.getY() - verticalOffset);
+                
                 newShapes.put(currentPolygonName, newPath);
-                System.out.println("line");
-            } else {
-                newShapes.put(currentPolygonName, newPolygon);
+            }
+            else {
+                newPath.lineTo(e.getX() - horizontalOffset, e.getY() - verticalOffset);
             }
         }
 
@@ -289,8 +301,8 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
             return;
         }
 
-        if (!objectTypeCircle.isSelected()) {
-            if (points == null || points.size() == 0) {
+        if (objectTypePolygon.isSelected()) {
+            if (points == null || points.isEmpty()) {
                 return;
             }
 
@@ -298,11 +310,23 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
             Point2D point2 = new Point2D.Float((float) e.getX() - horizontalOffset, (float) e.getY() - verticalOffset);
 
             currentLine = new Line2D.Float(point, point2);
-            if (newShapes.get(tmpLineKey) != null) {
-                newShapes.remove(tmpLineKey);
-            }
 
+            newShapes.remove(tmpLineKey);
             newShapes.put(tmpLineKey, currentLine);
+        }
+        else if (objectTypeLine.isSelected()) {
+            
+            if (newPath == null) {
+                return;
+            }
+            
+            Point2D point = newPath.getCurrentPoint();
+            Point2D point2 = new Point2D.Float((float) e.getX() - horizontalOffset, (float) e.getY() - verticalOffset);
+
+            currentLine = new Line2D.Float(point, point2);
+
+            newShapes.remove(tmpLineKey);
+            newShapes.put(tmpLineKey, currentLine); 
         }
 
         repaint();
@@ -340,6 +364,7 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
     }
 
     // </editor-fold> 
+    
     // <editor-fold defaultstate="collapsed" desc="Key listener methods">   
     /**
      *
@@ -350,17 +375,29 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         System.out.println("pressed");
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             System.out.println("esc");
-            if (points.size() > 0) {
+            
+            if (!points.isEmpty()) {
                 points.removeAll(points);
-                newShapes.remove(currentPolygonName);
-                newShapes.remove(tmpLineKey);
             }
+            
+            newShapes.remove(currentPolygonName);
+            newShapes.remove(tmpLineKey);
+            
+            newPath = null;
+            newPolygon = null;
+            newCircle = null;
 
             drawing = false;
         } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 
-            points.removeAll(points);
+            if (points != null) {
+                points.removeAll(points);
+            }
+            
             newShapes.remove(tmpLineKey);
+            newPath = null;
+            newPolygon = null;
+            
             drawing = false;
         }
 
@@ -648,6 +685,7 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
 
     private void saveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBtnActionPerformed
         saveChanges();
+        //repaint();
     }//GEN-LAST:event_saveBtnActionPerformed
 
     private void areaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_areaBtnActionPerformed

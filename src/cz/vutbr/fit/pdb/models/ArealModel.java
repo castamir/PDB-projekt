@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Path2D;
 import java.awt.geom.PathIterator;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -82,31 +83,66 @@ public class ArealModel extends BaseModel {
     
     private Shape jGeometry2Shape(JGeometry jGeometry) {
         Shape shape;
+        
+        int[] elemInfo = jGeometry.getElemInfo();
+        
+        boolean isLine = false;
+        
+        if (elemInfo.length >= 3) {
+            if (elemInfo[1] == 2) { // if etype = 2
+                isLine = true;
+                System.out.println("mela by byt line");
+            }
+        }
+        
         switch (jGeometry.getType()) {
             case JGeometry.GTYPE_POLYGON:
                 shape = jGeometry.createShape();
                 break;
+            case JGeometry.GTYPE_CURVE:
+            case JGeometry.GTYPE_MULTICURVE:
+                shape = new Path2D.Float(jGeometry.createShape());
+                break;
             default:
+                System.out.println("TYPE:"+jGeometry.getType());
                 return null; // TODO: throw exception
         }
+        
+        if (isLine) {
+           // shape = new Path2D.Float(shape);
+        }
+        
         return shape;
     }
     
     private JGeometry shape2JGeometry(Shape shape) {
        JGeometry jgeom;
        
-       int polygon = 1;
-        int circle = 4;
-
+        int polygon = 1;
+        int circle = 2;
+        int line = 3;
+        
+        int etype = 1003;
+        int gtype = 2003;
         int shapeType = 0;
+        int shapeTypeToDB = 0;
 
         if (shape instanceof Ellipse2D) {
             System.out.println("elipsa");
             shapeType = circle;
+            shapeTypeToDB = 4;
         }
         else if (shape instanceof Polygon) {
             System.out.println("polygon");
             shapeType = polygon;
+            shapeTypeToDB = 1;
+        }
+        else if (shape instanceof Path2D) {
+            System.out.println("line");
+            shapeType = line;
+            shapeTypeToDB = 1;
+            etype = 2;
+            gtype = 2002; // line, multiline je 2006 ??
         }
         else {
             System.out.println("other");
@@ -130,7 +166,7 @@ public class ArealModel extends BaseModel {
             int type = pi.currentSegment(coords);
             System.out.println(type+":"+coords[0]+","+coords[1]+","+coords[2]+","+coords[3]+","+coords[4]+","+coords[5]);
 
-            if (shapeType == polygon) {
+            if (shapeType == polygon || shapeType == line) {
                 
                 if (type != PathIterator.SEG_LINETO && type != PathIterator.SEG_MOVETO) {
                     continue;
@@ -170,7 +206,7 @@ public class ArealModel extends BaseModel {
             //System.out.println(d);
         }
         
-        jgeom = new JGeometry(2003, 0, new int[]{1, 1003, shapeType}, ordinates);
+        jgeom = new JGeometry(gtype, 0, new int[]{1, etype, shapeTypeToDB}, ordinates);
         
         return jgeom;
     }
