@@ -3,6 +3,7 @@ package cz.vutbr.fit.pdb.gui;
 import cz.vutbr.fit.pdb.models.RezervaceModel;
 import cz.vutbr.fit.pdb.utils.DatePicker;
 import cz.vutbr.fit.pdb.utils.DateTime;
+import cz.vutbr.fit.pdb.utils.ObservingTextField;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.sql.SQLException;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -17,6 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -26,8 +29,6 @@ import javax.swing.table.DefaultTableModel;
 public class PrehledRezervaci extends javax.swing.JPanel {
 
     private static final String VSECHNY_PKOKOJE = "Všechny pokoje";
-    private RezervaceModel modelRezervace;
-    private Map<Integer, Map<String, Object>> table_data;
 
     /**
      * Creates new form PrehledRezervaci
@@ -75,19 +76,29 @@ public class PrehledRezervaci extends javax.swing.JPanel {
         model.getDataVector().removeAllElements();
 
         try {
-            table_data = modelRezervace.getRezervaceVObdobi(rezervaceOd_field.getText(), rezervaceDo_field.getText());
+            table_data = new LinkedHashMap<>();
+            String cislo_pokoje = (String) pokoje_combobox.getSelectedItem();
+            Map<Integer, Map<String, Object>> data;
+            if (cislo_pokoje.equals(VSECHNY_PKOKOJE)) {
+                data = modelRezervace.getRezervaceVObdobi(rezervaceOd_field.getText(), rezervaceDo_field.getText());
+            } else {
+                data = modelRezervace.getRezervaceVObdobi(rezervaceOd_field.getText(), rezervaceDo_field.getText(), Integer.parseInt(cislo_pokoje.substring(6)));
+            }
             //Ziskani modelu tabulky
-            for (Map.Entry<Integer, Map<String, Object>> entry : table_data.entrySet()) {
+            int index = 0;
+            for (Map.Entry<Integer, Map<String, Object>> entry : data.entrySet()) {
                 Map<String, Object> value = entry.getValue();
 
                 String zakaznik = value.get("zakaznik").toString();
-                String pokoj = value.get("pokoj").toString();
+                String pokoj = "Pokoj " + value.get("pokoj").toString();
                 String rezervovano_od = value.get("od").toString();
                 String rezervovano_do = value.get("do").toString();
 
                 Object[] row = new Object[]{zakaznik, pokoj, rezervovano_od, rezervovano_do};
                 model.addRow(row);
 
+                table_data.put(index, entry.getKey());
+                index++;
             }
 
         } catch (SQLException ex) {
@@ -164,14 +175,14 @@ public class PrehledRezervaci extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Host", "Stav pokoje", "Od", "Do"
+                "Host", "Pokoj", "Od", "Do"
             }
         ) {
             Class[] types = new Class [] {
                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, true
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -201,6 +212,11 @@ public class PrehledRezervaci extends javax.swing.JPanel {
         );
 
         jButton1.setText("Zrušit rezervaci");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Vyúčtování pobytu");
 
@@ -209,6 +225,11 @@ public class PrehledRezervaci extends javax.swing.JPanel {
         jLabel10.setText("Od");
 
         rezervaceOd_field.setText("observingTextField1");
+        rezervaceOd_field.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                rezervaceOd_fieldCaretUpdate(evt);
+            }
+        });
 
         kalendar_od.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Calender Month.png"))); // NOI18N
         kalendar_od.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -220,6 +241,11 @@ public class PrehledRezervaci extends javax.swing.JPanel {
         jLabel12.setText("Do");
 
         rezervaceDo_field.setText("observingTextField2");
+        rezervaceDo_field.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                rezervaceDo_fieldCaretUpdate(evt);
+            }
+        });
 
         kalendar_do.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Calender Month.png"))); // NOI18N
         kalendar_do.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -233,7 +259,7 @@ public class PrehledRezervaci extends javax.swing.JPanel {
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(45, 45, 45)
                 .addComponent(jLabel10)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(rezervaceOd_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -245,11 +271,12 @@ public class PrehledRezervaci extends javax.swing.JPanel {
                 .addComponent(rezervaceDo_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(kalendar_do)
-                .addGap(60, 60, 60))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel10)
@@ -259,7 +286,7 @@ public class PrehledRezervaci extends javax.swing.JPanel {
                         .addComponent(jLabel12)
                         .addComponent(rezervaceDo_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(kalendar_do)))
-                .addContainerGap(70, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout prehledRezervaci_kontejnerLayout = new javax.swing.GroupLayout(prehledRezervaci_kontejner);
@@ -297,8 +324,8 @@ public class PrehledRezervaci extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton2)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(246, 246, 246))
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(294, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -334,7 +361,7 @@ public class PrehledRezervaci extends javax.swing.JPanel {
     private void pokoje_comboboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pokoje_comboboxActionPerformed
         JComboBox cb = (JComboBox) evt.getSource();
         String selectedValue = cb.getSelectedItem().toString();
-        System.out.println(selectedValue);
+        updateTable();
     }//GEN-LAST:event_pokoje_comboboxActionPerformed
 
     private void kalendar_odMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_kalendar_odMouseClicked
@@ -358,9 +385,40 @@ public class PrehledRezervaci extends javax.swing.JPanel {
         dp.start(rezervaceDo_field);
         //updateCheckBoxes(rezervaceOd_field.getText(),rezervaceDo_field.getText());
     }//GEN-LAST:event_kalendar_doMouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        model = (DefaultTableModel) pokoje_table.getModel();
+        int rows[] = pokoje_table.getSelectedRows();
+        for (int i : rows) {
+            System.out.println("row: " + i + ", id: " + table_data.get(i));
+            try {
+                modelRez.smazatRezervaci(table_data.get(i));
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(getParent(), "Nepodařilo se smazat rezervaci.", "Chyba při práci s databází", JOptionPane.ERROR_MESSAGE);
+                Logger.getLogger(PrehledRezervaci.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        updateTable();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void rezervaceDo_fieldCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_rezervaceDo_fieldCaretUpdate
+        ObservingTextField di = (ObservingTextField) evt.getSource();
+        if (!"".equals(di.getText())) {
+            updateTable();
+        }
+    }//GEN-LAST:event_rezervaceDo_fieldCaretUpdate
+
+    private void rezervaceOd_fieldCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_rezervaceOd_fieldCaretUpdate
+        ObservingTextField di = (ObservingTextField) evt.getSource();
+        if (!"".equals(di.getText())) {
+            updateTable();
+        }
+    }//GEN-LAST:event_rezervaceOd_fieldCaretUpdate
     private RezervaceModel modelRez;
     private Map<Integer, String> vsechnyPokoje;
     private DefaultTableModel model;
+    private RezervaceModel modelRezervace;
+    private Map<Integer, Integer> table_data;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;

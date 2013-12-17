@@ -110,6 +110,15 @@ public class RezervaceModel extends BaseModel {
         }
     }
 
+    public boolean smazatRezervaci(int id) throws SQLException {
+        OracleDataSource ods = ServiceLocator.getConnection();
+        try (Connection conn = ods.getConnection();
+                PreparedStatement stmt = conn.prepareStatement("DELETE FROM rezervace WHERE id = ?");) {
+            stmt.setInt(1, id);
+            return stmt.execute();
+        }
+    }
+
     public List<Integer> rezervovanePokojeVObdobi(String datum_od, String datum_do) throws SQLException, ParseException {
 
         List<Integer> pokoje = new ArrayList<>();
