@@ -34,6 +34,7 @@ public class vyhledaniVysledky extends javax.swing.JPanel {
         layout.setAlignment(FlowLayout.LEFT);
         vysl_kontejner.setLayout(layout);
         modelObr = new ObrazkyModel();
+        jButton1.setVisible(false);
         Map<Integer, myIcon> result = null;
         try {
             System.out.println("PRO ID: "+imageId);
