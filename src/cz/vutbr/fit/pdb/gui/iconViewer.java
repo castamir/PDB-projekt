@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
@@ -64,7 +65,7 @@ public class iconViewer extends javax.swing.JPanel {
     
     private void getNextIcon() {
         //Map.Entry<Integer, myIcon>  novy;
-        if(it != null && it.hasNext()) {
+        /*if(it != null && it.hasNext()) {
             novy = it.next();
             i = novy.getValue().getMyIcon();
             smaz_button.setEnabled(true);
@@ -73,22 +74,46 @@ public class iconViewer extends javax.swing.JPanel {
             setNewIcon(i, false);
             //obrazek.setActive(false);
             //obrazek.setBorder(null);
+        }*/
+        if(obrazkyAktualnihoUz != null) {
+            //List<Map.Entry<Integer, myIcon>> list = new ArrayList<>(obrazkyAktualnihoUz.entrySet());
+            if(list!=null && !list.isEmpty() && aktualniIndex < list.size()-1) {
+                aktualniIndex += 1;
+                Entry<Integer, myIcon> novyItem = list.get(aktualniIndex);
+                i = novyItem.getValue().getMyIcon();
+                smaz_button.setEnabled(true);
+                otoc_button.setEnabled(true);
+                obrazek.setIndex(novyItem.getKey());
+                setNewIcon(i, false);
+            }
         }
     }
     
     private void getPreviousIcon() {
         //Map.Entry<Integer, myIcon>  novy;
-        if(it != null && it.hasPrevious()) {
-            novy = it.previous();
-            i = novy.getValue().getMyIcon();
-            smaz_button.setEnabled(true);
-            otoc_button.setEnabled(true);
-            obrazek.setIndex(novy.getKey());
-            setNewIcon(i, false);
-            //obrazek.setActive(false);
-            //obrazek.setBorder(null);
-        }
+        /*if(it != null && it.hasPrevious()) {
+        novy = it.previous();
+        i = novy.getValue().getMyIcon();
+        smaz_button.setEnabled(true);
+        otoc_button.setEnabled(true);
+        obrazek.setIndex(novy.getKey());
+        setNewIcon(i, false);
+        //obrazek.setActive(false);
+        //obrazek.setBorder(null);
+        }*/
+        if(obrazkyAktualnihoUz != null) {
+            //List<Map.Entry<Integer, myIcon>> list = new ArrayList<>(obrazkyAktualnihoUz.entrySet());
         
+            if(list!=null && !list.isEmpty() && aktualniIndex > 0) {
+                aktualniIndex -= 1;
+                Entry<Integer, myIcon> novyItem = list.get(aktualniIndex);
+                i = novyItem.getValue().getMyIcon();
+                smaz_button.setEnabled(true);
+                otoc_button.setEnabled(true);
+                obrazek.setIndex(novyItem.getKey());
+                setNewIcon(i, false);
+            }
+        }
     }
     
     private Map<Integer, myIcon> updateUserImages(int usrId){
@@ -157,6 +182,7 @@ public class iconViewer extends javax.swing.JPanel {
         JComboBox cb = (JComboBox) ae.getSource();
         String comboBoxitem = (String) cb.getSelectedItem();
         it = null;
+        list = null;
         if(!comboBoxitem.equals("")){
             //int tmp = (int) cb.getSelectedIndex();
             String substring = comboBoxitem.substring(0, comboBoxitem.indexOf(" "));
@@ -173,8 +199,14 @@ public class iconViewer extends javax.swing.JPanel {
                 notFound = true;
             } else {
                 
-                List<Map.Entry<Integer, myIcon>> list = new ArrayList<>(obrazkyAktualnihoUz.entrySet());
-                
+                list = new ArrayList<>(obrazkyAktualnihoUz.entrySet());
+                aktualniIndex = list.size()-1;
+                Entry<Integer, myIcon> entry = list.get(aktualniIndex);
+                i = entry.getValue().getMyIcon();
+                obrazek.setIndex(entry.getKey());
+                smaz_button.setEnabled(true);
+                otoc_button.setEnabled(true);
+                /*
                 it = list.listIterator();
                 item = it.next();
                 
@@ -182,6 +214,7 @@ public class iconViewer extends javax.swing.JPanel {
                 smaz_button.setEnabled(true);
                 otoc_button.setEnabled(true);
                 obrazek.setIndex(item.getKey());
+                */
             }
             setNewIcon(i,notFound);
         } else {
@@ -358,16 +391,23 @@ public class iconViewer extends javax.swing.JPanel {
                 myIcon remove = obrazkyAktualnihoUz.remove(obrazek.getIndex());
                 //List<Map.Entry<Integer, myIcon>> list = new ArrayList<>(obrazkyAktualnihoUz.entrySet());
                 //it = list.listIterator();
-                it.remove();
+                //it.remove();
+                list = new ArrayList<>(obrazkyAktualnihoUz.entrySet());
+                list.remove(aktualniIndex);
                 //vozidla_kontejner.revalidate();
             } catch (SQLException ex) {
                 Logger.getLogger(Rezervace.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        if(it != null && it.hasNext()) {
+        /*if(it != null && it.hasNext()) {
            getNextIcon();
         } else if(it != null && it.hasPrevious()) {
            getPreviousIcon();
+        }*/ 
+        if(list != null && !list.isEmpty() && aktualniIndex < list.size()-1){
+            getNextIcon();
+        } else if(list != null && !list.isEmpty() && aktualniIndex > 0){
+            getPreviousIcon();
         } else {
             String path = "/icons/Badge-cancel.png";
             ImageIcon ic = new ImageIcon(getClass().getResource(path));
@@ -386,7 +426,9 @@ public class iconViewer extends javax.swing.JPanel {
                 obrazek.setNewIcon(ic);
                 setNewIcon(ic, false);
                 Entry<Integer, myIcon> en = new AbstractMap.SimpleEntry<Integer, myIcon>(obrazek.getIndex(), obrazek); 
-                it.set(en);
+                //it.set(en);
+                list = new ArrayList<>(obrazkyAktualnihoUz.entrySet());
+                list.set(aktualniIndex, en);
             } catch (SQLException ex) {
                 Logger.getLogger(iconViewer.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -434,4 +476,6 @@ public class iconViewer extends javax.swing.JPanel {
     private Map.Entry<Integer, myIcon> item;
     private ListIterator<Map.Entry<Integer, myIcon>> it = null;
     private Map.Entry<Integer, myIcon>  novy;
+    private Integer aktualniIndex;
+    private List<Map.Entry<Integer, myIcon>> list;
 }
