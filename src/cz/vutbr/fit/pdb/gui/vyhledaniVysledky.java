@@ -39,7 +39,7 @@ public class vyhledaniVysledky extends javax.swing.JPanel {
         Map<Integer, myIcon> result = null;
         try {
             System.out.println("PRO ID: "+imageId);
-            result = modelObr.getTheMostSimilar(imageId, 0.3, 0.3, 0.3, 0.1);
+            result = modelObr.getTheMostSimilar(imageId, 0.5, 0.5, 0.5, 0.1);
             System.out.println("Nalezeno: "+result.size());
         } catch (SQLException ex) {
             Logger.getLogger(vyhledaniVysledky.class.getName()).log(Level.SEVERE, null, ex);
@@ -49,6 +49,7 @@ public class vyhledaniVysledky extends javax.swing.JPanel {
                 myIcon value = entry.getValue();
                 //JLabel tm = new JLabel(value.getMyIcon());
                 value.setIcon(value.getMyIcon());
+                value.setText(value.getScoreAsString());
                 vysl_kontejner.add(value);
             }
         }

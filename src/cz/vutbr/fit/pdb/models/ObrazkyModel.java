@@ -205,6 +205,7 @@ public class ObrazkyModel extends BaseModel {
                 
                 ImageIcon i = new ImageIcon(tmp);
                 myIcon tmpIcon = new myIcon(i);
+                tmpIcon.setScore(rs.getDouble("similarity"));
                 result.put(rs.getInt("id"), tmpIcon);
             }
         } 
