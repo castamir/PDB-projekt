@@ -1,6 +1,7 @@
 package cz.vutbr.fit.pdb.models;
 
 import cz.vutbr.fit.pdb.application.ServiceLocator;
+import cz.vutbr.fit.pdb.utils.DateTime;
 import java.sql.Array;
 import java.sql.Connection;
 import java.sql.Date;
@@ -72,8 +73,8 @@ public class RezervaceModel extends BaseModel {
                     value.put("id", rs.getInt("id"));
                     value.put("zakaznik", rs.getInt("zakaznik"));
                     value.put("pokoj", rs.getInt("pokoj"));
-                    value.put("od", rs.getString("od"));
-                    value.put("do", rs.getString("do"));
+                    value.put("od", DateTime.format(rs.getString("od"), "yyyy-MM-dd kk:mm:ss.S"));
+                    value.put("do", DateTime.format(rs.getString("do"), "yyyy-MM-dd kk:mm:ss.S"));
 
                     result.put(rs.getInt("id"), value);
                 }
