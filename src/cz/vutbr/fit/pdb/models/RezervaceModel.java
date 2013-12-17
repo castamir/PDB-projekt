@@ -202,8 +202,7 @@ public class RezervaceModel extends BaseModel {
 
     /**
      *
-     * @return
-     * @throws SQLException
+     * @return @throws SQLException
      */
     public Map<Integer, String> getPokoje() throws SQLException {
 
@@ -219,5 +218,24 @@ public class RezervaceModel extends BaseModel {
         }
 
         return pokoje;
+    }
+
+    /**
+     *
+     * @param datum_od
+     * @param datum_do
+     * @return
+     * @throws SQLException
+     */
+    public boolean smazatRezervaceVObdobi(java.util.Date datum_od, java.util.Date datum_do) throws SQLException {
+        OracleDataSource ods = ServiceLocator.getConnection();
+        try (Connection conn = ods.getConnection();
+                PreparedStatement stmt = conn.prepareStatement("CALL REZERVACE_SMAZ_V_OBDOBI (?, ?)");) {
+            Date d_od = new Date(datum_od.getTime());
+            Date d_do = new Date(datum_do.getTime());
+            stmt.setDate(1, d_od);
+            stmt.setDate(2, d_do);
+            return stmt.execute();
+        }
     }
 }

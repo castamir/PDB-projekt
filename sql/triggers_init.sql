@@ -123,5 +123,3 @@ BEGIN
     COMMIT;
 END;
 /
-
-COMMIT;
