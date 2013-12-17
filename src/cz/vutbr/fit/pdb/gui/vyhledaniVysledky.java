@@ -19,17 +19,23 @@ public class vyhledaniVysledky extends javax.swing.JPanel {
 
     /**
      * Creates new form vyhledaniVysledky
+     * @param id id obrazku
      */
     public vyhledaniVysledky(Integer id) {
         initComponents();
         setImageId(id);
         myInit();
     }
-    
+    /**
+     * Nastavi id obrazku, pro ktery se provede vyhledani
+     * @param id id obrazku
+     */
     public void setImageId(Integer id) {
         this.imageId = id;
     }
-    
+    /**
+     * Inicializuje a zobrazí výsledky
+     */
     public void myInit(){
         //label.setHorizontalAlignment(SwingConstants.LEFT);
         //FlowLayout layout = new FlowLayout();
