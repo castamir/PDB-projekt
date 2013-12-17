@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 /**
  *
@@ -46,7 +47,8 @@ public class vyhledaniVysledky extends javax.swing.JPanel {
         if(result != null){
             for (Map.Entry<Integer, myIcon> entry : result.entrySet()) {
                 myIcon value = entry.getValue();
-                vysl_kontejner.add(value);
+                JLabel tm = new JLabel(value.getMyIcon());
+                vysl_kontejner.add(tm);
             }
         }
     }
