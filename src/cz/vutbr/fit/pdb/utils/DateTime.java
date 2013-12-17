@@ -23,9 +23,54 @@ public class DateTime {
      * @return
      */
     public static String now() {
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        return sdf.format(cal.getTime());
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat(DateTime.DEFAULT);
+        return sdf.format(c.getTime());
+    }
+
+    /**
+     *
+     * @param date
+     * @param days
+     * @return
+     */
+    public static Date addDay(Date date, int days) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.add(Calendar.DATE, days);
+        return c.getTime();
+    }
+
+    /**
+     *
+     * @param string
+     * @return
+     * @throws ParseException
+     */
+    public static Date toDate(String string) throws ParseException {
+        return DateTime.toDate(string, DEFAULT);
+    }
+
+    /**
+     *
+     * @param string
+     * @param from_format
+     * @return
+     * @throws ParseException
+     */
+    public static Date toDate(String string, String from_format) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat(DateTime.DEFAULT);
+        return sdf.parse(string);
+    }
+
+    /**
+     *
+     * @param original
+     * @return
+     * @throws ParseException
+     */
+    public static String format(String original) throws ParseException {
+        return format(original, DEFAULT, DEFAULT);
     }
 
     /**
