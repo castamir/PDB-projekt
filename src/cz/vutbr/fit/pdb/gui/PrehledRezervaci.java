@@ -7,6 +7,7 @@ import cz.vutbr.fit.pdb.utils.ObservingTextField;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Locale;
@@ -32,7 +33,7 @@ public class PrehledRezervaci extends javax.swing.JPanel {
     public PrehledRezervaci() {
         this.cellRenderer = new DefaultTableCellRenderer();
         cellRenderer.setToolTipText("Jméno a příjmení zákazníka (interní ID)");
-        
+
         initComponents();
         myInit();
         initTable();
@@ -232,7 +233,13 @@ public class PrehledRezervaci extends javax.swing.JPanel {
             }
         });
 
-        jButton2.setText("Vyúčtování pobytu");
+        jButton2.setText("Vyhlásit karanténu");
+        jButton2.setToolTipText("Při vyhlášení karantény budou smazány všechny rezervace v následujícím týdnu počínaje dneškem.");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Období"));
 
@@ -294,10 +301,10 @@ public class PrehledRezervaci extends javax.swing.JPanel {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(kalendar_od)
                     .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel10)
-                        .addComponent(rezervaceOd_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(kalendar_od))
+                        .addComponent(rezervaceOd_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel12)
                         .addComponent(rezervaceDo_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -429,6 +436,21 @@ public class PrehledRezervaci extends javax.swing.JPanel {
             updateTable();
         }
     }//GEN-LAST:event_rezervaceOd_fieldCaretUpdate
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        int dialogResult = JOptionPane.showConfirmDialog(getParent(), "Opravdu si přejete vyhlásit karanténu (smazat rezervace v následujícím týdnu)?", "Varování", JOptionPane.OK_CANCEL_OPTION);
+
+        if (dialogResult == JOptionPane.YES_OPTION) {
+            try {
+                Date today = DateTime.toDate(DateTime.now());
+                modelRez.smazatRezervaceVObdobi(today, DateTime.addDay(today, 6));
+            } catch (SQLException | ParseException ex) {
+                Logger.getLogger(PrehledRezervaci.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            updateTable();
+        }
+
+    }//GEN-LAST:event_jButton2ActionPerformed
     private RezervaceModel modelRez;
     private Map<Integer, String> vsechnyPokoje;
     private DefaultTableModel model;

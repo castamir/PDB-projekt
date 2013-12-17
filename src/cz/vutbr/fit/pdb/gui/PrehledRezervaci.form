@@ -239,8 +239,12 @@
         </Component>
         <Component class="javax.swing.JButton" name="jButton2">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Vy&#xfa;&#x10d;tov&#xe1;n&#xed; pobytu"/>
+            <Property name="text" type="java.lang.String" value="Vyhl&#xe1;sit karant&#xe9;nu"/>
+            <Property name="toolTipText" type="java.lang.String" value="P&#x159;i vyhl&#xe1;&#x161;en&#xed; karant&#xe9;ny budou smaz&#xe1;ny v&#x161;echny rezervace v n&#xe1;sleduj&#xed;c&#xed;m t&#xfd;dnu po&#x10d;&#xed;naje dne&#x161;kem."/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
+          </Events>
         </Component>
         <Container class="javax.swing.JPanel" name="jPanel4">
           <Properties>
@@ -276,10 +280,10 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                          <Component id="kalendar_od" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabel10" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="rezervaceOd_field" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="kalendar_od" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                               <Component id="jLabel12" alignment="3" min="-2" max="-2" attributes="0"/>
