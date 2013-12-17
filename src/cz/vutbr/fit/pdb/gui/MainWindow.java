@@ -140,9 +140,10 @@ public class MainWindow extends javax.swing.JFrame {
         System.out.println("Tab changed to: " + zdroj.getTitleAt(index));
         if (zdroj.getTitleAt(index).equals("icon_viewer")) {
             iw.updateCombo();
-        }
-        else if (zdroj.getTitleAt(index).equals("Služby")) {
+        } else if (zdroj.getTitleAt(index).equals("Služby")) {
             sluzby2.panelDidAppear();
+        } else if (zdroj.getTitleAt(index).equals("Rezervace")) {
+            prehledRezervaci1.updateTable();
         }
     }//GEN-LAST:event_jTabbedPane1StateChanged
 
@@ -175,6 +176,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new MainWindow().setVisible(true);
             }

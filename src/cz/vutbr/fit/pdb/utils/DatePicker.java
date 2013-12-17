@@ -25,7 +25,8 @@ import java.util.Locale;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.ResourceBundle;
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -210,7 +211,7 @@ public final class DatePicker extends Observable implements Runnable, WindowFocu
                 is.read(b);
                 return b;
             } catch (IOException e) {
-                //e.printStackTrace();
+                Logger.getLogger(DatePicker.class.getName()).log(Level.SEVERE, null, e);
                 return null;
             } finally {
                 if (is != null) {

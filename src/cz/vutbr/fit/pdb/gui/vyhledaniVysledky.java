@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
@@ -31,9 +32,9 @@ public class vyhledaniVysledky extends javax.swing.JPanel {
     
     public void myInit(){
         //label.setHorizontalAlignment(SwingConstants.LEFT);
-        FlowLayout layout = new FlowLayout();
-        layout.setAlignment(FlowLayout.LEFT);
-        vysl_kontejner.setLayout(layout);
+        //FlowLayout layout = new FlowLayout();
+        //layout.setAlignment(FlowLayout.LEFT);
+        vysl_kontejner.setLayout(new BoxLayout(vysl_kontejner, BoxLayout.Y_AXIS));
         modelObr = new ObrazkyModel();
         Map<Integer, myIcon> result = null;
         try {
@@ -47,9 +48,12 @@ public class vyhledaniVysledky extends javax.swing.JPanel {
             for (Map.Entry<Integer, myIcon> entry : result.entrySet()) {
                 myIcon value = entry.getValue();
                 //JLabel tm = new JLabel(value.getMyIcon());
-                value.setIcon(value.getMyIcon());
-                value.setText(value.getScoreAsString());
-                vysl_kontejner.add(value);
+                if(value.getScore() > 0.0) {
+                //System.out.println("Score: " + value.getScore());
+                    value.setIcon(value.getMyIcon());
+                    value.setText(value.getScoreAsString());
+                    vysl_kontejner.add(value);
+                }
             }
         }
     }

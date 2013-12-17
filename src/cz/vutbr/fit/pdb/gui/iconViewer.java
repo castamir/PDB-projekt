@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
@@ -64,7 +65,7 @@ public class iconViewer extends javax.swing.JPanel {
     
     private void getNextIcon() {
         //Map.Entry<Integer, myIcon>  novy;
-        if(it != null && it.hasNext()) {
+        /*if(it != null && it.hasNext()) {
             novy = it.next();
             i = novy.getValue().getMyIcon();
             smaz_button.setEnabled(true);
@@ -73,22 +74,48 @@ public class iconViewer extends javax.swing.JPanel {
             setNewIcon(i, false);
             //obrazek.setActive(false);
             //obrazek.setBorder(null);
+        }*/
+        if(obrazkyAktualnihoUz != null) {
+            //List<Map.Entry<Integer, myIcon>> list = new ArrayList<>(obrazkyAktualnihoUz.entrySet());
+            if(list!=null && !list.isEmpty() && aktualniIndex < list.size()-1) {
+                aktualniIndex += 1;
+                Entry<Integer, myIcon> novyItem = list.get(aktualniIndex);
+                i = novyItem.getValue().getMyIcon();
+                smaz_button.setEnabled(true);
+                otoc_button.setEnabled(true);
+                obrazek.setIndex(novyItem.getKey());
+                setNewIcon(i, false);
+                aktIndex_label.setText("Index: "+(aktualniIndex+1)+"/"+list.size());
+            }
         }
     }
     
     private void getPreviousIcon() {
         //Map.Entry<Integer, myIcon>  novy;
-        if(it != null && it.hasPrevious()) {
-            novy = it.previous();
-            i = novy.getValue().getMyIcon();
-            smaz_button.setEnabled(true);
-            otoc_button.setEnabled(true);
-            obrazek.setIndex(novy.getKey());
-            setNewIcon(i, false);
-            //obrazek.setActive(false);
-            //obrazek.setBorder(null);
-        }
+        /*if(it != null && it.hasPrevious()) {
+        novy = it.previous();
+        i = novy.getValue().getMyIcon();
+        smaz_button.setEnabled(true);
+        otoc_button.setEnabled(true);
+        obrazek.setIndex(novy.getKey());
+        setNewIcon(i, false);
+        //obrazek.setActive(false);
+        //obrazek.setBorder(null);
+        }*/
+        if(obrazkyAktualnihoUz != null) {
+            //List<Map.Entry<Integer, myIcon>> list = new ArrayList<>(obrazkyAktualnihoUz.entrySet());
         
+            if(list!=null && !list.isEmpty() && aktualniIndex > 0) {
+                aktualniIndex -= 1;
+                Entry<Integer, myIcon> novyItem = list.get(aktualniIndex);
+                i = novyItem.getValue().getMyIcon();
+                smaz_button.setEnabled(true);
+                otoc_button.setEnabled(true);
+                obrazek.setIndex(novyItem.getKey());
+                setNewIcon(i, false);
+                aktIndex_label.setText("Index: "+(aktualniIndex+1)+"/"+list.size());
+            } 
+        }
     }
     
     private Map<Integer, myIcon> updateUserImages(int usrId){
@@ -157,6 +184,7 @@ public class iconViewer extends javax.swing.JPanel {
         JComboBox cb = (JComboBox) ae.getSource();
         String comboBoxitem = (String) cb.getSelectedItem();
         it = null;
+        list = null;
         if(!comboBoxitem.equals("")){
             //int tmp = (int) cb.getSelectedIndex();
             String substring = comboBoxitem.substring(0, comboBoxitem.indexOf(" "));
@@ -173,8 +201,16 @@ public class iconViewer extends javax.swing.JPanel {
                 notFound = true;
             } else {
                 
-                List<Map.Entry<Integer, myIcon>> list = new ArrayList<>(obrazkyAktualnihoUz.entrySet());
-                
+                list = new ArrayList<>(obrazkyAktualnihoUz.entrySet());
+                //aktualniIndex = list.size()-1;
+                aktualniIndex = 0;
+                Entry<Integer, myIcon> entry = list.get(aktualniIndex);
+                i = entry.getValue().getMyIcon();
+                obrazek.setIndex(entry.getKey());
+                smaz_button.setEnabled(true);
+                otoc_button.setEnabled(true);
+                aktIndex_label.setText("Index: "+(aktualniIndex+1)+"/"+(list.size()));
+                /*
                 it = list.listIterator();
                 item = it.next();
                 
@@ -182,12 +218,14 @@ public class iconViewer extends javax.swing.JPanel {
                 smaz_button.setEnabled(true);
                 otoc_button.setEnabled(true);
                 obrazek.setIndex(item.getKey());
+                */
             }
             setNewIcon(i,notFound);
         } else {
             obrazek.setVisible(false);
             obrazek.setIcon(null);
             obrazek.setText("");
+            aktIndex_label.setText("Index: 0/0");
         }
     }
     
@@ -224,8 +262,9 @@ public class iconViewer extends javax.swing.JPanel {
         user_comboBox = new javax.swing.JComboBox();
         refreshUserList_button = new javax.swing.JButton();
         podobne_button = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        zpet_button = new javax.swing.JButton();
+        dalsi_button = new javax.swing.JButton();
+        aktIndex_label = new javax.swing.JLabel();
 
         otoc_button.setText("Otoč");
         otoc_button.addActionListener(new java.awt.event.ActionListener() {
@@ -284,19 +323,21 @@ public class iconViewer extends javax.swing.JPanel {
             }
         });
 
-        jButton2.setText("<");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        zpet_button.setText("<");
+        zpet_button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                zpet_buttonActionPerformed(evt);
             }
         });
 
-        jButton3.setText(">");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        dalsi_button.setText(">");
+        dalsi_button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                dalsi_buttonActionPerformed(evt);
             }
         });
+
+        aktIndex_label.setText("Index: 0/0");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -313,9 +354,11 @@ public class iconViewer extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(podobne_button)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
+                .addComponent(zpet_button)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3)
+                .addComponent(dalsi_button)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(aktIndex_label)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addComponent(obrazek_kontejner_parent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -328,8 +371,9 @@ public class iconViewer extends javax.swing.JPanel {
                     .addComponent(user_comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(refreshUserList_button)
                     .addComponent(podobne_button)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
+                    .addComponent(zpet_button)
+                    .addComponent(dalsi_button)
+                    .addComponent(aktIndex_label))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(obrazek_kontejner_parent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -358,16 +402,23 @@ public class iconViewer extends javax.swing.JPanel {
                 myIcon remove = obrazkyAktualnihoUz.remove(obrazek.getIndex());
                 //List<Map.Entry<Integer, myIcon>> list = new ArrayList<>(obrazkyAktualnihoUz.entrySet());
                 //it = list.listIterator();
-                it.remove();
+                //it.remove();
+                list = new ArrayList<>(obrazkyAktualnihoUz.entrySet());
+                list.remove(aktualniIndex);
                 //vozidla_kontejner.revalidate();
             } catch (SQLException ex) {
                 Logger.getLogger(Rezervace.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        if(it != null && it.hasNext()) {
+        /*if(it != null && it.hasNext()) {
            getNextIcon();
         } else if(it != null && it.hasPrevious()) {
            getPreviousIcon();
+        }*/ 
+        if(list != null && !list.isEmpty() && aktualniIndex < list.size()-1){
+            getNextIcon();
+        } else if(list != null && !list.isEmpty() && aktualniIndex > 0){
+            getPreviousIcon();
         } else {
             String path = "/icons/Badge-cancel.png";
             ImageIcon ic = new ImageIcon(getClass().getResource(path));
@@ -386,20 +437,22 @@ public class iconViewer extends javax.swing.JPanel {
                 obrazek.setNewIcon(ic);
                 setNewIcon(ic, false);
                 Entry<Integer, myIcon> en = new AbstractMap.SimpleEntry<Integer, myIcon>(obrazek.getIndex(), obrazek); 
-                it.set(en);
+                //it.set(en);
+                list = new ArrayList<>(obrazkyAktualnihoUz.entrySet());
+                list.set(aktualniIndex, en);
             } catch (SQLException ex) {
                 Logger.getLogger(iconViewer.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_otoc_buttonActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void dalsi_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dalsi_buttonActionPerformed
         getNextIcon();
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_dalsi_buttonActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void zpet_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zpet_buttonActionPerformed
         getPreviousIcon();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_zpet_buttonActionPerformed
 
     private void podobne_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_podobne_buttonActionPerformed
         if(obrazek.isActive()){
@@ -413,8 +466,8 @@ public class iconViewer extends javax.swing.JPanel {
     }//GEN-LAST:event_podobne_buttonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JLabel aktIndex_label;
+    private javax.swing.JButton dalsi_button;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel obrazek_kontejner;
     private javax.swing.JPanel obrazek_kontejner_parent;
@@ -423,6 +476,7 @@ public class iconViewer extends javax.swing.JPanel {
     private javax.swing.JButton refreshUserList_button;
     private javax.swing.JButton smaz_button;
     private javax.swing.JComboBox user_comboBox;
+    private javax.swing.JButton zpet_button;
     // End of variables declaration//GEN-END:variables
     private ObrazkyModel modelObr;
     private myIcon obrazek;
@@ -434,4 +488,6 @@ public class iconViewer extends javax.swing.JPanel {
     private Map.Entry<Integer, myIcon> item;
     private ListIterator<Map.Entry<Integer, myIcon>> it = null;
     private Map.Entry<Integer, myIcon>  novy;
+    private Integer aktualniIndex;
+    private List<Map.Entry<Integer, myIcon>> list;
 }
