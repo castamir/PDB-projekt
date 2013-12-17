@@ -1,8 +1,4 @@
-
-
 package cz.vutbr.fit.pdb.models;
-
-import cz.vutbr.fit.pdb.application.ServiceLocator;
 
 /**
  *
@@ -11,10 +7,9 @@ import cz.vutbr.fit.pdb.application.ServiceLocator;
  * @author Gajdoš Pavel
  */
 abstract class BaseModel {
-   
-    protected ServiceLocator serviceLocator;
-    
+
+    //protected ServiceLocator serviceLocator;
     public BaseModel() {
-        serviceLocator = new ServiceLocator();
+        //serviceLocator = ServiceLocator;
     }
 }

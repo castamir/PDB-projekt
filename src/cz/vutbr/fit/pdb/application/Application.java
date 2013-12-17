@@ -10,9 +10,16 @@ import cz.vutbr.fit.pdb.gui.MainWindow;
  */
 public class Application{
 
+    /**
+     *
+     */
     public Application() {
     }
     
+    /**
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         /*JFrame frame = new JFrame();
          Application myApp = new Application();
@@ -24,6 +31,7 @@ public class Application{
          frame.setSize(maxX * windowZoom, maxY * windowZoom);
          frame.setVisible(true);*/
         MainWindow mainWin = new MainWindow();
+        mainWin.setLocationRelativeTo(null);
         mainWin.setVisible(true);
     }
 }

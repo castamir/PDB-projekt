@@ -15,6 +15,10 @@ public class Loader {
 
     private Properties properties;
 
+    /**
+     *
+     * @return
+     */
     public Properties getProperties() {
         if (properties == null) {
             Properties prop1 = parsePropertiesFrom("config.properties");

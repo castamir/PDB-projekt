@@ -1,6 +1,8 @@
 package cz.vutbr.fit.pdb.application;
 
 import cz.vutbr.fit.pdb.config.Loader;
+import cz.vutbr.fit.pdb.security.Authenticator;
+import cz.vutbr.fit.pdb.security.IIdentity;
 import java.sql.SQLException;
 import java.util.Properties;
 import oracle.jdbc.pool.OracleDataSource;
@@ -13,19 +15,54 @@ import oracle.jdbc.pool.OracleDataSource;
  */
 public class ServiceLocator {
 
-    private Properties properties;
+    private static Properties properties = null;
+    private static Authenticator authenticator = null;
 
+    /**
+     *
+     */
     public ServiceLocator() {
         Loader loader = new Loader();
-        this.properties = loader.getProperties();
+        ServiceLocator.properties = loader.getProperties();
     }
 
-    public OracleDataSource getConnection() throws SQLException {
+    /**
+     *
+     * @return
+     * @throws SQLException
+     */
+    public static OracleDataSource getConnection() throws SQLException {
         OracleDataSource ods = new OracleDataSource();
-        String connectionString = "jdbc:oracle:thin:@" + properties.getProperty("DB.HOST") + ":" + properties.getProperty("DB.PORT") + ":" + properties.getProperty("DB.SID");
+        IIdentity identity = ServiceLocator.getAuthenticator().getIdentity();
+        Properties current_properties = ServiceLocator.getProperties();
+        String connectionString = "jdbc:oracle:thin:@" + current_properties.getProperty("DB.HOST") + ":" + current_properties.getProperty("DB.PORT") + ":" + current_properties.getProperty("DB.SID");
         ods.setURL(connectionString);
-        ods.setUser(properties.getProperty("DB.LOGIN"));
-        ods.setPassword(properties.getProperty("DB.PASSWORD"));
+
+        ods.setUser(identity.getUsername());
+        ods.setPassword(identity.getPassword());
         return ods;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public static Properties getProperties() {
+        if (ServiceLocator.properties == null) {
+            Loader loader = new Loader();
+            ServiceLocator.properties = loader.getProperties();
+        }
+        return ServiceLocator.properties;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public static Authenticator getAuthenticator() {
+        if (ServiceLocator.authenticator == null) {
+            ServiceLocator.authenticator = new Authenticator();
+        }
+        return ServiceLocator.authenticator;
     }
 }

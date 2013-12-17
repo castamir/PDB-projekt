@@ -1,3 +1,78 @@
+DELETE FROM areal;
+
+INSERT INTO areal VALUES (
+	'Hotel',
+	SDO_GEOMETRY(2003, NULL, NULL, -- 2D polygon
+		SDO_ELEM_INFO_ARRAY(1, 1003, 3), -- exterior rectangle (left-up, right-bottom)
+		SDO_ORDINATE_ARRAY(20,20, 140,200)
+	)
+);
+
+INSERT INTO areal VALUES (
+	'Služby bazénu',
+	SDO_GEOMETRY(2003, NULL, NULL, -- 2D polygon
+		SDO_ELEM_INFO_ARRAY(1, 1003, 1), -- exterior polygon (clockwise)
+		SDO_ORDINATE_ARRAY(20,220, 140,220, 140,380, 20,380, 20,360, 100,360, 100,240, 20,240, 20,220)
+	)
+);
+
+INSERT INTO areal VALUES (
+	'Bazén',
+	SDO_GEOMETRY(2003, NULL, NULL, -- 2D polygon
+		SDO_ELEM_INFO_ARRAY(1, 1003, 3), -- exterior rectangle (left-up, right-bottom)
+		SDO_ORDINATE_ARRAY(20,260, 80,340)
+	)
+);
+
+INSERT INTO areal VALUES (
+	'Bar+Disko',
+	SDO_GEOMETRY(2003, NULL, NULL, -- 2D polygon
+		SDO_ELEM_INFO_ARRAY(1, 1003, 3), -- exterior rectangle (left-up, right-bottom)
+		SDO_ORDINATE_ARRAY(160,20, 280,80)
+	)
+);
+
+INSERT INTO areal VALUES (
+	'Tenisové kurty',
+	SDO_GEOMETRY(2003, NULL, NULL, -- 2D polygon
+		SDO_ELEM_INFO_ARRAY(1, 1003, 3), -- exterior rectangle (left-up, right-bottom)
+		SDO_ORDINATE_ARRAY(160,100, 280,200)
+	)
+);
+
+
+INSERT INTO areal VALUES (
+	'Wellness',
+	SDO_GEOMETRY(2003, NULL, NULL, -- 2D polygon
+		SDO_ELEM_INFO_ARRAY(1, 1003, 3), -- exterior rectangle (left-up, right-bottom)
+		SDO_ORDINATE_ARRAY(300,20, 380,180)
+	)
+);
+
+INSERT INTO areal VALUES (
+	'Hlídání dětí',
+	SDO_GEOMETRY(2003, NULL, NULL, -- 2D polygon
+		SDO_ELEM_INFO_ARRAY(1, 1003, 3), -- exterior rectangle (left-up, right-bottom)
+		SDO_ORDINATE_ARRAY(300,200, 380,240)
+	)
+);
+
+INSERT INTO areal VALUES (
+	'Golfové hřiště',
+	SDO_GEOMETRY(2003, NULL, NULL, -- 2D polygon
+		SDO_ELEM_INFO_ARRAY(1, 1003, 1), -- exterior polygon (clockwise)
+		SDO_ORDINATE_ARRAY(280,260, 380,260, 380,380, 200,380, 200,300, 280,300, 280,260)
+	)
+);
+
+
+
+COMMIT;
+
+-- kontrola validity (na zacatku "valid" muze byt cislo chyby, vizte http://www.ora-code.com/)
+SELECT nazev, SDO_GEOM.VALIDATE_GEOMETRY_WITH_CONTEXT(geometrie, 1) valid -- 1=presnost
+FROM areal;
+
 DELETE FROM mapa;
 
 INSERT INTO mapa VALUES (
@@ -170,3 +245,50 @@ COMMIT;
 -- kontrola validity (na zacatku "valid" muze byt cislo chyby, vizte http://www.ora-code.com/)
 SELECT nazev, SDO_GEOM.VALIDATE_GEOMETRY_WITH_CONTEXT(geometrie, 1) valid -- 1=presnost
 FROM mapa;
+
+
+
+INSERT INTO pokoje (id, nazev) VALUES (1, 'Pokoj 1');
+INSERT INTO pokoje (id, nazev) VALUES (2, 'Pokoj 2');
+INSERT INTO pokoje (id, nazev) VALUES (3, 'Pokoj 3');
+INSERT INTO pokoje (id, nazev) VALUES (4, 'Pokoj 4');
+INSERT INTO pokoje (id, nazev) VALUES (5, 'Pokoj 5');
+INSERT INTO pokoje (id, nazev) VALUES (6, 'Pokoj 6');
+INSERT INTO pokoje (id, nazev) VALUES (7, 'Pokoj 7');
+INSERT INTO pokoje (id, nazev) VALUES (8, 'Pokoj 8');
+INSERT INTO pokoje (id, nazev) VALUES (9, 'Pokoj 9');
+INSERT INTO pokoje (id, nazev) VALUES (10, 'Pokoj 10');
+
+
+INSERT INTO zakaznik (jmeno, prijmeni, adresa, mesto, psc, kraj, telefon, email) VALUES ('Mira', 'x', 'x', 'x', 'x', 'x', 'x', 'x');
+INSERT INTO zakaznik (jmeno, prijmeni, adresa, mesto, psc, kraj, telefon, email) VALUES ('Tom', 'x', 'x', 'x', 'x', 'x', 'x', 'x');
+INSERT INTO zakaznik (jmeno, prijmeni, adresa, mesto, psc, kraj, telefon, email) VALUES ('Pavel', 'x', 'x', 'x', 'x', 'x', 'x', 'x');
+
+COMMIT;
+
+INSERT INTO sluzby (nazev, objekt, dostupnost_od, dostupnost_do)
+VALUES ('Tenisové kurty', 'Tenisové kurty', 8, 18);
+
+INSERT INTO sluzby (nazev, objekt, dostupnost_od, dostupnost_do)
+VALUES ('Wellness', 'Wellness', 12, 18);
+
+INSERT INTO sluzby (nazev, objekt, dostupnost_od, dostupnost_do)
+VALUES ('Hlídání dětí', 'Hlídání dětí', 6, 14);
+
+INSERT INTO sluzby (nazev, objekt, dostupnost_od, dostupnost_do)
+VALUES ('Golfové hřiště', 'Golfové hřiště', 11, 17);
+
+
+COMMIT;
+
+INSERT INTO sluzby_rezervace (sluzba, zakaznik, den, hodina)
+VALUES ('Tenisové kurty', 1002, TO_DATE('2013-12-13', 'yyyy-mm-dd'), '11');
+
+INSERT INTO sluzby_rezervace (sluzba, zakaznik, den, hodina)
+VALUES ('Tenisové kurty', 1001, TO_DATE('2013-12-14', 'yyyy-mm-dd'), 12);
+
+INSERT INTO sluzby_rezervace (sluzba, zakaznik, den, hodina)
+VALUES ('Tenisové kurty', 1003, TO_DATE('2013-12-13', 'yyyy-mm-dd'), 14);
+
+
+COMMIT;

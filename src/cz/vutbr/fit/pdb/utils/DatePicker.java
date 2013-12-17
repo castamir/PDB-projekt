@@ -25,7 +25,8 @@ import java.util.Locale;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.ResourceBundle;
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -43,11 +44,24 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.event.MouseInputListener;
 
+/**
+ *
+ * @author castamir
+ */
 public final class DatePicker extends Observable implements Runnable, WindowFocusListener {
 
+    /**
+     *
+     */
     protected static Font plain = new Font("Arial", Font.PLAIN, 10);
+    /**
+     *
+     */
     protected static Font bold = new Font("Arial", Font.BOLD, 10);
 
+    /**
+     *
+     */
     public static class DayLabel extends JLabel implements MouseInputListener,
             MouseMotionListener {
 
@@ -57,6 +71,11 @@ public final class DatePicker extends Observable implements Runnable, WindowFocu
         private static final long serialVersionUID = 1L;
         private DatePicker parent;
 
+        /**
+         *
+         * @param parent
+         * @param day
+         */
         public DayLabel(DatePicker parent, int day) {
             super(Integer.toString(day));
             this.parent = parent;
@@ -65,37 +84,62 @@ public final class DatePicker extends Observable implements Runnable, WindowFocu
             this.addMouseListener(this);
         }
 
+        /**
+         *
+         */
         public void setCurrentDayStyle() {
             setFont(bold);
             setForeground(Color.RED);
         }
 
+        /**
+         *
+         */
         public void setSelectedDayStyle() {
             setFont(plain);
             setForeground(Color.BLUE);
             setBorder(BorderFactory.createLineBorder(Color.GRAY));
         }
 
+        /**
+         *
+         */
         public void setWeekendStyle() {
             setFont(plain);
             setForeground(Color.GRAY);
         }
 
+        /**
+         *
+         * @param e
+         */
         @Override
         public void mouseClicked(MouseEvent e) {
             // JOptionPane.showMessageDialog(this,getText());
             parent.dayPicked(Integer.parseInt(getText()));
         }
 
+        /**
+         *
+         * @param e
+         */
         @Override
         public void mousePressed(MouseEvent e) {
         }
 
+        /**
+         *
+         * @param e
+         */
         @Override
         public void mouseReleased(MouseEvent e) {
         }
         private Border oldBorder;
 
+        /**
+         *
+         * @param e
+         */
         @Override
         public void mouseEntered(MouseEvent e) {
             oldBorder = this.getBorder();
@@ -105,25 +149,45 @@ public final class DatePicker extends Observable implements Runnable, WindowFocu
             this.setBorder(b);
         }
 
+        /**
+         *
+         * @param e
+         */
         @Override
         public void mouseExited(MouseEvent e) {
             this.setBorder(oldBorder);
         }
 
+        /**
+         *
+         * @param e
+         */
         @Override
         public void mouseDragged(MouseEvent e) {
         }
 
+        /**
+         *
+         * @param e
+         */
         @Override
         public void mouseMoved(MouseEvent e) {
         }
     }
 
+    /**
+     *
+     */
     public static class MonthPanel extends JPanel {
 
         private static final long serialVersionUID = 1L;
         private DatePicker parent;
 
+        /**
+         *
+         * @param parent
+         * @param c
+         */
         public MonthPanel(DatePicker parent, Calendar c) {
             this.parent = parent;
             GridLayout g = new GridLayout();
@@ -191,6 +255,9 @@ public final class DatePicker extends Observable implements Runnable, WindowFocu
         }
     }
 
+    /**
+     *
+     */
     public static final class NavigatePanel extends JPanel implements ActionListener {
 
         private static final long serialVersionUID = 1L;
@@ -210,7 +277,7 @@ public final class DatePicker extends Observable implements Runnable, WindowFocu
                 is.read(b);
                 return b;
             } catch (IOException e) {
-                //e.printStackTrace();
+                Logger.getLogger(DatePicker.class.getName()).log(Level.SEVERE, null, e);
                 return null;
             } finally {
                 if (is != null) {
@@ -222,6 +289,10 @@ public final class DatePicker extends Observable implements Runnable, WindowFocu
             }
         }
 
+        /**
+         *
+         * @param parent
+         */
         public NavigatePanel(DatePicker parent) {
             this.parent = parent;
             setLayout(new BorderLayout());
@@ -282,6 +353,10 @@ public final class DatePicker extends Observable implements Runnable, WindowFocu
         private Box box;
         final int height = 10;
 
+        /**
+         *
+         * @param c
+         */
         public void setCurrentMonth(Calendar c) {
             setMonthComboBox(c);
             setYearComboBox(c);
@@ -331,6 +406,10 @@ public final class DatePicker extends Observable implements Runnable, WindowFocu
             yearBox.setSelectedItem(years[3]);
         }
 
+        /**
+         *
+         * @param c
+         */
         public void setLabel(Calendar c) {
             if (lbl != null) {
                 remove(lbl);
@@ -343,6 +422,10 @@ public final class DatePicker extends Observable implements Runnable, WindowFocu
 
         }
 
+        /**
+         *
+         * @param e
+         */
         @Override
         public void actionPerformed(ActionEvent e) {
             Object src = e.getSource();
@@ -376,6 +459,9 @@ public final class DatePicker extends Observable implements Runnable, WindowFocu
     }
     private MonthPanel monthPanel;
     private NavigatePanel navPanel;
+    /**
+     *
+     */
     protected Calendar calendar;
     private Calendar selectedDate;
     private boolean closeOnSelect = true;
@@ -383,18 +469,38 @@ public final class DatePicker extends Observable implements Runnable, WindowFocu
     private DateFormat sdf;
     private JDialog screen;
 
+    /**
+     *
+     * @param observer
+     */
     public DatePicker(Observer observer) {
         this(observer, new Date());
     }
 
+    /**
+     *
+     * @param observer
+     * @param selecteddate
+     */
     public DatePicker(Observer observer, Date selecteddate) {
         this(observer, selecteddate, Locale.US);
     }
 
+    /**
+     *
+     * @param observer
+     * @param locale
+     */
     public DatePicker(Observer observer, Locale locale) {
         this(observer, new Date(), locale);
     }
 
+    /**
+     *
+     * @param observer
+     * @param selecteddate
+     * @param locale
+     */
     @SuppressWarnings("static-access")
     public DatePicker(Observer observer, Date selecteddate, Locale locale) {
         super();
@@ -423,6 +529,10 @@ public final class DatePicker extends Observable implements Runnable, WindowFocu
         screen.setTitle(getString("program.title", "Date Picker"));
     }
 
+    /**
+     *
+     * @param c
+     */
     public void start(Component c) {
         if (c != null) {
             Component p = c.getParent();
@@ -442,6 +552,9 @@ public final class DatePicker extends Observable implements Runnable, WindowFocu
         SwingUtilities.invokeLater(this);
     }
 
+    /**
+     *
+     */
     @Override
     public void run() {
         screen.pack();
@@ -449,6 +562,11 @@ public final class DatePicker extends Observable implements Runnable, WindowFocu
 
     }
 
+    /**
+     *
+     * @param date
+     * @return
+     */
     public Date parseDate(String date) {
         if (sdf == null) {
             sdf = SimpleDateFormat.getDateInstance(SimpleDateFormat.SHORT,
@@ -461,6 +579,11 @@ public final class DatePicker extends Observable implements Runnable, WindowFocu
         }
     }
 
+    /**
+     *
+     * @param date
+     * @return
+     */
     public String formatDate(Date date) {
         if (date == null) {
             return "";
@@ -472,6 +595,12 @@ public final class DatePicker extends Observable implements Runnable, WindowFocu
         return sdf.format(date);
     }
 
+    /**
+     *
+     * @param date
+     * @param pattern
+     * @return
+     */
     public String formatDate(Date date, String pattern) {
         if (date == null) {
             return "";
@@ -479,6 +608,11 @@ public final class DatePicker extends Observable implements Runnable, WindowFocu
         return new SimpleDateFormat(pattern).format(date);
     }
 
+    /**
+     *
+     * @param date
+     * @return
+     */
     public String formatDate(Calendar date) {
         if (date == null) {
             return "";
@@ -486,6 +620,12 @@ public final class DatePicker extends Observable implements Runnable, WindowFocu
         return formatDate(date.getTime());
     }
 
+    /**
+     *
+     * @param date
+     * @param pattern
+     * @return
+     */
     public String formatDate(Calendar date, String pattern) {
         if (date == null) {
             return "";
@@ -493,20 +633,36 @@ public final class DatePicker extends Observable implements Runnable, WindowFocu
         return new SimpleDateFormat(pattern).format(date.getTime());
     }
 
+    /**
+     *
+     * @param l
+     */
     public void setLocale(Locale l) {
         this.locale = l;
     }
 
+    /**
+     *
+     * @return
+     */
     public Locale getLocale() {
         return this.locale == null ? Locale.US : locale;
     }
 
+    /**
+     *
+     * @param observer
+     */
     public final void register(Observer observer) {
         if (observer != null) {
             this.addObserver(observer);
         }
     }
 
+    /**
+     *
+     * @param observer
+     */
     public void unregister(Observer observer) {
         if (observer != null) {
             this.deleteObserver(observer);
@@ -522,6 +678,10 @@ public final class DatePicker extends Observable implements Runnable, WindowFocu
         this.calendar = c;
     }
 
+    /**
+     *
+     * @param d
+     */
     public void setSelectedDate(Date d) {
         if (d != null) {
             if (selectedDate == null) {
@@ -532,6 +692,10 @@ public final class DatePicker extends Observable implements Runnable, WindowFocu
         }
     }
 
+    /**
+     *
+     * @param c
+     */
     protected void updateScreen(Calendar c) {
         if (navPanel == null) {
             navPanel = new NavigatePanel(this);
@@ -542,6 +706,10 @@ public final class DatePicker extends Observable implements Runnable, WindowFocu
         screen.pack();
     }
 
+    /**
+     *
+     * @param calendar
+     */
     protected void setMonthPanel(Calendar calendar) {
         if (calendar != null) {
             this.calendar.setTime(calendar.getTime());
@@ -553,6 +721,10 @@ public final class DatePicker extends Observable implements Runnable, WindowFocu
         screen.getContentPane().add(monthPanel, BorderLayout.CENTER);
     }
 
+    /**
+     *
+     * @param day
+     */
     protected void dayPicked(int day) {
         // this.day = day;
         calendar.set(Calendar.DAY_OF_MONTH, day);
@@ -568,6 +740,12 @@ public final class DatePicker extends Observable implements Runnable, WindowFocu
     }
     private ResourceBundle i18n;
 
+    /**
+     *
+     * @param key
+     * @param dv
+     * @return
+     */
     public String getString(String key, String dv) {
         if (i18n == null || getLocale() != i18n.getLocale()) {
             i18n = ResourceBundle.getBundle("i18n", getLocale());
@@ -580,27 +758,51 @@ public final class DatePicker extends Observable implements Runnable, WindowFocu
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isCloseOnSelect() {
         return closeOnSelect;
     }
 
+    /**
+     *
+     * @param e
+     */
     @Override
     public void windowGainedFocus(WindowEvent e) {
     }
 
+    /**
+     *
+     * @param e
+     */
     @Override
     public void windowLostFocus(WindowEvent e) {
         screen.toFront();
     }
 
+    /**
+     *
+     * @return
+     */
     public JDialog getScreen() {
         return this.screen;
     }
 
+    /**
+     *
+     * @param closeOnSelect
+     */
     public void setCloseOnSelect(boolean closeOnSelect) {
         this.closeOnSelect = closeOnSelect;
     }
 
+    /**
+     *
+     * @param argv
+     */
     public static void main(String[] argv) {
         DatePicker dp = new DatePicker(null);
 

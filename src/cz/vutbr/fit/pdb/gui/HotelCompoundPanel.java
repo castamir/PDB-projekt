@@ -8,9 +8,11 @@ import java.awt.event.*;
 import java.util.Map;
 import java.awt.Shape;
 import javax.swing.JPanel;
-
 import cz.vutbr.fit.pdb.models.ArealModel;
+import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -24,18 +26,22 @@ public class HotelCompoundPanel extends JPanel implements MouseListener {
     //private double zoom = 1.0;
     private Sluzby parentPanel;
     private Map<String, Shape> shapes;
-    
     private ArealModel arealModel;
-    
     private String selectedBuilding;
-    
-    private static final String[] excludeBuildings = {"Hotel","Bazén","Bar+Disko","Služby u bazénu"};
+    private static final String[] excludeBuildings = {"Hotel", "Bazén", "Bar+Disko", "Služby u bazénu"};
 
+    /**
+     *
+     */
     public HotelCompoundPanel() {
         this.addMouseListener(this);
         arealModel = new ArealModel();
     }
 
+    /**
+     *
+     * @param g
+     */
     @Override
     public void paint(Graphics g) {
         //g.clearRect(0, 0, getWidth(), getHeight());
@@ -50,13 +56,7 @@ public class HotelCompoundPanel extends JPanel implements MouseListener {
         Graphics2D g2D = (Graphics2D) g;
         //super.paint(g2D);
 
-        if (shapes == null) {
-            try {
-                shapes = arealModel.loadShapes();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        loadShapes();
 
 
         for (Map.Entry<String, Shape> entry : shapes.entrySet()) {
@@ -65,15 +65,14 @@ public class HotelCompoundPanel extends JPanel implements MouseListener {
             Color background = Color.darkGray;
             Color fontColor = Color.lightGray;
             Color borderColor = Color.black;
-            
+
             if (Arrays.asList(excludeBuildings).contains(entry.getKey())) {
                 background = Color.gray;
-            }
-            else if (selectedBuilding != null && selectedBuilding.equals(entry.getKey())) {
+            } else if (selectedBuilding != null && selectedBuilding.equals(entry.getKey())) {
                 background = Color.green;
                 fontColor = Color.darkGray;
             }
-            
+
             g2D.setPaint(background);
             g2D.fill(entry.getValue());
             g2D.setPaint(borderColor);
@@ -84,52 +83,99 @@ public class HotelCompoundPanel extends JPanel implements MouseListener {
         }
     }
 
+    /**
+     *
+     * @param panel
+     */
     public void setParentPanel(Sluzby panel) {
         parentPanel = panel;
+    }
+    
+    /**
+     *
+     */
+    public void update() {
+        reloadShapes();
+    }
+    
+    private void loadShapes() {
+        if (shapes == null) {
+            try {
+                shapes = arealModel.loadShapes();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    private void reloadShapes() {
+        if (shapes != null) {
+            shapes.clear();
+            shapes = null;
+        }
+        
+        selectedBuilding = null;
+        
+        loadShapes();
     }
 
 
     /* MouseListener methods */
+    /**
+     *
+     * @param e
+     */
     @Override
     public void mouseClicked(MouseEvent e) {
         String buildingName = null;
-        
         try {
             buildingName = arealModel.getBuildingAtPoint(e.getX(), e.getY());
-        } catch (Exception exc) {
-            exc.printStackTrace();
+        } catch (SQLException ex) {
+            Logger.getLogger(HotelCompoundPanel.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(HotelCompoundPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         if (buildingName != null) {
-            
+
             if (!Arrays.asList(excludeBuildings).contains(buildingName)) {
-                parentPanel.updateTitle(buildingName);    
+                parentPanel.updateTitle(buildingName);
                 selectedBuilding = buildingName;
             }
-            
+
             this.repaint();
         }
     }
 
-    // povinna implementace metod
+    /**
+     *
+     * @param e
+     */
     @Override
     public void mouseEntered(MouseEvent e) {
     }
 
+    /**
+     *
+     * @param e
+     */
     @Override
     public void mousePressed(MouseEvent e) {
     }
 
+    /**
+     *
+     * @param e
+     */
     @Override
     public void mouseReleased(MouseEvent e) {
     }
 
+    /**
+     *
+     * @param e
+     */
     @Override
     public void mouseExited(MouseEvent e) {
     }
-    /*
-     public void setZoom(double zoomFactor) {
-     zoom = zoomFactor;
-     repaint();
-     }*/
 }
