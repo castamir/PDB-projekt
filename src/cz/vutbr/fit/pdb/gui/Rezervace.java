@@ -39,7 +39,7 @@ import javax.swing.filechooser.FileFilter;
 public class Rezervace extends javax.swing.JPanel {
 
     /**
-     * Creates new form Rezervace
+     * Konstruktor
      */
     public Rezervace() {
         initComponents();
@@ -47,7 +47,7 @@ public class Rezervace extends javax.swing.JPanel {
     }
 
     /**
-     *
+     * Inicializace
      */
     public void myInit() {
         modelObr = new ObrazkyModel();
@@ -58,14 +58,12 @@ public class Rezervace extends javax.swing.JPanel {
         fc.setFileFilter(new FileFilter() {
             @Override
             public boolean accept(File file) {
-                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
                 return file.getName().endsWith(".jpg") || file.getName().endsWith(".jpeg")
                         || file.getName().endsWith(".png");
             }
 
             @Override
             public String getDescription() {
-                //throw new UnsupportedOperationException("jpeg & png"); //To change body of generated methods, choose Tools | Templates.
                 return "Only jpeg & png files";
             }
         });
@@ -115,13 +113,11 @@ public class Rezervace extends javax.swing.JPanel {
         updateCheckBoxes(rezervaceOd_field.getText(), rezervaceDo_field.getText());
     }
 
-    /*
-     * Pokud je obsazeno, tak uncheck..
-     */
     /**
-     *
-     * @param _od
-     * @param _do
+     * Updatne checkboxy (napr. znemozni na ne klikat a odznaci je pokud je 
+     * pokoj v danem odbobi obsazen) podle vybraneho datumu
+     * @param _od datum od
+     * @param _do datum do
      */
     public void updateCheckBoxes(String _od, String _do) {
         try {
@@ -146,36 +142,6 @@ public class Rezervace extends javax.swing.JPanel {
                 checkBoxlist.get(i).setEnabled(true);
             }
         }
-    }
-
-    /**
-     *
-     */
-    public void loadImagesFromDb() {
-        //System.out.println("load");
-        try {
-            System.out.println(lastInsertedImgId);
-            if (lastInsertedImgId != null) {
-                icon = new ImageIcon(modelObr.getImage(lastInsertedImgId));
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(Rezervace.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    /**
-     *
-     * @param i
-     * @return
-     */
-    public ImageIcon updateIcon(int i) {
-        ImageIcon tmp = null;
-        try {
-            tmp = new ImageIcon(modelObr.getImage(i));
-        } catch (SQLException ex) {
-            Logger.getLogger(Rezervace.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return tmp;
     }
 
     /**
@@ -204,14 +170,10 @@ public class Rezervace extends javax.swing.JPanel {
         jLabel8 = new javax.swing.JLabel();
         email_field = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
-        parkovaciMisto_checkbox = new javax.swing.JCheckBox();
-        pocetParkovacihMist_spinner = new javax.swing.JSpinner();
-        jLabel9 = new javax.swing.JLabel();
         pridatFotoAuta_button = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         vozidla_kontejner = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
-        otocit_button = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         rezervaceOd_field = new cz.vutbr.fit.pdb.utils.ObservingTextField();
@@ -327,19 +289,7 @@ public class Rezervace extends javax.swing.JPanel {
                 .addComponent(email_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Parkování"));
-
-        parkovaciMisto_checkbox.setText("Parkovací místa?");
-        parkovaciMisto_checkbox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                parkovaciMisto_checkboxActionPerformed(evt);
-            }
-        });
-
-        pocetParkovacihMist_spinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(1)));
-        pocetParkovacihMist_spinner.setEnabled(false);
-
-        jLabel9.setText("Počet");
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Automobily"));
 
         pridatFotoAuta_button.setText("Přidej");
         pridatFotoAuta_button.addActionListener(new java.awt.event.ActionListener() {
@@ -371,52 +321,27 @@ public class Rezervace extends javax.swing.JPanel {
             }
         });
 
-        otocit_button.setText("Otoč");
-        otocit_button.setEnabled(false);
-        otocit_button.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                otocit_buttonActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(parkovaciMisto_checkbox)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel9)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(pocetParkovacihMist_spinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(pridatFotoAuta_button)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(otocit_button)
-                        .addGap(0, 110, Short.MAX_VALUE)))
-                .addContainerGap())
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addComponent(pridatFotoAuta_button)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton1)
+                .addContainerGap(177, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(parkovaciMisto_checkbox)
-                    .addComponent(pocetParkovacihMist_spinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(19, 19, 19)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(pridatFotoAuta_button)
-                    .addComponent(jButton1)
-                    .addComponent(otocit_button))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton1))
+                .addGap(40, 40, 40)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE))
         );
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Období"));
@@ -624,11 +549,11 @@ public class Rezervace extends javax.swing.JPanel {
                             .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(vlozitRezervaci_button)
                     .addComponent(zpet))
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -649,28 +574,9 @@ public class Rezervace extends javax.swing.JPanel {
                 } catch (IOException ex) {
                     Logger.getLogger(Rezervace.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                //icon = new ImageIcon(getClass().getResource(path));
                 ic = new myIcon();
                 ic.setPreferredSize(new Dimension(60, 60));
                 ic.setPath(file.getCanonicalPath().toString());
-                //System.out.println("Opening: " + file.getName() + ".");
-                /*System.out.println("Opening: " +path);
-                 System.out.println("Opening path to DB: "+ic.getPath());*/
-                //Load z DB!
-                /*try {
-                 //DRUHY PARAMETR JE ID ZAKAZNIKA
-                 lastInsertedImgId = modelObr.insertImage(new File(defaultSearchDir).getAbsolutePath()+"/"+file.getName(),1033);
-                 ic = new myIcon();
-                 ic.setIndex(lastInsertedImgId);
-                 //Miniatury budou mit velikost 60x60px
-                 ic.setPreferredSize(new Dimension(60,60));
-                 System.out.println("posledni id z obrazku:" + ic.getIndex());
-                 System.out.println("posledni id z db:" + lastInsertedImgId);
-                 //System.out.println("/icons/"+file.getName());
-        
-                 } catch (SQLException ex) {
-                 Logger.getLogger(Rezervace.class.getName()).log(Level.SEVERE, null, ex);
-                 }*/
             } catch (IOException ex) {
                 Logger.getLogger(Rezervace.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -678,22 +584,14 @@ public class Rezervace extends javax.swing.JPanel {
             System.out.println("Cancelled by user.");
             load = false;
         }
-        //Load z DB!
-        /*if(load){
-
-         loadImagesFromDb();
-         }*/
         if (icon != null && load) {
             //Jen pro zobrazeni, stejne se do DB ulozi cely obrazek
             Image img = icon.getImage();
             Image scaledImg = img.getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH);
             ic.setIcon(new ImageIcon(scaledImg));
-            //ic.setIcon(icon);
             iconList.add(ic);
             vozidla_kontejner.add(iconList.get(iconList.size() - 1));
             vozidla_kontejner.revalidate();
-            //auti.setVisible(true);
-            //auti.setIcon(icon);
         }
     }//GEN-LAST:event_pridatFotoAuta_buttonActionPerformed
 
@@ -706,28 +604,14 @@ public class Rezervace extends javax.swing.JPanel {
                 tmp.setVisible(false);
                 tmp.setIcon(null);
                 it.remove();
-                //Mazani z DB!
-                /*try {
-                 modelObr.delete(tmp.getIndex());
-                 //tmp.getIndex();
-                 System.out.println("Chci smazat index: "+tmp.getIndex());
-                 vozidla_kontejner.revalidate();
-                 } catch (SQLException ex) {
-                 Logger.getLogger(Rezervace.class.getName()).log(Level.SEVERE, null, ex);
-                 }*/
             }
-
-            //System.out.println(index);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    /*
-     * Osetrit:
-     *          1) od 12.12.2013 od 3.4.2013
+    /**
+     * Provede vlozeni zaznamu do DB
      */
     private void vlozitRezervaci_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vlozitRezervaci_buttonActionPerformed
-        // TODO add your handling code here:
-
         int zakaznik_id;
         boolean again = false;
         String jmeno = jmeno_field.getText();
@@ -740,8 +624,6 @@ public class Rezervace extends javax.swing.JPanel {
         String email = email_field.getText();
         String rezervaceOd = rezervaceOd_field.getText();
         String rezervaceDo = rezervaceDo_field.getText();
-        // implicitně je to 0
-        int pocetParkovacichMist = 0;
         if (jmeno.equals("") || prijmeni.equals("") || adresa.equals("") || mesto.equals("")
                 || psc.equals("") || kraj.equals("") || telefon.equals("") || email.equals("")) {
             JOptionPane.showMessageDialog(getParent(), "Všechna pole musí být vyplněna, prosím vyplňte je!", "Chyba", JOptionPane.ERROR_MESSAGE);
@@ -775,14 +657,11 @@ public class Rezervace extends javax.swing.JPanel {
                     }
 
                     zakaznik_id = modelZakaznik.insert(jmeno, prijmeni, adresa, mesto, psc, kraj, telefon, email);
-                    //int[] pokoje = new int[] {1,2};
-                    //modelRezervace.vytvoritRezervaci(zakaznik_id, pokoje, "2013-12-15", "2013-12-20");
                     System.out.println("Pro zaakznika id: " + zakaznik_id);
 
                     modelRezervace.vytvoritRezervaci(zakaznik_id, rezervace, d_od, d_do);
 
                     updateCheckBoxes(rezervaceOd, rezervaceDo);
-                    //lastInsertedImgId = modelObr.insertImage(new File(defaultSearchDir).getAbsolutePath()+"/"+file.getName(),1033);
                     it = iconList.listIterator();
                     myIcon tmp;
                     while (it.hasNext()) {
@@ -801,23 +680,10 @@ public class Rezervace extends javax.swing.JPanel {
                 again = true;
             }
         }
-        if (parkovaciMisto_checkbox.isSelected()) {
-            pocetParkovacichMist = (int) pocetParkovacihMist_spinner.getValue();
-        }
         if (!again) {
             getToolkit().getSystemEventQueue().postEvent(new WindowEvent(pFrame, WindowEvent.WINDOW_CLOSING));
         }
     }//GEN-LAST:event_vlozitRezervaci_buttonActionPerformed
-
-    private void parkovaciMisto_checkboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_parkovaciMisto_checkboxActionPerformed
-        if (parkovaciMisto_checkbox.isSelected()) {
-            //System.out.println("Checked");
-            pocetParkovacihMist_spinner.setEnabled(true);
-        } else {
-            //System.out.println("Unchecked");
-            pocetParkovacihMist_spinner.setEnabled(false);
-        }
-    }//GEN-LAST:event_parkovaciMisto_checkboxActionPerformed
 
     private void kalendar_odMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_kalendar_odMouseClicked
         String lang = null;
@@ -827,7 +693,6 @@ public class Rezervace extends javax.swing.JPanel {
         Date selectedDate = dp.parseDate(rezervaceOd_field.getText());
         dp.setSelectedDate(selectedDate);
         dp.start(rezervaceOd_field);
-        //updateCheckBoxes(rezervaceOd_field.getText(),rezervaceDo_field.getText());
     }//GEN-LAST:event_kalendar_odMouseClicked
 
     private void kalendar_doMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_kalendar_doMouseClicked
@@ -838,28 +703,7 @@ public class Rezervace extends javax.swing.JPanel {
         Date selectedDate = dp.parseDate(rezervaceDo_field.getText());
         dp.setSelectedDate(selectedDate);
         dp.start(rezervaceDo_field);
-        //updateCheckBoxes(rezervaceOd_field.getText(),rezervaceDo_field.getText());
     }//GEN-LAST:event_kalendar_doMouseClicked
-
-    private void otocit_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_otocit_buttonActionPerformed
-        it = iconList.listIterator();
-        myIcon tmp;
-        while (it.hasNext()) {
-            tmp = it.next();
-            if (tmp.isActive()) {
-                try {
-                    modelObr.rotateImage(tmp.getIndex());
-                    ImageIcon i = updateIcon(tmp.getIndex());
-                    if (i != null) {
-                        tmp.setIcon(i);
-                    }
-                    System.out.println("Chci otocit index: " + tmp.getIndex());
-                } catch (SQLException ex) {
-                    Logger.getLogger(Rezervace.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
-    }//GEN-LAST:event_otocit_buttonActionPerformed
 
     private void zpetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zpetActionPerformed
         pFrame.dispose();
@@ -874,8 +718,8 @@ public class Rezervace extends javax.swing.JPanel {
     }
 
     /**
-     *
-     * @return
+     * Vraci aktualni datum ve formatu yyyy-mm-dd
+     * @return datum ve formatu yyyy-mm-dd
      */
     public static String now() {
         Calendar cal = Calendar.getInstance();
@@ -884,8 +728,8 @@ public class Rezervace extends javax.swing.JPanel {
     }
 
     /**
-     *
-     * @param p
+     * Nastavi rodicovske okno
+     * @param p rodicovske okno
      */
     public void setParentFrame(JFrame p) {
         pFrame = p;
@@ -896,7 +740,6 @@ public class Rezervace extends javax.swing.JPanel {
     private Map<Integer, String> pokoje;
     private List<Integer> rezervovanePokoje;
     private Integer lastInsertedImgId;
-    //Create a file chooser
     private ObrazkyModel modelObr;
     private ZakaznikModel modelZakaznik;
     private RezervaceModel modelRezervace;
@@ -925,7 +768,6 @@ public class Rezervace extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
@@ -938,9 +780,6 @@ public class Rezervace extends javax.swing.JPanel {
     private javax.swing.JLabel kalendar_od;
     private javax.swing.JComboBox kraj_combobox;
     private javax.swing.JTextField mesto_field;
-    private javax.swing.JButton otocit_button;
-    private javax.swing.JCheckBox parkovaciMisto_checkbox;
-    private javax.swing.JSpinner pocetParkovacihMist_spinner;
     private javax.swing.JCheckBox pokoj10_checkbox;
     private javax.swing.JCheckBox pokoj1_checkbox;
     private javax.swing.JCheckBox pokoj2_checkbox;
