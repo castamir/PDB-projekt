@@ -1,6 +1,7 @@
 package cz.vutbr.fit.pdb.models;
 
 import cz.vutbr.fit.pdb.application.ServiceLocator;
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -23,11 +24,26 @@ import oracle.jdbc.pool.OracleDataSource;
 public class RezervaceModel extends BaseModel {
 
     public Map<Integer, Map<String, Object>> getRezervaceVObdobi(String datum_od, String datum_do, Integer pokoj) throws SQLException, ParseException {
+        String[] pokoje = {pokoj.toString()};
+        return getRezervaceVObdobi(datum_od, datum_do, pokoje);
+    }
+
+    public Map<Integer, Map<String, Object>> getRezervaceVObdobi(String datum_od, String datum_do) throws SQLException, ParseException {
+        String[] pokoje = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
+        return getRezervaceVObdobi(datum_od, datum_do, pokoje);
+    }
+
+    public Map<Integer, Map<String, Object>> getRezervaceVObdobi(String datum_od, String datum_do, String[] pokoje) throws SQLException, ParseException {
 
         String query = "SELECT * FROM rezervace WHERE ((od BETWEEN ? AND ?) OR (do BETWEEN ? AND ?) OR (? BETWEEN od AND do) OR (? BETWEEN od AND do))";
 
-        if (pokoj != null) {
-            query += " AND pokoj=?";
+        if (pokoje.length > 0) {
+            StringBuilder builder = new StringBuilder();
+            for (String s : pokoje) {
+                builder.append(",");
+                builder.append(s);
+            }
+            query = query + " AND pokoj IN (" + builder.toString().substring(1) + ")";
         }
 
         Map<Integer, Map<String, Object>> result = new LinkedHashMap<>();
@@ -46,10 +62,6 @@ public class RezervaceModel extends BaseModel {
 
             stmt.setDate(5, d_od);
             stmt.setDate(6, d_do);
-
-            if (pokoj != null) {
-                stmt.setInt(7, pokoj);
-            }
 
             try (ResultSet rs = stmt.executeQuery()) {
 

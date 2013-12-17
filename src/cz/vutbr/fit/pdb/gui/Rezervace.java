@@ -7,6 +7,8 @@ import cz.vutbr.fit.pdb.utils.DatePicker;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -783,7 +785,7 @@ public class Rezervace extends javax.swing.JPanel {
          System.out.println("Do: "+rezervaceDo);*/
         //System.out.println(rezervovanePokoje.toArray());
         if (!again) {
-            pFrame.dispose();
+            getToolkit().getSystemEventQueue().postEvent(new WindowEvent(pFrame, WindowEvent.WINDOW_CLOSING));
         }
     }//GEN-LAST:event_vlozitRezervaci_buttonActionPerformed
 
