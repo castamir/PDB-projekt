@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2011.11.26)  18 DEC 2013 23:41
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2011.11.26)  18 DEC 2013 23:53
 entering extended mode
 **pdb
 (d:\SKOLA\PDB-projekt\doku\pdb.tex
@@ -534,27 +534,24 @@ Package: verbatim 2003/08/22 v1.5q LaTeX2e package for verbatim enhancements
 \tab@position=\count116
 \tab@size=\count117
 \listing@line=\count118
-) (d:\SKOLA\PDB-projekt\doku\pdb.aux
+) (d:\SKOLA\PDB-projekt\doku\pdb.aux)
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 8.
+LaTeX Font Info:    ... okay on input line 8.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 8.
+LaTeX Font Info:    ... okay on input line 8.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 8.
+LaTeX Font Info:    ... okay on input line 8.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 8.
+LaTeX Font Info:    ... okay on input line 8.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 8.
+LaTeX Font Info:    ... okay on input line 8.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 8.
+LaTeX Font Info:    ... okay on input line 8.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 8.
+LaTeX Font Info:    ... okay on input line 8.
+LaTeX Font Info:    Try loading font information for OT1+ptm on input line 8.
 
-LaTeX Warning: Label `admin' multiply defined.
-
-)
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 7.
-LaTeX Font Info:    ... okay on input line 7.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 7.
-LaTeX Font Info:    ... okay on input line 7.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 7.
-LaTeX Font Info:    ... okay on input line 7.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 7.
-LaTeX Font Info:    ... okay on input line 7.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 7.
-LaTeX Font Info:    ... okay on input line 7.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 7.
-LaTeX Font Info:    ... okay on input line 7.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 7.
-LaTeX Font Info:    ... okay on input line 7.
-LaTeX Font Info:    Try loading font information for OT1+ptm on input line 7.
- (D:\MiKTeX\tex\latex\psnfss\ot1ptm.fd
+(D:\MiKTeX\tex\latex\psnfss\ot1ptm.fd
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 )
 *geometry* driver: auto-detecting
@@ -609,7 +606,7 @@ Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: hyperref package is loaded.
 Package caption Info: End \AtBeginDocument code.
 \AtBeginShipoutBox=\box29
-Package hyperref Info: Link coloring ON on input line 7.
+Package hyperref Info: Link coloring ON on input line 8.
  (D:\MiKTeX\tex\latex\hyperref\nameref.sty
 Package: nameref 2010/04/30 v2.40 Cross-referencing by name of section
 
@@ -618,15 +615,15 @@ Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
 \c@section@level=\count125
 )
-LaTeX Info: Redefining \ref on input line 7.
-LaTeX Info: Redefining \pageref on input line 7.
-LaTeX Info: Redefining \nameref on input line 7.
+LaTeX Info: Redefining \ref on input line 8.
+LaTeX Info: Redefining \pageref on input line 8.
+LaTeX Info: Redefining \nameref on input line 8.
 
 (d:\SKOLA\PDB-projekt\doku\pdb.out) (d:\SKOLA\PDB-projekt\doku\pdb.out)
 \@outlinefile=\write3
 
 (d:\SKOLA\PDB-projekt\doku\titlepage.tex
-<images/fit.pdf, id=19, 360.34625pt x 360.34625pt>
+<images/fit.pdf, id=23, 360.34625pt x 360.34625pt>
 File: images/fit.pdf Graphic file (type pdf)
  <use images/fit.pdf>
 Package pdftex.def Info: images/fit.pdf used on input line 7.
@@ -642,90 +639,79 @@ File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 {C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map} <d:/SKOLA/PDB-projekt/doku
 /images/fit.pdf>])
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 10.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 11.
 
 
 Package hyperref Warning: Composite letter `\textasciicaron+r'
 (hyperref)                not defined in PD1 encoding,
-(hyperref)                removing `\textasciicaron' on input line 13.
+(hyperref)                removing `\textasciicaron' on input line 14.
 
 
 Package hyperref Warning: Composite letter `\textasciicaron+e'
 (hyperref)                not defined in PD1 encoding,
-(hyperref)                removing `\textasciicaron' on input line 13.
+(hyperref)                removing `\textasciicaron' on input line 14.
 
-<images/login.png, id=35, 354.57469pt x 174.6525pt>
+<images/login.png, id=39, 354.57469pt x 174.6525pt>
 File: images/login.png Graphic file (type png)
  <use images/login.png>
-Package pdftex.def Info: images/login.png used on input line 25.
+Package pdftex.def Info: images/login.png used on input line 26.
 (pdftex.def)             Requested size: 354.57382pt x 174.65207pt.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10.95> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 26.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 27.
 
 
 Package hyperref Warning: Composite letter `\textasciicaron+c'
 (hyperref)                not defined in PD1 encoding,
-(hyperref)                removing `\textasciicaron' on input line 32.
+(hyperref)                removing `\textasciicaron' on input line 33.
 
 
-Underfull \hbox (badness 2556) in paragraph at lines 44--45
+Underfull \hbox (badness 2556) in paragraph at lines 45--46
 \OT1/ptm/m/n/10.95 Tento sou-bor se mus[] jme-no-vat \OT1/pcr/m/n/10.95 config
 .local.properties \OT1/ptm/m/n/10.95 a mus[] b[]yt v ad-res[]a[]ri
  []
+
+
+Package hyperref Warning: Composite letter `\textasciicaron+r'
+(hyperref)                not defined in PD1 encoding,
+(hyperref)                removing `\textasciicaron' on input line 47.
 
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.49 \item \textbf
-                  {Administrace} -- popsána v sekci \ref{sec1} [1 <d:/SKOLA/PD
-B-projekt/doku/images/login.png>]
-LaTeX Font Info:    Try loading font information for OMS+ptm on input line 49.
- (D:\MiKTeX\tex\latex\psnfss\omsptm.fd
+l.59 \end{center}
+                  [1 <d:/SKOLA/PDB-projekt/doku/images/login.png>]
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 64.
+
+(D:\MiKTeX\tex\latex\psnfss\omsptm.fd
 File: omsptm.fd 
 )
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 49.
-
-<images/sluzby.png, id=49, 685.8122pt x 319.94531pt>
-File: images/sluzby.png Graphic file (type png)
- <use images/sluzby.png>
-Package pdftex.def Info: images/sluzby.png used on input line 58.
-(pdftex.def)             Requested size: 685.81053pt x 319.94452pt.
-
-Overfull \hbox (253.32874pt too wide) in paragraph at lines 58--59
- [] 
- []
-
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 64.
-[2 <d:/SKOLA/PDB-projekt/doku/images/sluzby.png>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 64.
-
-(d:\SKOLA\PDB-projekt\doku\pdb.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 64.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 64.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 64.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 88.
+ [2]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 88.
+ (d:\SKOLA\PDB-projekt\doku\pdb.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 88.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 88.
 Package rerunfilecheck Info: File `pdb.out' has not changed.
-(rerunfilecheck)             Checksum: 6655FA4EDF7BE67850E10ACD4BEAFAD7;309.
-
-
-LaTeX Warning: There were multiply-defined labels.
-
+(rerunfilecheck)             Checksum: 3392D9EE8E099EC87E0F79E58E09D3E6;402.
  ) 
 Here is how much of TeX's memory you used:
- 8122 strings out of 494045
- 115661 string characters out of 3155643
- 219181 words of memory out of 3000000
- 11284 multiletter control sequences out of 15000+200000
+ 8119 strings out of 494045
+ 115587 string characters out of 3155643
+ 220145 words of memory out of 3000000
+ 11282 multiletter control sequences out of 15000+200000
  27678 words of font info for 62 fonts, out of 3000000 for 9000
  715 hyphenation exceptions out of 8191
- 38i,8n,38p,452b,380s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 38i,8n,38p,452b,381s stack positions out of 5000i,500n,10000p,200000b,50000s
 {D:/MiKTeX/fonts/enc/dvips/fontname/8r.enc}<D:/MiKTeX/fonts/type1/public/amsf
 onts/cm/cmsy10.pfb><D:/MiKTeX/fonts/type1/urw/courier/ucrr8a.pfb><D:/MiKTeX/fon
 ts/type1/urw/times/utmb8a.pfb><D:/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><D:/M
 iKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on pdb.pdf (3 pages, 91294 bytes).
+Output written on pdb.pdf (3 pages, 79509 bytes).
 PDF statistics:
- 79 PDF objects out of 1000 (max. 8388607)
+ 80 PDF objects out of 1000 (max. 8388607)
  14 named destinations out of 1000 (max. 500000)
- 48 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 51 words of extra memory for PDF output out of 10000 (max. 10000000)
 

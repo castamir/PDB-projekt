@@ -2,6 +2,7 @@
 \input{config}
 \usepackage{amsmath}
 \usepackage{moreverb}
+\newcommand\mycomment[1]{}
 
 
 \begin{document} \sloppy
@@ -43,6 +44,20 @@ DB.SID=dbname
 \end{center}
 Tento soubor se musí jmenovat \texttt{config.local.properties} a musí být v adresáři \verb;PDB-projekt\src\cz\vutbr\fit\pdb\config;. V případě existence tohoto souboru se pokusí aplikace po spuštení připojit k databázi automaticky, aniž by bylo nutné na něco klikat.
 
+\subsection{Přístupové údaje k databázím}
+
+\begin{center}
+  \begin{tabular}{ | c || c | c |}
+  	\hline
+  	Jméno a příjmení & login & heslo\\
+    \hline\hline
+    Tomáš Mikulica & xmikul45 & 3mycjfdc \\ \hline
+    Miroslav Paulík & xpauli00 & pa2mx4qu \\ \hline
+    Pavel Gajdoš & xgajdo13 & 9 \\
+    \hline
+  \end{tabular}
+\end{center}
+
 \section{Ovládání aplikace}
 Aplikace je rozdělena do několika záložek: 
 \begin{itemize}
@@ -53,12 +68,21 @@ Aplikace je rozdělena do několika záložek:
 \item \textbf{Rezervace} -- V této záložce je možné si zobrazit seznam rezervací pokojů v zadaném období, dále je možné vytvořit novou rezervaci a případně vyhlásit stav karantény.
 \end{itemize}
 %---obrazek
-\begin{figure}[h!]
+\mycomment{\begin{figure}[h!]
 \begin{center}
 \scalebox{0.5}{\includegraphics{images/sluzby.png}}
 \caption{Obrazovka služeb.}
 \label{sluzby}
 \end{center}
-\end{figure}
+\end{figure}}
+%---konec obrazek
+%---obrazek
+\mycomment{\begin{figure}[h!]
+\begin{center}
+\scalebox{0.6}{\includegraphics{images/fotografie.png}}
+\caption{Obrazovka fotografií.}
+\label{foto}
+\end{center}
+\end{figure}}
 %---konec obrazek
 \end{document}
