@@ -496,6 +496,7 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         filler6 = new javax.swing.Box.Filler(new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 32767));
         removeBtn = new javax.swing.JButton();
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(30, 0), new java.awt.Dimension(30, 0), new java.awt.Dimension(30, 32767));
+        objectTypePoint = new javax.swing.JRadioButton();
         objectTypeLine = new javax.swing.JRadioButton();
         objectTypePolygon = new javax.swing.JRadioButton();
         objectTypeCircle = new javax.swing.JRadioButton();
@@ -539,6 +540,14 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         });
         jToolBar1.add(removeBtn);
         jToolBar1.add(filler2);
+
+        objectTypeButtonGroup.add(objectTypePoint);
+        objectTypePoint.setText("Point");
+        objectTypePoint.setFocusable(false);
+        objectTypePoint.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        objectTypePoint.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        objectTypePoint.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(objectTypePoint);
 
         objectTypeButtonGroup.add(objectTypeLine);
         objectTypeLine.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
@@ -830,6 +839,7 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
     private javax.swing.ButtonGroup objectTypeButtonGroup;
     private javax.swing.JRadioButton objectTypeCircle;
     private javax.swing.JRadioButton objectTypeLine;
+    private javax.swing.JRadioButton objectTypePoint;
     private javax.swing.JRadioButton objectTypePolygon;
     private javax.swing.JButton removeBtn;
     private javax.swing.JButton saveBtn;
