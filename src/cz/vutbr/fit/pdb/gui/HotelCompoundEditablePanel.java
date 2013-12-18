@@ -510,6 +510,8 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
         distancesBtn = new javax.swing.JButton();
         filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
+        nearestBtn = new javax.swing.JButton();
+        filler9 = new javax.swing.Box.Filler(new java.awt.Dimension(15, 0), new java.awt.Dimension(15, 0), new java.awt.Dimension(15, 32767));
         unionBtn = new javax.swing.JButton();
 
         jToolBar1.setRollover(true);
@@ -627,6 +629,18 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         jToolBar1.add(distancesBtn);
         jToolBar1.add(filler4);
 
+        nearestBtn.setText("NEJBLIŽŠÍ");
+        nearestBtn.setFocusable(false);
+        nearestBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        nearestBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        nearestBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nearestBtnActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(nearestBtn);
+        jToolBar1.add(filler9);
+
         unionBtn.setText("SPOJIT");
         unionBtn.setFocusable(false);
         unionBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -730,6 +744,35 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         }
     }//GEN-LAST:event_unionBtnActionPerformed
 
+    private void nearestBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nearestBtnActionPerformed
+        if (selectedBuilding == null) {
+            JOptionPane.showMessageDialog(getParent(), "Vyberte nejprve objekt.");
+        } else {
+
+            try {
+                
+                String n = JOptionPane.showInputDialog(getParent(), "Vyhledat n nejbližších sousedů:");
+                
+                if (n == null)
+                    return;
+                
+                Map<String, Float> distances = arealModel.getNNearestNeighboursFromBuilding(selectedBuilding, Integer.parseInt(n));
+                
+                String msg = "Nejbližší sousedé ("+n+") objektu '" + selectedBuilding + "' jsou:\n";
+
+                for (Map.Entry<String, Float> entry : distances.entrySet()) {
+
+                    msg += "'" + entry.getKey() + "'" + " ve vzdálenosti " + entry.getValue().toString() + "\n";
+                }
+
+                JOptionPane.showMessageDialog(getParent(), msg);
+            } catch (SQLException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(getParent(), "Při výpočtu došlo k chybě.");
+            }
+        }
+    }//GEN-LAST:event_nearestBtnActionPerformed
+
     private void distancesBtnActionPerformed(java.awt.event.ActionEvent evt) {
         if (selectedBuilding == null) {
             JOptionPane.showMessageDialog(getParent(), "Vyberte nejprve objekt.");
@@ -780,8 +823,10 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
     private javax.swing.Box.Filler filler6;
     private javax.swing.Box.Filler filler7;
     private javax.swing.Box.Filler filler8;
+    private javax.swing.Box.Filler filler9;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JButton lengthBtn;
+    private javax.swing.JButton nearestBtn;
     private javax.swing.ButtonGroup objectTypeButtonGroup;
     private javax.swing.JRadioButton objectTypeCircle;
     private javax.swing.JRadioButton objectTypeLine;

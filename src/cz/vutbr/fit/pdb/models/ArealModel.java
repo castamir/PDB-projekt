@@ -329,14 +329,14 @@ public class ArealModel extends BaseModel {
         
         OracleDataSource ods = ServiceLocator.getConnection();
         try (Connection conn = ods.getConnection(); 
-             PreparedStatement stmt = conn.prepareStatement("select nazev, SDO_NN_DISTANCE(10) as distance from areal where SDO_NN(geometrie, (SELECT x.geometrie FROM areal x WHERE x.nazev='{"+name+"}'), '', 10) = 'TRUE' ORDER BY distance")) 
+             PreparedStatement stmt = conn.prepareStatement("select nazev, SDO_NN_DISTANCE(1) as distance from areal where SDO_NN(geometrie, (SELECT x.geometrie FROM areal x WHERE x.nazev='"+name+"'), 'sdo_batch_size=1', 1) = 'TRUE' AND ROWNUM <= ? AND nazev <> ? ORDER BY distance")) 
         {
-            //stmt.setString(1, name);
-            //stmt.setInt(2, n);
+            stmt.setString(2, name);
+            stmt.setInt(1, n);
             
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    result.put(rs.getString("nazev"), rs.getFloat("distance"));
+                    result.put(rs.getString("nazev"), (float)rs.getInt("distance"));
                 }
             }
         }
