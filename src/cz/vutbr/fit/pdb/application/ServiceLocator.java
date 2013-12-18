@@ -34,8 +34,7 @@ public class ServiceLocator {
     public static OracleDataSource getConnection() throws SQLException {
         OracleDataSource ods = new OracleDataSource();
         IIdentity identity = ServiceLocator.getAuthenticator().getIdentity();
-        Properties current_properties = ServiceLocator.getProperties();
-        String connectionString = "jdbc:oracle:thin:@" + current_properties.getProperty("DB.HOST") + ":" + current_properties.getProperty("DB.PORT") + ":" + current_properties.getProperty("DB.SID");
+        String connectionString = "jdbc:oracle:thin:@berta.fit.vutbr.cz:1522:DBFIT";
         ods.setURL(connectionString);
 
         ods.setUser(identity.getUsername());

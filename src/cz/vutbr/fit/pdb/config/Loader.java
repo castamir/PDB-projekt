@@ -30,7 +30,7 @@ public class Loader {
         }
         return properties;
     }
-    
+
     private Properties parsePropertiesFrom(String configFileName) {
             Properties prop = new Properties();
             try {
@@ -39,6 +39,9 @@ public class Loader {
                 }
             } catch (IOException ex) {
                 Logger.getLogger(Loader.class.getName()).log(Level.SEVERE, configFileName + " not found", ex);
+                prop.setProperty("DB.HOST", "berta.fit.vutbr.cz");
+                prop.setProperty("DB.PORT", "1522");
+                prop.setProperty("DB.SID", "DBFIT");
             }
             return prop;
     }
