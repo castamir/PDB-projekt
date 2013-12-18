@@ -4,6 +4,8 @@ import cz.vutbr.fit.pdb.application.ServiceLocator;
 import cz.vutbr.fit.pdb.config.Loader;
 import cz.vutbr.fit.pdb.models.ReloadDatabaseModel;
 import java.awt.FlowLayout;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JTabbedPane;
 
 /**
@@ -79,13 +81,13 @@ public class MainWindow extends javax.swing.JFrame {
         });
         jTabbedPane1.addTab("Administrace", administrace1);
         jTabbedPane1.addTab("Služby", sluzby2);
-        jTabbedPane1.addTab("tab5", hotelCompoundEditablePanel1);
+        jTabbedPane1.addTab("Areál", hotelCompoundEditablePanel1);
 
         javax.swing.GroupLayout icon_kontejnerLayout = new javax.swing.GroupLayout(icon_kontejner);
         icon_kontejner.setLayout(icon_kontejnerLayout);
         icon_kontejnerLayout.setHorizontalGroup(
             icon_kontejnerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 923, Short.MAX_VALUE)
+            .addGap(0, 987, Short.MAX_VALUE)
         );
         icon_kontejnerLayout.setVerticalGroup(
             icon_kontejnerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -105,13 +107,13 @@ public class MainWindow extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("icon_viewer", jPanel1);
+        jTabbedPane1.addTab("Fotografie", jPanel1);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(prehledRezervaci1, javax.swing.GroupLayout.DEFAULT_SIZE, 923, Short.MAX_VALUE)
+            .addComponent(prehledRezervaci1, javax.swing.GroupLayout.DEFAULT_SIZE, 987, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -149,10 +151,15 @@ public class MainWindow extends javax.swing.JFrame {
         JTabbedPane zdroj = (JTabbedPane) evt.getSource();
         int index = zdroj.getSelectedIndex();
         System.out.println("Tab changed to: " + zdroj.getTitleAt(index));
-        if (zdroj.getTitleAt(index).equals("icon_viewer")) {
+        if (zdroj.getTitleAt(index).equals("Fotografie")) {
             iw.updateCombo();
         } else if (zdroj.getTitleAt(index).equals("Služby")) {
-            sluzby2.panelDidAppear();
+            try {
+                sluzby2.panelDidAppear();
+                sluzby2.initTable();
+            } catch (Exception ex) {
+                Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } else if (zdroj.getTitleAt(index).equals("Rezervace")) {
             prehledRezervaci1.updateTable();
         }

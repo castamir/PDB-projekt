@@ -88,7 +88,7 @@ public class Sluzby extends javax.swing.JPanel {
         return new DefaultComboBoxModel(toUpdate);
     }
 
-    private void initTable() throws Exception {
+    public void initTable() throws Exception {
 
         TableColumn tc = this.detail_dne_table.getColumnModel().getColumn(2);
 
@@ -189,7 +189,7 @@ public class Sluzby extends javax.swing.JPanel {
 
                 int comboBoxItemId = 0;
 
-                if (value.get("id") != null) {
+                if (value.get("id") != null && !customer_databaseIdToComboBoxId.isEmpty()) {
                     comboBoxItemId = customer_databaseIdToComboBoxId.get(zakaznik.get("id"));
                 }
 
