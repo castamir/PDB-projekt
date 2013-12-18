@@ -70,7 +70,7 @@ public class myIcon extends JLabel{
         //System.out.println("Klik my Icon");
         if(focusable) {
             if(!active){
-                setBorder(BorderFactory.createLineBorder(Color.red));
+                setBorder(BorderFactory.createLineBorder(Color.green,5));
                 active = true;
             } else {
                 active = false;
