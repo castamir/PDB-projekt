@@ -36,7 +36,7 @@ public class PrehledRezervaci extends javax.swing.JPanel {
 
         initComponents();
         myInit();
-        initTable();
+        //initTable();
     }
 
     /**
@@ -60,9 +60,9 @@ public class PrehledRezervaci extends javax.swing.JPanel {
     /**
      *
      */
-    public void initTable() {
+    /*public void initTable() {
         updateTable();
-    }
+    }*/
 
     /**
      *
