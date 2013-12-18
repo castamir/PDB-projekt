@@ -112,7 +112,7 @@ public class Sluzby extends javax.swing.JPanel {
         refTableData = new ArrayList<>();
     }
 
-    private void initComboBoxItems() {
+    public void initComboBoxItems() {
         customer_databaseIdToComboBoxId = new HashMap<>();
 
         try {
