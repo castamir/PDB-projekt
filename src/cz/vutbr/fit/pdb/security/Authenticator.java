@@ -3,12 +3,7 @@ package cz.vutbr.fit.pdb.security;
 import cz.vutbr.fit.pdb.application.InvalidCredentialsException;
 import cz.vutbr.fit.pdb.application.ServiceLocator;
 import cz.vutbr.fit.pdb.models.ReloadDatabaseModel;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Properties;
-import oracle.jdbc.pool.OracleDataSource;
 
 /**
  *
