@@ -2,9 +2,14 @@ package cz.vutbr.fit.pdb.gui;
 
 import cz.vutbr.fit.pdb.application.InvalidCredentialsException;
 import cz.vutbr.fit.pdb.application.ServiceLocator;
+import cz.vutbr.fit.pdb.config.Loader;
 import cz.vutbr.fit.pdb.models.ReloadDatabaseModel;
 import cz.vutbr.fit.pdb.security.IIdentity;
+import java.awt.HeadlessException;
 import java.sql.SQLException;
+import java.util.concurrent.ExecutionException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
@@ -22,6 +27,10 @@ public class Administrace extends javax.swing.JPanel {
     public Administrace() {
         initComponents();
         reset_database_spinner.setVisible(false);
+        if (!Loader.existsLocalConfig()) {
+            logout_button.setEnabled(false);
+            reset_database_button.setEnabled(false);
+        }
     }
 
     /**
@@ -67,8 +76,8 @@ public class Administrace extends javax.swing.JPanel {
                 mainWindow.setPanelVisibility(true);
                 mainWindow.checkPanelAvailability();
                 JOptionPane.showMessageDialog(getParent(), get());
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (InterruptedException | ExecutionException | HeadlessException ex) {
+                Logger.getLogger(Administrace.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 
@@ -223,8 +232,10 @@ public class Administrace extends javax.swing.JPanel {
              }*/
             new BackgroundWorker().execute();
         } else {
-            login_button.setEnabled(true);
             logout_button.setEnabled(true);
+            if (Loader.existsLocalConfig()) {
+                login_button.setEnabled(true);
+            }
             //reset_database_spinner.setVisible(false);
             mainWindow.setPanelVisibility(true);
         }
@@ -238,6 +249,8 @@ public class Administrace extends javax.swing.JPanel {
 
         try {
             ServiceLocator.getAuthenticator().login(username, password);
+            logout_button.setEnabled(true);
+            reset_database_button.setEnabled(true);
         } catch (InvalidCredentialsException ex) {
             JOptionPane.showMessageDialog(getParent(), ex.getMessage(), "Přihlášení se nezdařilo", JOptionPane.ERROR_MESSAGE);
         }
