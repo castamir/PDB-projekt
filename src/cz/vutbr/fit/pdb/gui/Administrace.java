@@ -232,9 +232,9 @@ public class Administrace extends javax.swing.JPanel {
              }*/
             new BackgroundWorker().execute();
         } else {
-            logout_button.setEnabled(true);
+            login_button.setEnabled(true);
             if (Loader.existsLocalConfig()) {
-                login_button.setEnabled(true);
+                logout_button.setEnabled(true);
             }
             //reset_database_spinner.setVisible(false);
             mainWindow.setPanelVisibility(true);
@@ -249,7 +249,9 @@ public class Administrace extends javax.swing.JPanel {
 
         try {
             ServiceLocator.getAuthenticator().login(username, password);
-            logout_button.setEnabled(true);
+            if (Loader.existsLocalConfig()) {
+                logout_button.setEnabled(true);
+            }
             reset_database_button.setEnabled(true);
         } catch (InvalidCredentialsException ex) {
             JOptionPane.showMessageDialog(getParent(), ex.getMessage(), "Přihlášení se nezdařilo", JOptionPane.ERROR_MESSAGE);
