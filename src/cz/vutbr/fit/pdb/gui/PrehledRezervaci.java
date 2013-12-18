@@ -50,11 +50,11 @@ public class PrehledRezervaci extends javax.swing.JPanel {
             Logger.getLogger(PrehledRezervaci.class.getName()).log(Level.SEVERE, null, ex);
         }
         //List<String> seznamPokoju = new ArrayList<>();
-        String[] comboboxItems = new String[vsechnyPokoje.size() + 1];
+        /*String[] comboboxItems = new String[vsechnyPokoje.size() + 1];
         for (Integer key : vsechnyPokoje.keySet()) {
             //seznamPokoju.add(vsechnyPokoje.get(key));
             //System.out.println(vsechnyPokoje.get(key)); //jedna dva tri (serazene podle klice)
-        }
+        }*/
 
         rezervaceOd_field.setText(DateTime.now());
         rezervaceDo_field.setText(DateTime.now());

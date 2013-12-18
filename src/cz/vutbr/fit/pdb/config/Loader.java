@@ -34,7 +34,9 @@ public class Loader {
     private Properties parsePropertiesFrom(String configFileName) {
             Properties prop = new Properties();
             try {
-                prop.load(getClass().getResourceAsStream(configFileName));
+                if(getClass().getResourceAsStream(configFileName) != null) {
+                    prop.load(getClass().getResourceAsStream(configFileName));
+                }
             } catch (IOException ex) {
                 Logger.getLogger(Loader.class.getName()).log(Level.SEVERE, configFileName + " not found", ex);
             }
