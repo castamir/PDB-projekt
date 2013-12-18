@@ -43,19 +43,6 @@ public class PrehledRezervaci extends javax.swing.JPanel {
      *
      */
     public void myInit() {
-        modelRez = new RezervaceModel();
-        try {
-            vsechnyPokoje = modelRez.getPokoje();
-        } catch (SQLException ex) {
-            Logger.getLogger(PrehledRezervaci.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        //List<String> seznamPokoju = new ArrayList<>();
-        /*String[] comboboxItems = new String[vsechnyPokoje.size() + 1];
-        for (Integer key : vsechnyPokoje.keySet()) {
-            //seznamPokoju.add(vsechnyPokoje.get(key));
-            //System.out.println(vsechnyPokoje.get(key)); //jedna dva tri (serazene podle klice)
-        }*/
-
         rezervaceOd_field.setText(DateTime.now());
         rezervaceDo_field.setText(DateTime.now());
 
@@ -414,7 +401,7 @@ public class PrehledRezervaci extends javax.swing.JPanel {
         int rows[] = pokoje_table.getSelectedRows();
         for (int i : rows) {
             try {
-                modelRez.smazatRezervaci(table_data.get(i));
+                modelRezervace.smazatRezervaci(table_data.get(i));
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(getParent(), "Nepodařilo se smazat rezervaci.", "Chyba při práci s databází", JOptionPane.ERROR_MESSAGE);
                 Logger.getLogger(PrehledRezervaci.class.getName()).log(Level.SEVERE, null, ex);
@@ -443,7 +430,7 @@ public class PrehledRezervaci extends javax.swing.JPanel {
         if (dialogResult == JOptionPane.YES_OPTION) {
             try {
                 Date today = DateTime.toDate(DateTime.now());
-                modelRez.smazatRezervaceVObdobi(today, DateTime.addDay(today, 6));
+                modelRezervace.smazatRezervaceVObdobi(today, DateTime.addDay(today, 6));
             } catch (SQLException | ParseException ex) {
                 Logger.getLogger(PrehledRezervaci.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -451,8 +438,7 @@ public class PrehledRezervaci extends javax.swing.JPanel {
         }
 
     }//GEN-LAST:event_jButton2ActionPerformed
-    private RezervaceModel modelRez;
-    private Map<Integer, String> vsechnyPokoje;
+
     private DefaultTableModel model;
     private RezervaceModel modelRezervace;
     private Map<Integer, Integer> table_data;
