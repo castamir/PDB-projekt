@@ -236,8 +236,19 @@ public class ArealModel extends BaseModel {
      */
     public String getBuildingAtPoint(int x, int y) throws SQLException, Exception {
     
+        int x1,x2,x3,y1,y2,y3;
+        int r = 2;
+        
+        x1 = x3 = x;
+        y1 = y - r;
+        y3 = y + r;
+        x2 = x + r;
+        y2 = y;
+        
         OracleDataSource ods = ServiceLocator.getConnection();
-        try (Connection conn = ods.getConnection(); Statement stmt = conn.createStatement(); ResultSet resultSet = stmt.executeQuery("select nazev from areal where SDO_RELATE(geometrie, SDO_GEOMETRY(2001, NULL, SDO_POINT_TYPE(" + x + "," + y + ",NULL), NULL, NULL), 'mask=contains') = 'TRUE'")) {
+        try (Connection conn = ods.getConnection(); Statement stmt = conn.createStatement(); 
+             ResultSet resultSet = stmt.executeQuery("select nazev from areal where SDO_RELATE(geometrie, SDO_GEOMETRY(2003, NULL, NULL, SDO_ELEM_INFO_ARRAY(1,1003,4), SDO_ORDINATE_ARRAY("+x1+","+y1+", "+x2+","+y2+", "+x3+","+y3+")), 'mask=ANYINTERACT') = 'TRUE'"))
+        {
             while (resultSet.next()) {
                 return resultSet.getString("nazev");
             }
@@ -337,6 +348,13 @@ public class ArealModel extends BaseModel {
         return result;
     }
     
+    /**
+     *
+     * @param nam
+     * @param n neighbours to be returned
+     * @return
+     * @throws SQLException
+     */
     public Map<String, Float> getNNearestNeighboursFromBuilding(String name, int n) throws SQLException {
         
         Map<String, Float> result = new LinkedHashMap<>();
@@ -358,7 +376,11 @@ public class ArealModel extends BaseModel {
         return result;
     }
     
-    
+    /**
+     *
+     * @return
+     * @throws SQLException
+     */
     public void doUnionOperation() throws SQLException {
     
         OracleDataSource ods = ServiceLocator.getConnection();
