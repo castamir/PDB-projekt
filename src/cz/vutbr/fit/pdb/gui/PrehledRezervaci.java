@@ -20,8 +20,10 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 /**
- *
- * @author Doma
+ * Třída pro zobrazení rezervací pokojů
+ * @author Paulík Miroslav
+ * @author Mikulica Tomáš
+ * @author Gajdoš Pavel
  */
 public class PrehledRezervaci extends javax.swing.JPanel {
 
