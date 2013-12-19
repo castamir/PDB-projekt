@@ -393,7 +393,8 @@ public class iconViewer extends javax.swing.JPanel {
                 ImageIcon ic = new ImageIcon(modelObr.getImage(obrazek.getIndex()));
                 obrazek.setNewIcon(ic);
                 setNewIcon(ic, false);
-                Entry<Integer, myIcon> en = new AbstractMap.SimpleEntry<Integer, myIcon>(obrazek.getIndex(), obrazek); 
+                Entry<Integer, myIcon> en = new AbstractMap.SimpleEntry<Integer, myIcon>(obrazek.getIndex(), obrazek);
+                obrazkyAktualnihoUz = updateUserImages(lastUserId);
                 list = new ArrayList<>(obrazkyAktualnihoUz.entrySet());
                 list.set(aktualniIndex, en);
             } catch (SQLException ex) {

@@ -9,13 +9,15 @@ import java.util.logging.Logger;
 import javax.swing.JTabbedPane;
 
 /**
- *
- * @author Doma
+ * Hlavni okno aplikace. Do nej jsou pridavany vsechny komponenty
+ * @author Paulík Miroslav
+ * @author Mikulica Tomáš
+ * @author Gajdoš Pavel
  */
 public class MainWindow extends javax.swing.JFrame {
 
     /**
-     * Creates new form MainWindow
+     * Konstruktor
      */
     public MainWindow() {
         initComponents();
@@ -37,7 +39,7 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     /**
-     *
+     * Zkotroluje, zda se ma zazakat prepinani panelu
      */
     public void checkPanelAvailability() {
         if (!Loader.existsLocalConfig() && !ServiceLocator.getAuthenticator().getIdentity().isLoggendIn()) {
@@ -49,6 +51,10 @@ public class MainWindow extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Metoda pro nastaveni viditelnosti panelu
+     * @param b viditelnost
+     */
     public void setPanelVisibility(boolean b) {
         jTabbedPane1.setEnabled(b);
     }
@@ -166,7 +172,8 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_jTabbedPane1StateChanged
 
     /**
-     * @param args the command line arguments
+     * Hlavni smycka aplikace.
+     * @param args parametry z prikazove radky
      */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

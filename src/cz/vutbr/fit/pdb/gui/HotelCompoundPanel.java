@@ -19,7 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * Třída pro zobrazování a vybírání objektů z tabulky 'areal'. Slouží pro výběr rezervací služeb - tam kd eje dostupno. Pokud v daném objektu nejsou žádné služby dostupné, nelze tento objekt vybrat.
  * @author Paulík Miroslav
  * @author Mikulica Tomáš
  * @author Gajdoš Pavel
@@ -43,7 +43,7 @@ public class HotelCompoundPanel extends JPanel implements MouseListener {
     }
 
     /**
-     *
+     * Vykreslí objekty
      * @param g
      */
     @Override
@@ -112,7 +112,7 @@ public class HotelCompoundPanel extends JPanel implements MouseListener {
     }
     
     /**
-     *
+     * Aktualizuje data z databáze.
      */
     public void update() {
         reloadShapes();
@@ -142,7 +142,7 @@ public class HotelCompoundPanel extends JPanel implements MouseListener {
 
     /* MouseListener methods */
     /**
-     *
+     * Výběr objektů kliknutím myši.
      * @param e
      */
     @Override

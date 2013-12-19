@@ -18,15 +18,17 @@ import java.util.Map;
 import oracle.jdbc.pool.OracleDataSource;
 
 /**
- *
- * @author Pavel
+ * Model pro práci s tabulkou 'rezervace'
+ * @author Paulík Miroslav
+ * @author Mikulica Tomáš
+ * @author Gajdoš Pavel
  */
 public class RezervaceModel extends BaseModel {
 
     /**
-     *
-     * @param datum_od
-     * @param datum_do
+     * Vrací rezervace v zadaném období pro zvolený pokoj.
+     * @param datum_od Ve formátu YYYY-mm-dd
+     * @param datum_do Ve formátu YYYY-mm-dd
      * @param pokoj
      * @return
      * @throws SQLException
@@ -38,9 +40,9 @@ public class RezervaceModel extends BaseModel {
     }
 
     /**
-     *
-     * @param datum_od
-     * @param datum_do
+     * Vrací rezervace pro všechny pokoje v zadaném období.
+     * @param datum_od Ve formátu YYYY-mm-dd
+     * @param datum_do Ve formátu YYYY-mm-dd
      * @return
      * @throws SQLException
      * @throws ParseException
@@ -51,9 +53,9 @@ public class RezervaceModel extends BaseModel {
     }
 
     /**
-     *
-     * @param datum_od
-     * @param datum_do
+     * Vrací rezervace v období a pro zvolené pokoje.
+     * @param datum_od Ve formátu YYYY-mm-dd
+     * @param datum_do Ve formátu YYYY-mm-dd
      * @param pokoje
      * @return
      * @throws SQLException
@@ -112,11 +114,11 @@ public class RezervaceModel extends BaseModel {
     }
 
     /**
-     *
+     * Vytvoří novou rezervaci.
      * @param zakaznik
      * @param pokoje
-     * @param datum_od
-     * @param datum_do
+     * @param datum_od Ve formátu YYYY-mm-dd
+     * @param datum_do Ve formátu YYYY-mm-dd
      * @throws SQLException
      * @throws ParseException
      */
@@ -148,7 +150,7 @@ public class RezervaceModel extends BaseModel {
     }
 
     /**
-     *
+     * Smaže rezervaci.
      * @param id
      * @return
      * @throws SQLException
@@ -163,10 +165,10 @@ public class RezervaceModel extends BaseModel {
     }
 
     /**
-     *
+     * Vrátí rezervované pokoje v zadaném období.
      * @param datum_od
      * @param datum_do
-     * @return
+     * @return Seznam pokojů - hodnoty jsou ID pokojů.
      * @throws SQLException
      * @throws ParseException
      */
@@ -200,8 +202,9 @@ public class RezervaceModel extends BaseModel {
     }
 
     /**
-     *
-     * @return @throws SQLException
+     * Vrací seznam všech pokojů.
+     * @return Klíč je ID pokoje, hodnota název pokoje.
+     * @throws SQLException
      */
     public Map<Integer, String> getPokoje() throws SQLException {
 
@@ -220,7 +223,7 @@ public class RezervaceModel extends BaseModel {
     }
 
     /**
-     *
+     * Smaže rezervace v období.
      * @param datum_od
      * @param datum_do
      * @return
@@ -239,8 +242,9 @@ public class RezervaceModel extends BaseModel {
     }
 
     /**
-     *
-     * @return @throws SQLException
+     * Vrátí informaci o nejdéle ubytovaném klientovi
+     * @return Řetězec s naformátovanými informacemi
+     * @throws SQLException
      */
     public String nalezniRekordmanaVDelceUbytovani() throws SQLException {
         String rekordman = "";
