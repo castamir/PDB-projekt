@@ -196,7 +196,7 @@ public class SluzbyModel extends BaseModel {
         OracleDataSource ods = ServiceLocator.getConnection();
         try (Connection conn = ods.getConnection();
                 Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT nvl(avg(nvl2(hodina, 1, 0)),0) as prumer FROM zakaznik LEFT JOIN sluzby_rezervace ON sluzby_rezervace.zakaznik = zakaznik.id WHERE sluzby_rezervace.den <= trunc(sysdate) OR sluzby_rezervace.den IS NULL")) {
+                ResultSet rs = stmt.executeQuery("SELECT nvl(avg(nvl2(sluzby_rezervace.id, 1, 0)),0) as prumer FROM zakaznik LEFT JOIN sluzby_rezervace ON sluzby_rezervace.zakaznik = zakaznik.id WHERE sluzby_rezervace.den <= trunc(sysdate) OR sluzby_rezervace.den IS NULL")) {
             while (rs.next()) {
                 prumer = Float.parseFloat(rs.getString("prumer"));
             }

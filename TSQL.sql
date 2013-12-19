@@ -18,14 +18,11 @@ WHERE id NOT IN (
 SELECT
 -- ziskani prumerneho poctu objednanych sluzeb
 -- TSQL2
-SELECT nvl(avg(pocet),0) FROM (
-  SELECT zakaznik.id, count(*) as pocet 
-  FROM zakaznik LEFT JOIN rezervace_sluzeb ON rezervace_sluzeb.zakaznik = zakaznik.id
+SELECT nvl(avg(nvl2(sluzby_rezervace.id, 1, 0)),0) as prumer
+  FROM zakaznik LEFT JOIN sluzby_rezervace ON sluzby_rezervace.zakaznik = zakaznik.id
   WHERE VALID(rezervace_sluzeb) PRECEDES DATE NOW
-  GROUP BY zakaznik.id
-)
 -- SQL
-SELECT nvl(avg(nvl2(hodina, 1, 0)),0) as prumer
+SELECT nvl(avg(nvl2(sluzby_rezervace.id, 1, 0)),0) as prumer
   FROM zakaznik LEFT JOIN sluzby_rezervace ON sluzby_rezervace.zakaznik = zakaznik.id
   WHERE sluzby_rezervace.den <= trunc(sysdate) OR sluzby_rezervace.den IS NULL
 /***********************************************/
@@ -36,7 +33,7 @@ SELECT jmeno
 	FROM zakaznik(jmeno) AS L
 	WHERE CAST(VALID(L) AS INTERVAL DAY) > ALL (SELECT CAST(VALID(L2) AS INTERVAL DAY)
 	FROM zakaznik(jmeno) L2
-	WHERE L.jmeno != L2.jmeno) AND VALID(pacienti) PRECEDES DATE NOW
+	WHERE L.jmeno != L2.jmeno) AND VALID(zakaznik) PRECEDES DATE NOW
 -- SQL
 select * from rezervace WHERE trunc (do - od) in (select max (pocet) as maximum from (select x.*, trunc (do - od) as pocet from rezervace x) r);
 /***********************************************/
