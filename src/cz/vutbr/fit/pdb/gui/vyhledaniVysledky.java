@@ -1,11 +1,14 @@
 package cz.vutbr.fit.pdb.gui;
 
 import cz.vutbr.fit.pdb.models.ObrazkyModel;
+import java.awt.Color;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 /**
  * Zobrazi vysledky vyhledani
@@ -53,17 +56,23 @@ public class vyhledaniVysledky extends javax.swing.JPanel {
         } catch (SQLException ex) {
             Logger.getLogger(vyhledaniVysledky.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if (result != null) {
+        if (result != null && result.size() > 0) {
             for (Map.Entry<Integer, myIcon> entry : result.entrySet()) {
                 myIcon value = entry.getValue();
                 //JLabel tm = new JLabel(value.getMyIcon());
-                if (value.getScore() > 0.0) {
-                    //System.out.println("Score: " + value.getScore());
-                    value.setIcon(value.getMyIcon());
-                    value.setText(value.getScoreAsString());
-                    vysl_kontejner.add(value);
-                }
+                //System.out.println("Score: " + value.getScore());
+                value.setIcon(value.getMyIcon());
+                value.setText(value.getScoreAsString());
+                value.setToolTipText("Čím menší skóre, tím podobnější obrázek");
+                vysl_kontejner.add(value);
             }
+        } else if(result.size() <= 0){
+            JLabel warn = new JLabel("Žádné podobné obrázky! V databázi se nachází pravděpodobně jediný obrázek");
+            String path = "/icons/Info.png";
+            ImageIcon i = new ImageIcon(getClass().getResource(path));
+            warn.setIcon(i);
+            warn.setBackground(Color.LIGHT_GRAY);
+            vysl_kontejner.add(warn);
         }
     }
 
@@ -78,10 +87,13 @@ public class vyhledaniVysledky extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         vysl_kontejner = new javax.swing.JPanel();
 
+        setToolTipText("");
         setPreferredSize(new java.awt.Dimension(612, 600));
 
         jScrollPane1.setMaximumSize(new java.awt.Dimension(600, 600));
         jScrollPane1.setPreferredSize(new java.awt.Dimension(600, 600));
+
+        vysl_kontejner.setToolTipText("Čím menší skóre, tím podobnější obrázek");
 
         javax.swing.GroupLayout vysl_kontejnerLayout = new javax.swing.GroupLayout(vysl_kontejner);
         vysl_kontejner.setLayout(vysl_kontejnerLayout);

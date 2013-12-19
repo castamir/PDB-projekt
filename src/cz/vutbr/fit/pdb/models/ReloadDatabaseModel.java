@@ -4,7 +4,6 @@ import cz.vutbr.fit.pdb.application.ServiceLocator;
 import java.io.BufferedReader;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -125,13 +124,20 @@ public class ReloadDatabaseModel {
 
     /**
      *
-     * @param args
+     * @return
      */
-    public static void main(String[] args) {
+    public static boolean isConnectionValid() {
         try {
-            ReloadDatabaseModel.resetDatabase();
-        } catch (SQLException ex) {
-            Logger.getLogger(ReloadDatabaseModel.class.getName()).log(Level.SEVERE, null, ex);
+            OracleDataSource ods = ServiceLocator.getConnection();
+
+            try (Connection conn = ods.getConnection(); Statement stmt = conn.createStatement(); ResultSet rset = stmt.executeQuery(
+                    "select 1+2 as col1, 3-4 as col2 from dual")) {
+                while (rset.next()) {
+                }
+            }
+        } catch (SQLException sqlEx) {
+            return false;
         }
+        return true;
     }
 }

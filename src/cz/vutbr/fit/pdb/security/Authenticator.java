@@ -2,12 +2,8 @@ package cz.vutbr.fit.pdb.security;
 
 import cz.vutbr.fit.pdb.application.InvalidCredentialsException;
 import cz.vutbr.fit.pdb.application.ServiceLocator;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import cz.vutbr.fit.pdb.models.ReloadDatabaseModel;
 import java.util.Properties;
-import oracle.jdbc.pool.OracleDataSource;
 
 /**
  *
@@ -41,7 +37,7 @@ public class Authenticator {
     public IIdentity login(String username, String password) throws InvalidCredentialsException {
 
         identity = new Identity(username, password);
-        if (!isConnectionValid()) {
+        if (!ReloadDatabaseModel.isConnectionValid()) {
             logout();
             throw new InvalidCredentialsException("Neplatné uživatelské jméno nebo heslo.");
         }
@@ -53,20 +49,5 @@ public class Authenticator {
      */
     public void logout() {
         identity = null;
-    }
-
-    private boolean isConnectionValid() {
-        try {
-            OracleDataSource ods = ServiceLocator.getConnection();
-
-            try (Connection conn = ods.getConnection(); Statement stmt = conn.createStatement(); ResultSet rset = stmt.executeQuery(
-                    "select 1+2 as col1, 3-4 as col2 from dual")) {
-                while (rset.next()) {
-                }
-            }
-        } catch (SQLException sqlEx) {
-            return false;
-        }
-        return true;
     }
 }

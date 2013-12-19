@@ -16,7 +16,7 @@ import oracle.jdbc.pool.OracleDataSource;
         
         
 /**
- *
+ * Model pro práci s tabulkou 'zakaznik'
  * @author Paulík Miroslav
  * @author Mikulica Tomáš
  * @author Gajdoš Pavel
@@ -24,9 +24,9 @@ import oracle.jdbc.pool.OracleDataSource;
 public class ZakaznikModel extends BaseModel {
     
     /**
-     *
+     * Vrátí zákazníka se zadaným ID
      * @param id
-     * @return
+     * @return Klíč je atribut zákazníka, hodnota je typu object. Vypisovat pomocí .toString()
      * @throws SQLException
      * @throws Exception
      */
@@ -58,8 +58,8 @@ public class ZakaznikModel extends BaseModel {
     }
     
     /**
-     *
-     * @return
+     * Vrátí seznam zákazníků.
+     * @return Klíč je ID zákazníka, hodnota je jméno zákazníka.
      * @throws SQLException
      */
     public Map<Integer, String> getList() throws SQLException {
@@ -84,7 +84,7 @@ public class ZakaznikModel extends BaseModel {
     }
     
     /**
-     *
+     * Vloží nového zákazníka
      * @param name
      * @param surname
      * @param address

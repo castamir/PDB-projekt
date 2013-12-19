@@ -30,13 +30,15 @@ import java.util.Calendar;
 import java.text.SimpleDateFormat;
 
 /**
- *
- * @author Doma
+ * Zobrazi sluzby v arealu
+ * @author Paulík Miroslav
+ * @author Mikulica Tomáš
+ * @author Gajdoš Pavel
  */
 public class Sluzby extends javax.swing.JPanel {
 
     /**
-     * Creates new form Sluzby
+     * Konstruktor
      */
     public Sluzby() {
         initComponents();
@@ -52,7 +54,7 @@ public class Sluzby extends javax.swing.JPanel {
             Logger.getLogger(Sluzby.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     /**
      *
      */
@@ -61,8 +63,8 @@ public class Sluzby extends javax.swing.JPanel {
     }
 
     /**
-     *
-     * @return
+     * Vrati dnesni datum ve formatu yyyy-mm-dd
+     * @return datum
      */
     public static String now() {
         Calendar cal = Calendar.getInstance();
@@ -70,25 +72,15 @@ public class Sluzby extends javax.swing.JPanel {
         return sdf.format(cal.getTime());
     }
 
-    /**
-     * TODO smazat?
-     *
-     * @param evt
-     */
-    private void comboBoxAction(ActionEvent evt) {
-        JComboBox cb = (JComboBox) evt.getSource();
-        item = (String) cb.getSelectedItem();
-        int tmp = (int) cb.getSelectedIndex();
-        //if(item != null ||tmp != -1) {
-        //System.out.println(item);
-        //}
-    }
-
     private ComboBoxModel getComboBoxItems(String[] toUpdate) {
         return new DefaultComboBoxModel(toUpdate);
     }
 
-    private void initTable() throws Exception {
+    /**
+     * Inicializace
+     * @throws Exception
+     */
+    public void initTable() throws Exception {
 
         TableColumn tc = this.detail_dne_table.getColumnModel().getColumn(2);
 
@@ -96,12 +88,7 @@ public class Sluzby extends javax.swing.JPanel {
 
         comboBox = new JComboBox();
         comboBox.setModel(getComboBoxItems(comboBoxItems));
-        comboBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                comboBoxAction(ae);
-            }
-        });
+
         tc.setCellEditor(new DefaultCellEditor(comboBox));
 
         //Popisky
@@ -110,9 +97,19 @@ public class Sluzby extends javax.swing.JPanel {
         renderer.setToolTipText("Vyberte jméno");
         tc.setCellRenderer(renderer);
         refTableData = new ArrayList<>();
+
+        try {
+            avg.setText(String.format("%.2f", modelSluzby.prumernyPocetRezervaci()));
+        } catch (SQLException ex) {
+            Logger.getLogger(Sluzby.class.getName()).log(Level.SEVERE, null, ex);
+            avg.setText("");
+        }
     }
 
-    private void initComboBoxItems() {
+    /**
+     *
+     */
+    public void initComboBoxItems() {
         customer_databaseIdToComboBoxId = new HashMap<>();
 
         try {
@@ -131,18 +128,6 @@ public class Sluzby extends javax.swing.JPanel {
         } catch (SQLException e) {
             comboBoxItems = new String[]{"chyba při načítání.."};
         }
-    }
-
-    private void updateTable(Object o) {
-        model = (DefaultTableModel) detail_dne_table.getModel();
-        //Odstraníme všechny řádky
-        model.getDataVector().removeAllElements();
-        //Updatneme kombobox
-        comboBox.setModel(getComboBoxItems(tmp));
-        //Pridame zaznam do tabulky
-        //model.addRow(new Object[]{"ads","asd",(String)comboBox.getItemAt(2),date_field.getText()});
-        //Překreslíme tabulku
-        model.fireTableDataChanged();
     }
 
     private Locale getLocale(String loc) {
@@ -189,7 +174,7 @@ public class Sluzby extends javax.swing.JPanel {
 
                 int comboBoxItemId = 0;
 
-                if (value.get("id") != null) {
+                if (value.get("id") != null && !customer_databaseIdToComboBoxId.isEmpty()) {
                     comboBoxItemId = customer_databaseIdToComboBoxId.get(zakaznik.get("id"));
                 }
 
@@ -208,6 +193,12 @@ public class Sluzby extends javax.swing.JPanel {
             Logger.getLogger(Sluzby.class.getName()).log(Level.SEVERE, null, ex);
         }
         model.fireTableDataChanged();
+        try {
+            avg.setText(String.format("%.2f", modelSluzby.prumernyPocetRezervaci()));
+        } catch (SQLException ex) {
+            Logger.getLogger(Sluzby.class.getName()).log(Level.SEVERE, null, ex);
+            avg.setText("");
+        }
     }
 
     private boolean checkChangesInTable() {
@@ -293,6 +284,8 @@ public class Sluzby extends javax.swing.JPanel {
         date_field = new cz.vutbr.fit.pdb.utils.ObservingTextField();
         kalendar = new javax.swing.JLabel();
         ulozitZmena_button = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        avg = new javax.swing.JLabel();
 
         setMaximumSize(new java.awt.Dimension(911, 665));
 
@@ -381,6 +374,10 @@ public class Sluzby extends javax.swing.JPanel {
             }
         });
 
+        jLabel1.setText("Průměrný počet rezervací služeb na zákazníka");
+
+        avg.setText("jLabel2");
+
         javax.swing.GroupLayout wrapperLayout = new javax.swing.GroupLayout(wrapper);
         wrapper.setLayout(wrapperLayout);
         wrapperLayout.setHorizontalGroup(
@@ -398,7 +395,11 @@ public class Sluzby extends javax.swing.JPanel {
                                 .addGap(18, 18, 18)
                                 .addComponent(kalendar))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(ulozitZmena_button))
+                            .addComponent(ulozitZmena_button)
+                            .addGroup(wrapperLayout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(avg, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -417,6 +418,10 @@ public class Sluzby extends javax.swing.JPanel {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(ulozitZmena_button)
+                .addGap(48, 48, 48)
+                .addGroup(wrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(avg))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -475,10 +480,12 @@ public class Sluzby extends javax.swing.JPanel {
     private DefaultTableModel model;
     private Object[][] defaultValue;
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel avg;
     private cz.vutbr.fit.pdb.utils.ObservingTextField date_field;
     private javax.swing.JLabel den_label;
     private javax.swing.JTable detail_dne_table;
     private cz.vutbr.fit.pdb.gui.HotelCompoundPanel hotelCompoundPanel1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel kalendar;
     private javax.swing.JLabel nazev_sluzby;

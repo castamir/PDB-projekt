@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package cz.vutbr.fit.pdb.models;
 
@@ -16,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.swing.ImageIcon;
 import oracle.jdbc.OraclePreparedStatement;
@@ -24,7 +20,7 @@ import oracle.jdbc.pool.OracleDataSource;
 import oracle.ord.im.OrdImage;
 
 /**
- *
+ * Model pro práci s tabukou 'obrazky'
  * @author Paulík Miroslav
  * @author Mikulica Tomáš
  * @author Gajdoš Pavel
@@ -32,10 +28,10 @@ import oracle.ord.im.OrdImage;
 public class ObrazkyModel extends BaseModel {
     
     /**
-     *
+     * Vloží obrázek se zadanou cestou 'path' k zákazníkovi 'zakaznik'
      * @param path
      * @param zakaznik
-     * @return
+     * @return ID vloženého obrázku.
      * @throws SQLException
      */
     public Integer insertImage(String path, int zakaznik) throws SQLException {
@@ -107,9 +103,9 @@ public class ObrazkyModel extends BaseModel {
     }
     
     /**
-     *
+     * Vyhledá obrázky uživatele customer.
      * @param customer
-     * @return
+     * @return Obrázky uživatele - klíč je ID obrázku v DB, hodnota je objekt typu myIcon.
      * @throws SQLException
      */
     public Map<Integer, myIcon> getImagesOfCustomer(int customer) throws SQLException {
@@ -141,9 +137,9 @@ public class ObrazkyModel extends BaseModel {
     }
     
     /**
-     *
+     * Vrací obrázek se zadaným ID.
      * @param id
-     * @return
+     * @return Obrázek reprezentovaný polem typu byte.
      * @throws SQLException
      */
     public byte[] getImage(Integer id) throws SQLException {
@@ -177,9 +173,9 @@ public class ObrazkyModel extends BaseModel {
     }
     
     /**
-     *
+     * Smaže obrázek se zadaným ID.
      * @param id
-     * @return
+     * @return 
      * @throws SQLException
      */
     public boolean delete(Integer id) throws SQLException {
@@ -194,7 +190,7 @@ public class ObrazkyModel extends BaseModel {
     }
     
     /**
-     *
+     * Otočí obrázek se zadaným ID zavoláním procedury, která provede otočení o 90
      * @param id
      * @throws SQLException
      */
@@ -211,17 +207,17 @@ public class ObrazkyModel extends BaseModel {
     }
     
     /**
-     *
+     * Vyhledá nejpodobnější obrázky na základě zadaného obrázku pomocí ID.
      * @param id
      * @param weightAC
      * @param weightCH
      * @param weightPC
      * @param weightTX
-     * @return
+     * @return Podobné obrázky - klíč je ID obrázku, hodnota jeobjekt typu myIcon. Obrázky jsou seřazeny podle podobnosti.
      * @throws SQLException
      */
     public Map<Integer, myIcon> getTheMostSimilar(Integer id, double weightAC, double weightCH, double weightPC, double weightTX) throws SQLException {
-        Map<Integer, myIcon> result = new HashMap<>();
+        Map<Integer, myIcon> result = new LinkedHashMap<>();
         OracleDataSource ods = ServiceLocator.getConnection();
          try (Connection conn = ods.getConnection();
                OraclePreparedStatement pstmt = (OraclePreparedStatement)conn.prepareStatement("SELECT dst.id, dst.img, SI_ScoreByFtrList("
@@ -254,43 +250,5 @@ public class ObrazkyModel extends BaseModel {
         }
         
         return result;
-        /*String simVyrobce = null;
-        String simModel = null;
-        // najdeme zaznam podobneho fota
-        PreparedStatement pstmtSelect = connection.prepareStatement(
-                "SELECT dst.vyrobce, dst.model, SI_ScoreByFtrList("
-                + "new SI_FeatureList(src.foto_ac,?,src.foto_ch,?,src.foto_pc,?,src.foto_tx,?),dst.foto_si)"
-                + " as similarity FROM vozidlo src, vozidlo dst "
-                + "WHERE (src.vyrobce <> dst.vyrobce OR src.model <> dst.model) "
-                + "AND src.vyrobce = ? and src.model = ? ORDER BY similarity ASC");
-        try {
-            pstmtSelect.setDouble(1, weightAC);
-            pstmtSelect.setDouble(2, weightCH);
-            pstmtSelect.setDouble(3, weightPC);
-            pstmtSelect.setDouble(4, weightTX);
-            pstmtSelect.setString(5, this.vyrobce);
-            pstmtSelect.setString(6, this.model);
-            ResultSet rset = pstmtSelect.executeQuery();
-            try {
-                if (rset.next()) {
-                    simVyrobce = rset.getString(1);
-                    simModel = rset.getString(2);
-                }
-            } finally {
-                rset.close();
-            }
-        } finally {
-            pstmtSelect.close();
-        }
-        // nalezneme ziskane vozidlo v katalogu (tam je "jeho" objekt)
-        for (Iterator<Vozidlo> i = katalog.getVozidloIterator(); i.hasNext();) {
-            Vozidlo v = i.next();
-            if (v.vyrobce.equals(simVyrobce) && v.model.equals(simModel)) {
-                return v;
-            }
-        }
-        // pokud nenalezneme, tak null
-        return null;*/
-        //return null;
     }
 }

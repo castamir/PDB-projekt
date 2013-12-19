@@ -18,15 +18,17 @@ import java.util.Map;
 import oracle.jdbc.pool.OracleDataSource;
 
 /**
- *
- * @author Pavel
+ * Model pro práci s tabulkou 'rezervace'
+ * @author Paulík Miroslav
+ * @author Mikulica Tomáš
+ * @author Gajdoš Pavel
  */
 public class RezervaceModel extends BaseModel {
 
     /**
-     *
-     * @param datum_od
-     * @param datum_do
+     * Vrací rezervace v zadaném období pro zvolený pokoj.
+     * @param datum_od Ve formátu YYYY-mm-dd
+     * @param datum_do Ve formátu YYYY-mm-dd
      * @param pokoj
      * @return
      * @throws SQLException
@@ -38,9 +40,9 @@ public class RezervaceModel extends BaseModel {
     }
 
     /**
-     *
-     * @param datum_od
-     * @param datum_do
+     * Vrací rezervace pro všechny pokoje v zadaném období.
+     * @param datum_od Ve formátu YYYY-mm-dd
+     * @param datum_do Ve formátu YYYY-mm-dd
      * @return
      * @throws SQLException
      * @throws ParseException
@@ -51,9 +53,9 @@ public class RezervaceModel extends BaseModel {
     }
 
     /**
-     *
-     * @param datum_od
-     * @param datum_do
+     * Vrací rezervace v období a pro zvolené pokoje.
+     * @param datum_od Ve formátu YYYY-mm-dd
+     * @param datum_do Ve formátu YYYY-mm-dd
      * @param pokoje
      * @return
      * @throws SQLException
@@ -112,11 +114,11 @@ public class RezervaceModel extends BaseModel {
     }
 
     /**
-     *
+     * Vytvoří novou rezervaci.
      * @param zakaznik
      * @param pokoje
-     * @param datum_od
-     * @param datum_do
+     * @param datum_od Ve formátu YYYY-mm-dd
+     * @param datum_do Ve formátu YYYY-mm-dd
      * @throws SQLException
      * @throws ParseException
      */
@@ -139,6 +141,7 @@ public class RezervaceModel extends BaseModel {
                 stmt.setDate(4, d_do);
                 stmt.addBatch();
             }
+            System.out.println(stmt);
 
             int[] result = stmt.executeBatch();
 
@@ -147,7 +150,7 @@ public class RezervaceModel extends BaseModel {
     }
 
     /**
-     *
+     * Smaže rezervaci.
      * @param id
      * @return
      * @throws SQLException
@@ -162,10 +165,10 @@ public class RezervaceModel extends BaseModel {
     }
 
     /**
-     *
+     * Vrátí rezervované pokoje v zadaném období.
      * @param datum_od
      * @param datum_do
-     * @return
+     * @return Seznam pokojů - hodnoty jsou ID pokojů.
      * @throws SQLException
      * @throws ParseException
      */
@@ -184,7 +187,6 @@ public class RezervaceModel extends BaseModel {
             stmt.setDate(2, d_do);
             stmt.setDate(3, d_od);
             stmt.setDate(4, d_do);
-
             stmt.setDate(5, d_od);
             stmt.setDate(6, d_do);
 
@@ -200,8 +202,8 @@ public class RezervaceModel extends BaseModel {
     }
 
     /**
-     *
-     * @return
+     * Vrací seznam všech pokojů.
+     * @return Klíč je ID pokoje, hodnota název pokoje.
      * @throws SQLException
      */
     public Map<Integer, String> getPokoje() throws SQLException {
@@ -218,5 +220,124 @@ public class RezervaceModel extends BaseModel {
         }
 
         return pokoje;
+    }
+
+    /**
+     * Smaže rezervace v období.
+     * @param datum_od
+     * @param datum_do
+     * @return
+     * @throws SQLException
+     */
+    public boolean smazatRezervaceVObdobi(java.util.Date datum_od, java.util.Date datum_do) throws SQLException {
+        OracleDataSource ods = ServiceLocator.getConnection();
+        try (Connection conn = ods.getConnection();
+                PreparedStatement stmt = conn.prepareStatement("CALL REZERVACE_SMAZ_V_OBDOBI (?, ?)");) {
+            Date d_od = new Date(datum_od.getTime());
+            Date d_do = new Date(datum_do.getTime());
+            stmt.setDate(1, d_od);
+            stmt.setDate(2, d_do);
+            return stmt.execute();
+        }
+    }
+
+    /**
+     * Vrátí informaci o nejdéle ubytovaném klientovi
+     * @return Řetězec s naformátovanými informacemi
+     * @throws SQLException
+     */
+    public String nalezniRekordmanaVDelceUbytovani() throws SQLException {
+        String rekordman = "";
+        String query = "SELECT zakaznik.jmeno, zakaznik.prijmeni, trunc (do - od) AS pocet_dnu FROM rezervace JOIN zakaznik ON (rezervace.zakaznik = zakaznik.id) WHERE trunc (do - od) IN ( SELECT MAX (pocet) AS maximum FROM ( SELECT x.*, trunc (do - od) AS pocet FROM rezervace x ) r)";
+        OracleDataSource ods = ServiceLocator.getConnection();
+        try (Connection conn = ods.getConnection();
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(query)) {
+            while (rs.next()) {
+                String jmeno = rs.getString("jmeno");
+                String prijmeni = rs.getString("prijmeni");
+                int pocetDnu = rs.getInt("pocet_dnu");
+
+                String den;
+                switch (pocetDnu) {
+                    case 1:
+                        den = "den";
+                        break;
+                    case 2:
+                    case 3:
+                    case 4:
+                        den = "dny";
+                        break;
+                    default:
+                        den = "dnů";
+                        break;
+                }
+                rekordman = jmeno + " " + prijmeni + " (" + pocetDnu + " " + den + ")";
+            }
+        }
+
+        return rekordman;
+    }
+
+    public int getVolnyPokojVObdobi(java.util.Date datum_od, java.util.Date datum_do) throws SQLException {
+        int pokoj = 0;
+        String query = "SELECT * FROM pokoje "
+                + "WHERE id NOT IN ("
+                + "  SELECT pokoj FROM rezervace WHERE ("
+                + "    (od BETWEEN ? AND ?) OR"
+                + "    (do BETWEEN ? AND ?) OR"
+                + "    (? BETWEEN od AND do) OR"
+                + "    (? BETWEEN od AND do)"
+                + "  )"
+                + ") AND ROWNUM = 1";
+
+        OracleDataSource ods = ServiceLocator.getConnection();
+        try (Connection conn = ods.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(query);) {
+            Date d_od = new Date(datum_od.getTime());
+            Date d_do = new Date(datum_do.getTime());
+
+            stmt.setDate(1, d_od);
+            stmt.setDate(2, d_do);
+            stmt.setDate(3, d_od);
+            stmt.setDate(4, d_do);
+            stmt.setDate(5, d_od);
+            stmt.setDate(6, d_do);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+
+                while (rs.next()) {
+                    pokoj = rs.getInt("id");
+                }
+            }
+        }
+        return pokoj;
+    }
+
+    public void zmenCisloPokoje(int pokoj, java.util.Date datum_od, java.util.Date datum_do) throws SQLException, Exception {
+        int new_pokoj = getVolnyPokojVObdobi(datum_od, datum_do);
+        if (new_pokoj == 0) {
+            throw new Exception("Změnu pokoje nelze provést, protože nebyl nalezen žádný volný pokoj");
+        }
+
+        String query = "UPDATE rezervace"
+                + "  SET pokoj = ?"
+                + "  WHERE pokoj = ? AND"
+                + "  od = ? AND"
+                + "  do = ?";
+
+        OracleDataSource ods = ServiceLocator.getConnection();
+        try (Connection conn = ods.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(query);) {
+            Date d_od = new Date(datum_od.getTime());
+            Date d_do = new Date(datum_do.getTime());
+
+            stmt.setInt(1, new_pokoj);
+            stmt.setInt(2, pokoj);
+            stmt.setDate(3, d_od);
+            stmt.setDate(4, d_do);
+
+            stmt.executeUpdate();
+        }
     }
 }

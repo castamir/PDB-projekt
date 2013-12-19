@@ -13,9 +13,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -26,13 +28,16 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
- *
- * @author Pavel
+ * Třída, která umožňuje editaci areálu interaktivní formou.
+ * @author Paulík Miroslav
+ * @author Mikulica Tomáš
+ * @author Gajdoš Pavel
  */
 public class HotelCompoundEditablePanel extends javax.swing.JPanel implements MouseListener, MouseMotionListener, KeyListener {
 
-    private Map<String, Shape> shapes;
-    private Map<String, Shape> newShapes;
+    private Map<String, Object> shapes;
+    private Map<String, Object> newShapes;
+    
     private List<String> buildingsToDelete;
     private String selectedBuilding;
     private boolean drawing = false;
@@ -40,10 +45,12 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
     /* aktualne vytvareny tvar */
     private List<Point2D> points;
     private Line2D.Float currentLine;
-    private String currentPolygonName;
+    private String currentObjectName;
     private Polygon newPolygon;
     private Path2D newPath;
+    private Point2D newPoint;
     private Ellipse2D newCircle;
+    private Rectangle2D newRectangle;
     private final String tmpLineKey = "tmpLinePDB";
     private final int verticalOffset = 30;
     private final int horizontalOffset = 0;
@@ -67,7 +74,6 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
     
     private void saveChanges() {
 
-
         try {
             for (String name : buildingsToDelete) {
                 arealModel.deleteBuildingWithName(name);
@@ -78,9 +84,14 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
 
         // ulozeni novych
 
-        for (Map.Entry<String, Shape> entry : newShapes.entrySet()) {
+        for (Map.Entry<String, Object> entry : newShapes.entrySet()) {
             try {
-                arealModel.saveShape(entry.getKey(), entry.getValue());
+                if (entry.getValue() instanceof Shape) {
+                    arealModel.saveShape(entry.getKey(), (Shape)entry.getValue());
+                }
+                else { // point
+                    arealModel.savePoint(entry.getKey(), (Point2D)entry.getValue());
+                }
             } catch (SQLException ex) {
                 Logger.getLogger(HotelCompoundEditablePanel.class.getName()).log(Level.SEVERE, null, ex);
             } catch (Exception ex) {
@@ -93,7 +104,7 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
     }
 
     /**
-     *
+     * Vykreslí data
      * @param g
      */
     @Override
@@ -107,21 +118,40 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
 
         loadShapes();
 
-        for (Map.Entry<String, Shape> entry : shapes.entrySet()) {
-            drawShape(g2D, entry, false);
+        for (Map.Entry<String, Object> entry : shapes.entrySet()) {
+            if (entry.getValue() instanceof Shape) {
+                drawShape(g2D, entry.getKey(), (Shape)entry.getValue(), false);
+            }
+            else {
+                drawPoint(g2D, entry.getKey(), (Point2D)entry.getValue(), false);
+            }
         }
 
-        for (Map.Entry<String, Shape> entry : newShapes.entrySet()) {
-            drawShape(g2D, entry, true);
+        for (Map.Entry<String, Object> entry : newShapes.entrySet()) {
+            if (entry.getValue() instanceof Shape) {
+                drawShape(g2D, entry.getKey(), (Shape)entry.getValue(), true);
+            }
+            else {
+                drawPoint(g2D, entry.getKey(), (Point2D)entry.getValue(), true);
+            }
         }
     }
+    
+    private void drawPoint(Graphics2D g2D, String name, Point2D point, boolean newShape) {
+    
+        float r = (float)2;
+        
+        Ellipse2D tmp = new Ellipse2D.Float((float)point.getX()-r, (float)point.getY()-r, 2*r, 2*r);
+        
+        drawShape(g2D, name, tmp, newShape);
+    }
 
-    private void drawShape(Graphics2D g2D, Map.Entry<String, Shape> entry, boolean newShape) {
+    private void drawShape(Graphics2D g2D, String name, Shape shape, boolean newShape) {
         Color background = Color.darkGray;
         Color fontColor = Color.lightGray;
         Color borderColor = Color.black;
-
-        if (selectedBuilding != null && selectedBuilding.equals(entry.getKey())) {
+        
+        if (selectedBuilding != null && selectedBuilding.equals(name)) {
             background = Color.green;
             fontColor = Color.darkGray;
         } else if (newShape) {
@@ -129,20 +159,28 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         }
 
         g2D.setPaint(background);
-        g2D.fill(entry.getValue());
+        
+        if ((shape instanceof Rectangle2D) || (shape instanceof GeneralPath) || (shape instanceof Ellipse2D) || (shape instanceof Polygon)) {
+            g2D.fill(shape);
+        }
+        
+        //System.out.println(shape+" je trida: "+ shape.getClass().toString());
+        
         g2D.setPaint(borderColor);
-        g2D.draw(entry.getValue());
+        g2D.draw(shape);
         g2D.setColor(fontColor);
         g2D.setFont(new Font("Verdana", Font.BOLD, 11));
+        
+        
 
-        if (!entry.getKey().equals(tmpLineKey)) {
-            g2D.drawString(entry.getKey(), (int) entry.getValue().getBounds2D().getMinX() + 5, (int) entry.getValue().getBounds2D().getMaxY() - 5);
+        if (!name.equals(tmpLineKey)) {
+            g2D.drawString(name, (int) shape.getBounds2D().getMinX() + 5, (int) shape.getBounds2D().getMaxY() - 5);
         }
     }
 
     // <editor-fold defaultstate="collapsed" desc="Mouse listener methods">   
     /**
-     *
+     * Vybírání objektů v mapě.
      * @param e
      */
     @Override
@@ -156,13 +194,24 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
 
         selectedBuilding = null;
 
-        for (Map.Entry<String, Shape> entry : newShapes.entrySet()) {
+        for (Map.Entry<String, Object> entry : newShapes.entrySet()) {
 
-            Shape obj = entry.getValue();
+            if (entry.getValue() instanceof Shape) {
+                Shape obj = (Shape)entry.getValue();
 
-            if (obj.contains(e.getX() - horizontalOffset, e.getY() - verticalOffset)) {
-                selectedBuilding = entry.getKey();
-                break;
+                if (obj.contains(e.getX() - horizontalOffset, e.getY() - verticalOffset)) {
+                    selectedBuilding = entry.getKey();
+                    break;
+                }
+            }
+            else {
+                
+                Point2D point = (Point2D)entry.getValue();
+                
+                if (point.distance(e.getX() - horizontalOffset, e.getY() - verticalOffset) <= 4) {
+                    selectedBuilding = entry.getKey();
+                    break;
+                }
             }
         }
 
@@ -191,7 +240,7 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
     }
 
     /**
-     *
+     * Počátek kreslení objektů
      * @param e
      */
     @Override
@@ -203,20 +252,25 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
 
         System.out.println("pressed");
 
-
-        newShapes.remove(currentPolygonName);
-        newShapes.remove(tmpLineKey);
-
         if (objectTypeCircle.isSelected()) {
 
             newCircle = new Ellipse2D.Float(e.getX() - horizontalOffset, e.getY() - verticalOffset, 0, 0);
 
-            newShapes.put(currentPolygonName, newCircle);
-        } else {
+            newShapes.put(currentObjectName, newCircle);
+        } else if (objectTypeRectangle.isSelected()) {
+
+            newRectangle = new Rectangle2D.Float(e.getX() - horizontalOffset, e.getY() - verticalOffset, 0, 0);
+
+            newShapes.put(currentObjectName, newRectangle);
+        } else if (objectTypePolygon.isSelected()) {
+            
+            newShapes.remove(tmpLineKey);
+            newShapes.remove(currentObjectName);
+              
             if (points == null) {
                 points = new ArrayList<>();
             }
-
+            
             points.add(new Point2D.Float(e.getX() - horizontalOffset, e.getY() - verticalOffset));
             // polygon
 
@@ -231,24 +285,37 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
             }
 
             newPolygon = new Polygon(xpoints, ypoints, npoints);
-
-            if (objectTypeLine.isSelected()) {
-                newPath = new Path2D.Float(newPolygon);
+            
+            newShapes.put(currentObjectName, newPolygon);
+        }
+        else if (objectTypeLine.isSelected()) {
+            newShapes.remove(tmpLineKey);
+            
+            if (newPath == null) {
+                newPath = new Path2D.Float();
+                newPath.moveTo(e.getX() - horizontalOffset, e.getY() - verticalOffset);
+                
+                newShapes.put(currentObjectName, newPath);
             }
-
-            if (objectTypeLine.isSelected()) {
-                newShapes.put(currentPolygonName, newPath);
-                System.out.println("line");
-            } else {
-                newShapes.put(currentPolygonName, newPolygon);
+            else {
+                newPath.lineTo(e.getX() - horizontalOffset, e.getY() - verticalOffset);
             }
+        }
+        else if (objectTypePoint.isSelected()) {
+            
+            newPoint = new Point2D.Float(e.getX() - horizontalOffset, e.getY() - verticalOffset);
+            
+            newShapes.put(currentObjectName, newPoint);
+            
+            newPoint = null;
+            drawing = false;
         }
 
         repaint();
     }
 
     /**
-     *
+     * Ukončení kreslení některých objektů.
      * @param e
      */
     @Override
@@ -257,12 +324,25 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         if (objectTypeCircle.isSelected() && newCircle != null) {
 
             if (newCircle.getWidth() == 0 || newCircle.getHeight() == 0) {
-                newShapes.remove(currentPolygonName);
+                newShapes.remove(currentObjectName);
                 return;
             }
 
             drawing = false;
             newCircle = null;
+            selectedBuilding = currentObjectName;
+
+            repaint();
+        }
+        else if (objectTypeRectangle.isSelected() && newRectangle != null) {
+            if (newRectangle.getWidth() == 0 || newRectangle.getHeight() == 0) {
+                newShapes.remove(currentObjectName);
+                return;
+            }
+
+            drawing = false;
+            newRectangle = null;
+            selectedBuilding = currentObjectName;
 
             repaint();
         }
@@ -289,8 +369,8 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
             return;
         }
 
-        if (!objectTypeCircle.isSelected()) {
-            if (points == null || points.size() == 0) {
+        if (objectTypePolygon.isSelected()) {
+            if (points == null || points.isEmpty()) {
                 return;
             }
 
@@ -298,18 +378,30 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
             Point2D point2 = new Point2D.Float((float) e.getX() - horizontalOffset, (float) e.getY() - verticalOffset);
 
             currentLine = new Line2D.Float(point, point2);
-            if (newShapes.get(tmpLineKey) != null) {
-                newShapes.remove(tmpLineKey);
-            }
 
+            newShapes.remove(tmpLineKey);
             newShapes.put(tmpLineKey, currentLine);
+        }
+        else if (objectTypeLine.isSelected()) {
+            
+            if (newPath == null) {
+                return;
+            }
+            
+            Point2D point = newPath.getCurrentPoint();
+            Point2D point2 = new Point2D.Float((float) e.getX() - horizontalOffset, (float) e.getY() - verticalOffset);
+
+            currentLine = new Line2D.Float(point, point2);
+
+            newShapes.remove(tmpLineKey);
+            newShapes.put(tmpLineKey, currentLine); 
         }
 
         repaint();
     }
 
     /**
-     *
+     * Tažením myši lze vytvářet kruh nebo čtverec/obdélník.
      * @param e
      */
     @Override
@@ -337,12 +429,33 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
 
             repaint();
         }
+        else if (objectTypeRectangle.isSelected() && newRectangle != null) {
+            int w, h;
+            int x, y, x1, x2, y1, y2;
+
+            x1 = (int) newRectangle.getX();
+            y1 = (int) newRectangle.getY();
+            x2 = e.getX() - horizontalOffset;
+            y2 = e.getY() - verticalOffset;
+
+            w = x2 - x1;
+            h = y2 - y1;
+            
+            if (w == 0 || h == 0) {
+                return;
+            }
+
+            newRectangle.setFrame(x1, y1, w, h);
+
+            repaint();
+        }
     }
 
     // </editor-fold> 
+    
     // <editor-fold defaultstate="collapsed" desc="Key listener methods">   
     /**
-     *
+     * Zmáčknutím příslušných tlačítek dojde ke zrušení vytváření nebo k potvrzení nového objektu.
      * @param e
      */
     @Override
@@ -350,17 +463,35 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         System.out.println("pressed");
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             System.out.println("esc");
-            if (points.size() > 0) {
+            
+            if (!points.isEmpty()) {
                 points.removeAll(points);
-                newShapes.remove(currentPolygonName);
-                newShapes.remove(tmpLineKey);
             }
+            
+            newShapes.remove(currentObjectName);
+            newShapes.remove(tmpLineKey);
+            
+            newPath = null;
+            newPolygon = null;
+            newCircle = null;
+            newRectangle = null;
+            newPoint = null;
 
             drawing = false;
         } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 
-            points.removeAll(points);
+            if (points != null) {
+                points.removeAll(points);
+            }
+            
             newShapes.remove(tmpLineKey);
+            newPath = null;
+            newPolygon = null;
+            newRectangle = null;
+            newPoint = null;
+            
+            selectedBuilding = currentObjectName;
+            
             drawing = false;
         }
 
@@ -384,9 +515,10 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
     }
 
     // </editor-fold>
+    
     /* dialog pro ziskani nazvu kresleneho objektu */
     /**
-     *
+     * Vytvoří nové okno, kde lze zadat název nového objektu.
      */
     public void newObjectNameDialog() {
 
@@ -407,7 +539,7 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
 
                 newObjectNameDialog();
             } else {
-                currentPolygonName = s;
+                currentObjectName = s;
                 drawing = true;
             }
         }
@@ -459,7 +591,9 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         filler6 = new javax.swing.Box.Filler(new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 32767));
         removeBtn = new javax.swing.JButton();
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(30, 0), new java.awt.Dimension(30, 0), new java.awt.Dimension(30, 32767));
+        objectTypePoint = new javax.swing.JRadioButton();
         objectTypeLine = new javax.swing.JRadioButton();
+        objectTypeRectangle = new javax.swing.JRadioButton();
         objectTypePolygon = new javax.swing.JRadioButton();
         objectTypeCircle = new javax.swing.JRadioButton();
         filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 0), new java.awt.Dimension(50, 0), new java.awt.Dimension(50, 32767));
@@ -473,6 +607,8 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
         distancesBtn = new javax.swing.JButton();
         filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
+        nearestBtn = new javax.swing.JButton();
+        filler9 = new javax.swing.Box.Filler(new java.awt.Dimension(15, 0), new java.awt.Dimension(15, 0), new java.awt.Dimension(15, 32767));
         unionBtn = new javax.swing.JButton();
 
         jToolBar1.setRollover(true);
@@ -501,6 +637,14 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         jToolBar1.add(removeBtn);
         jToolBar1.add(filler2);
 
+        objectTypeButtonGroup.add(objectTypePoint);
+        objectTypePoint.setText("Point");
+        objectTypePoint.setFocusable(false);
+        objectTypePoint.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        objectTypePoint.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        objectTypePoint.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(objectTypePoint);
+
         objectTypeButtonGroup.add(objectTypeLine);
         objectTypeLine.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
         objectTypeLine.setText("Line");
@@ -510,9 +654,16 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         objectTypeLine.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(objectTypeLine);
 
+        objectTypeButtonGroup.add(objectTypeRectangle);
+        objectTypeRectangle.setSelected(true);
+        objectTypeRectangle.setText("Rectangle");
+        objectTypeRectangle.setFocusable(false);
+        objectTypeRectangle.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        objectTypeRectangle.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(objectTypeRectangle);
+
         objectTypeButtonGroup.add(objectTypePolygon);
         objectTypePolygon.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
-        objectTypePolygon.setSelected(true);
         objectTypePolygon.setText("Polygon");
         objectTypePolygon.setFocusable(false);
         objectTypePolygon.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -590,6 +741,18 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
         jToolBar1.add(distancesBtn);
         jToolBar1.add(filler4);
 
+        nearestBtn.setText("NEJBLIŽŠÍ");
+        nearestBtn.setFocusable(false);
+        nearestBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        nearestBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        nearestBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nearestBtnActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(nearestBtn);
+        jToolBar1.add(filler9);
+
         unionBtn.setText("SPOJIT");
         unionBtn.setFocusable(false);
         unionBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -607,7 +770,7 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 967, Short.MAX_VALUE)
+                .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -648,6 +811,7 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
 
     private void saveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBtnActionPerformed
         saveChanges();
+        //repaint();
     }//GEN-LAST:event_saveBtnActionPerformed
 
     private void areaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_areaBtnActionPerformed
@@ -691,6 +855,35 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
             JOptionPane.showMessageDialog(getParent(), "Při operaci došlo k chybě.");
         }
     }//GEN-LAST:event_unionBtnActionPerformed
+
+    private void nearestBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nearestBtnActionPerformed
+        if (selectedBuilding == null) {
+            JOptionPane.showMessageDialog(getParent(), "Vyberte nejprve objekt.");
+        } else {
+
+            try {
+                
+                String n = JOptionPane.showInputDialog(getParent(), "Vyhledat n nejbližších sousedů:");
+                
+                if (n == null)
+                    return;
+                
+                Map<String, Float> distances = arealModel.getNNearestNeighboursFromBuilding(selectedBuilding, Integer.parseInt(n));
+                
+                String msg = "Nejbližší sousedé ("+n+") objektu '" + selectedBuilding + "' jsou:\n";
+
+                for (Map.Entry<String, Float> entry : distances.entrySet()) {
+
+                    msg += "'" + entry.getKey() + "'" + " ve vzdálenosti " + entry.getValue().toString() + "\n";
+                }
+
+                JOptionPane.showMessageDialog(getParent(), msg);
+            } catch (SQLException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(getParent(), "Při výpočtu došlo k chybě.");
+            }
+        }
+    }//GEN-LAST:event_nearestBtnActionPerformed
 
     private void distancesBtnActionPerformed(java.awt.event.ActionEvent evt) {
         if (selectedBuilding == null) {
@@ -742,12 +935,16 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
     private javax.swing.Box.Filler filler6;
     private javax.swing.Box.Filler filler7;
     private javax.swing.Box.Filler filler8;
+    private javax.swing.Box.Filler filler9;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JButton lengthBtn;
+    private javax.swing.JButton nearestBtn;
     private javax.swing.ButtonGroup objectTypeButtonGroup;
     private javax.swing.JRadioButton objectTypeCircle;
     private javax.swing.JRadioButton objectTypeLine;
+    private javax.swing.JRadioButton objectTypePoint;
     private javax.swing.JRadioButton objectTypePolygon;
+    private javax.swing.JRadioButton objectTypeRectangle;
     private javax.swing.JButton removeBtn;
     private javax.swing.JButton saveBtn;
     private javax.swing.JButton unionBtn;

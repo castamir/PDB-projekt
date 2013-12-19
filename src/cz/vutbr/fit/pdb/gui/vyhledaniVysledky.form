@@ -2,6 +2,7 @@
 
 <Form version="1.3" maxVersion="1.8" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <Properties>
+    <Property name="toolTipText" type="java.lang.String" value=""/>
     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
       <Dimension value="[612, 600]"/>
     </Property>
@@ -44,6 +45,9 @@
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
         <Container class="javax.swing.JPanel" name="vysl_kontejner">
+          <Properties>
+            <Property name="toolTipText" type="java.lang.String" value="&#x10c;&#xed;m men&#x161;&#xed; sk&#xf3;re, t&#xed;m podobn&#x11b;j&#x161;&#xed; obr&#xe1;zek"/>
+          </Properties>
 
           <Layout>
             <DimensionLayout dim="0">

@@ -10,7 +10,10 @@ import java.util.Map;
 import java.util.HashMap;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Path2D;
 import java.awt.geom.PathIterator;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,7 +27,7 @@ import oracle.jdbc.pool.OracleDataSource;
 import oracle.spatial.geometry.JGeometry;
 
 /**
- *
+ * Model pro práci s tabulkou 'areal'
  * @author Paulík Miroslav
  * @author Mikulica Tomáš
  * @author Gajdoš Pavel
@@ -32,7 +35,7 @@ import oracle.spatial.geometry.JGeometry;
 public class ArealModel extends BaseModel {
     
     /**
-     *
+     * Ukládá objekt type Shape do databáze.
      * @param name
      * @param shape
      * @throws SQLException
@@ -55,14 +58,39 @@ public class ArealModel extends BaseModel {
     }
     
     /**
-     *
-     * @return
+     * Ukládá objekt typu Point2D do databáze.
+     * @param name
+     * @param point
      * @throws SQLException
      * @throws Exception
      */
-    public Map<String, Shape> loadShapes() throws SQLException, Exception {
+    public void savePoint(String name, Point2D point) throws SQLException, Exception {
     
-        Map<String, Shape> shapes = new HashMap<String, Shape>();
+        OracleDataSource ods = ServiceLocator.getConnection();
+        try (Connection conn = ods.getConnection(); 
+             PreparedStatement stmt = conn.prepareStatement("INSERT INTO areal (nazev, geometrie) VALUES (?, ?)");
+             )
+        {
+            stmt.setString(1, name);
+            
+            JGeometry jgeomPoint = JGeometry.createPoint(new double[]{point.getX(), point.getY()}, 2, 0);
+            
+            STRUCT obj = JGeometry.store(conn, jgeomPoint);
+            stmt.setObject(2, obj);
+            
+            stmt.execute();
+        }        
+    }
+    
+    /**
+     * Načte všechny tvary z databáze.
+     * @return Všechny tvary v databázi. Klíč je název objektu, hodnota je objekt typu Shape nebo Pojnt2D.
+     * @throws SQLException
+     * @throws Exception
+     */
+    public Map<String, Object> loadShapes() throws SQLException, Exception {
+    
+        Map<String, Object> shapes = new HashMap<>();
         
         OracleDataSource ods = ServiceLocator.getConnection();
         try (Connection conn = ods.getConnection(); Statement stmt = conn.createStatement(); ResultSet resultSet = stmt.executeQuery("select nazev, geometrie from areal")) {
@@ -70,7 +98,7 @@ public class ArealModel extends BaseModel {
                 byte[] image = resultSet.getBytes("geometrie");
                 JGeometry jGeometry = JGeometry.load(image);
                 
-                Shape shape = jGeometry2Shape(jGeometry);
+                Object shape = jGeometry2Shape(jGeometry);
                 if (shape != null) {
                     shapes.put(resultSet.getString("nazev"), shape);
                 }
@@ -80,33 +108,62 @@ public class ArealModel extends BaseModel {
         return shapes;
     }
     
-    private Shape jGeometry2Shape(JGeometry jGeometry) {
-        Shape shape;
+    private Object jGeometry2Shape(JGeometry jGeometry) {
+        Object shape;
+            
         switch (jGeometry.getType()) {
             case JGeometry.GTYPE_POLYGON:
                 shape = jGeometry.createShape();
                 break;
+            case JGeometry.GTYPE_CURVE:
+            case JGeometry.GTYPE_MULTICURVE:
+                shape = new Path2D.Float(jGeometry.createShape());
+                break;  
+            case JGeometry.GTYPE_POINT:
+                shape = jGeometry.getJavaPoint();
+                break;
             default:
+                System.out.println("TYPE:"+jGeometry.getType());
                 return null; // TODO: throw exception
         }
+        
         return shape;
     }
     
     private JGeometry shape2JGeometry(Shape shape) {
        JGeometry jgeom;
        
-       int polygon = 1;
-        int circle = 4;
-
+        int polygon = 1;
+        int circle = 2;
+        int line = 3;
+        int rectangle = 4;
+        
+        int etype = 1003;
+        int gtype = 2003;
         int shapeType = 0;
+        int shapeTypeToDB = 0;
 
         if (shape instanceof Ellipse2D) {
             System.out.println("elipsa");
             shapeType = circle;
+            shapeTypeToDB = 4;
+        }
+        else if (shape instanceof Rectangle2D) {
+            System.out.println("rectangle");
+            shapeType = rectangle;
+            shapeTypeToDB = 3;
         }
         else if (shape instanceof Polygon) {
             System.out.println("polygon");
             shapeType = polygon;
+            shapeTypeToDB = 1;
+        }
+        else if (shape instanceof Path2D) {
+            System.out.println("line");
+            shapeType = line;
+            shapeTypeToDB = 1;
+            etype = 2;
+            gtype = 2002; // line, multiline je 2006 ??
         }
         else {
             System.out.println("other");
@@ -115,43 +172,54 @@ public class ArealModel extends BaseModel {
         if (shapeType == 0) 
             return null;
 
-        
         List<Double> points = new ArrayList<>();
-        double[] coords = new double[6];
+        
+        if (shapeType != rectangle) {
+            
+            double[] coords = new double[6];
 
-        int ellipse_SEG_CUBICTO_Counter = 0;
+            int ellipse_SEG_CUBICTO_Counter = 0;
 
-        for (PathIterator pi = shape.getPathIterator(null); !pi.isDone(); pi.next()) {
+            for (PathIterator pi = shape.getPathIterator(null); !pi.isDone(); pi.next()) {
 
-            for (int j=0;j<6;j++) {
-                coords[j] = 0.0;
-            }
-
-            int type = pi.currentSegment(coords);
-            System.out.println(type+":"+coords[0]+","+coords[1]+","+coords[2]+","+coords[3]+","+coords[4]+","+coords[5]);
-
-            if (shapeType == polygon) {
-                
-                if (type != PathIterator.SEG_LINETO && type != PathIterator.SEG_MOVETO) {
-                    continue;
-                }
-                
-                points.add(coords[0]);
-                points.add(coords[1]);
-            }
-            else if (shapeType == circle) {
-                if (type != PathIterator.SEG_CUBICTO) {
-                    continue;
+                for (int j=0;j<6;j++) {
+                    coords[j] = 0.0;
                 }
 
-                if (ellipse_SEG_CUBICTO_Counter < 3) {
+                int type = pi.currentSegment(coords);
+                System.out.println(type+":"+coords[0]+","+coords[1]+","+coords[2]+","+coords[3]+","+coords[4]+","+coords[5]);
 
-                    points.add(coords[4]);
-                    points.add(coords[5]);
+                if (shapeType == polygon || shapeType == line) {
 
-                    ellipse_SEG_CUBICTO_Counter++;
+                    if (type != PathIterator.SEG_LINETO && type != PathIterator.SEG_MOVETO) {
+                        continue;
+                    }
+
+                    points.add(coords[0]);
+                    points.add(coords[1]);
+                }
+                else if (shapeType == circle) {
+                    if (type != PathIterator.SEG_CUBICTO) {
+                        continue;
+                    }
+
+                    if (ellipse_SEG_CUBICTO_Counter < 3) {
+
+                        points.add(coords[4]);
+                        points.add(coords[5]);
+
+                        ellipse_SEG_CUBICTO_Counter++;
+                    }
                 }
             }
+        }
+        else {
+        
+            Rectangle2D rec = shape.getBounds2D();
+            points.add(rec.getMinX());
+            points.add(rec.getMinY());
+            points.add(rec.getMaxX());
+            points.add(rec.getMaxY());
         }
         
         if (shapeType == polygon) {
@@ -170,24 +238,35 @@ public class ArealModel extends BaseModel {
             //System.out.println(d);
         }
         
-        jgeom = new JGeometry(2003, 0, new int[]{1, 1003, shapeType}, ordinates);
+        jgeom = new JGeometry(gtype, 0, new int[]{1, etype, shapeTypeToDB}, ordinates);
         
         return jgeom;
     }
     
     
     /**
-     *
+     * Vyhledá objekt/budovu na daných souřadnicích v databázi.
      * @param x
      * @param y
-     * @return
+     * @return Název objektu/budovy.
      * @throws SQLException
      * @throws Exception
      */
     public String getBuildingAtPoint(int x, int y) throws SQLException, Exception {
     
+        int x1,x2,x3,y1,y2,y3;
+        int r = 4;
+        
+        x1 = x3 = x;
+        y1 = y - r;
+        y3 = y + r;
+        x2 = x + r;
+        y2 = y;
+        
         OracleDataSource ods = ServiceLocator.getConnection();
-        try (Connection conn = ods.getConnection(); Statement stmt = conn.createStatement(); ResultSet resultSet = stmt.executeQuery("select nazev from areal where SDO_RELATE(geometrie, SDO_GEOMETRY(2001, NULL, SDO_POINT_TYPE(" + x + "," + y + ",NULL), NULL, NULL), 'mask=contains') = 'TRUE'")) {
+        try (Connection conn = ods.getConnection(); Statement stmt = conn.createStatement(); 
+             ResultSet resultSet = stmt.executeQuery("select nazev from areal where SDO_RELATE(geometrie, SDO_GEOMETRY(2003, NULL, NULL, SDO_ELEM_INFO_ARRAY(1,1003,4), SDO_ORDINATE_ARRAY("+x1+","+y1+", "+x2+","+y2+", "+x3+","+y3+")), 'mask=ANYINTERACT') = 'TRUE'"))
+        {
             while (resultSet.next()) {
                 return resultSet.getString("nazev");
             }
@@ -197,7 +276,7 @@ public class ArealModel extends BaseModel {
     }
     
     /**
-     *
+     * Smaže objekt/budovu se zadaným názvem.
      * @param name
      * @throws SQLException
      */
@@ -216,7 +295,7 @@ public class ArealModel extends BaseModel {
     
     
     /**
-     *
+     * Vypočítá plochu objektu/budovy.
      * @param name
      * @return
      * @throws SQLException
@@ -239,7 +318,7 @@ public class ArealModel extends BaseModel {
     }
     
     /**
-     *
+     * Vypočítá obvod/délku budovy.
      * @param name
      * @return
      * @throws SQLException
@@ -262,9 +341,9 @@ public class ArealModel extends BaseModel {
     }
     
     /**
-     *
+     * Vypočítá vzdálenosti od budovy/objektu k ostatním budovám/objektům.
      * @param name
-     * @return
+     * @return Vzdálenosti. Klíč je název budovy a hodnota je vzdálenost k dané budově od zkoumané budovy.
      * @throws SQLException
      */
     public Map<String, Float> getDistancesFromBuilding(String name) throws SQLException {
@@ -287,20 +366,27 @@ public class ArealModel extends BaseModel {
         return result;
     }
     
+    /**
+     * Vyhledá n nejbližších sousedů budovy.
+     * @param name
+     * @param n neighbours to be returned
+     * @return Klíč je název budovy a hodnota vzdálenost k tét budově od zkoumané budovy.
+     * @throws SQLException
+     */
     public Map<String, Float> getNNearestNeighboursFromBuilding(String name, int n) throws SQLException {
         
         Map<String, Float> result = new LinkedHashMap<>();
         
         OracleDataSource ods = ServiceLocator.getConnection();
         try (Connection conn = ods.getConnection(); 
-             PreparedStatement stmt = conn.prepareStatement("select nazev, SDO_NN_DISTANCE(10) as distance from areal where SDO_NN(geometrie, (SELECT x.geometrie FROM areal x WHERE x.nazev='{"+name+"}'), '', 10) = 'TRUE' ORDER BY distance")) 
+             PreparedStatement stmt = conn.prepareStatement("select nazev, SDO_NN_DISTANCE(1) as distance from areal where SDO_NN(geometrie, (SELECT x.geometrie FROM areal x WHERE x.nazev='"+name+"'), 'sdo_batch_size=1', 1) = 'TRUE' AND ROWNUM <= ? AND nazev <> ? ORDER BY distance")) 
         {
-            //stmt.setString(1, name);
-            //stmt.setInt(2, n);
+            stmt.setString(2, name);
+            stmt.setInt(1, n);
             
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    result.put(rs.getString("nazev"), rs.getFloat("distance"));
+                    result.put(rs.getString("nazev"), (float)rs.getInt("distance"));
                 }
             }
         }
@@ -308,7 +394,11 @@ public class ArealModel extends BaseModel {
         return result;
     }
     
-    
+    /**
+     * Spojí překrývající se budovy/objekty pomocí operace SDO_GEOM_SDO_UNION.
+     * @return
+     * @throws SQLException
+     */
     public void doUnionOperation() throws SQLException {
     
         OracleDataSource ods = ServiceLocator.getConnection();
