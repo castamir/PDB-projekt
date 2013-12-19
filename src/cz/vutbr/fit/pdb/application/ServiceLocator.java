@@ -19,7 +19,7 @@ public class ServiceLocator {
     private static Authenticator authenticator = null;
 
     /**
-     *
+     * Konstruktor service lokatoru pro pripad jineho navrhu, nez pres static
      */
     public ServiceLocator() {
         Loader loader = new Loader();
@@ -27,9 +27,9 @@ public class ServiceLocator {
     }
 
     /**
-     *
+     * Tovarna na vytvareni instanci pripojeni k databazi
      * @return
-     * @throws SQLException
+     * @throws SQLException v pripade, ze se nepodari pripojit k databazi
      */
     public static OracleDataSource getConnection() throws SQLException {
         OracleDataSource ods = new OracleDataSource();
@@ -43,7 +43,7 @@ public class ServiceLocator {
     }
 
     /**
-     *
+     * singleton pro ziskani nastaveni apliakce
      * @return
      */
     public static Properties getProperties() {
@@ -55,7 +55,7 @@ public class ServiceLocator {
     }
 
     /**
-     *
+     * singleton pro sluzbu na prihlasovani
      * @return
      */
     public static Authenticator getAuthenticator() {

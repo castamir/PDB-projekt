@@ -9,7 +9,7 @@ package cz.vutbr.fit.pdb.security;
 public class DefaultIdentity extends BaseIdentity implements IIdentity {
 
     /**
-     *
+     * 
      * @param username
      * @param password
      */

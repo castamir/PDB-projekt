@@ -15,6 +15,10 @@ public class Loader {
 
     private Properties properties;
 
+    /**
+     * Zjisti, zda existuje konfiguracni soubor s udaji pro pripojeni defaultniho uzivatele
+     * @return
+     */
     public static boolean existsLocalConfig() {
         Loader loader = new Loader();
         if (loader.getClass().getResourceAsStream("config.local.properties") == null) {
@@ -24,7 +28,9 @@ public class Loader {
     }
 
     /**
-     *
+     * Zpracovani souboru s konfiguracemi.
+     * Nejprve se zpracuje soubor se zakladni konfiguraci a pote
+     * jsou prepsana lokalne zavisla data ze souboru config.local.properties
      * @return
      */
     public Properties getProperties() {
@@ -44,8 +50,6 @@ public class Loader {
         try {
             if (getClass().getResourceAsStream(configFileName) != null) {
                 prop.load(getClass().getResourceAsStream(configFileName));
-
-
             }
         } catch (IOException ex) {
             Logger.getLogger(Loader.class

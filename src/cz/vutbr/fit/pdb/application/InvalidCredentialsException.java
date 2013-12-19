@@ -9,15 +9,7 @@ package cz.vutbr.fit.pdb.application;
 public class InvalidCredentialsException extends Exception {
 
     /**
-     *
-     */
-    public InvalidCredentialsException() {
-        super();
-    }
-
-    /**
-     *
-     * @param message
+     * @param message zprava popisuji, odkud pochazi nevalidni prihlasovaci udaje
      */
     public InvalidCredentialsException(String message) {
         super(message);
