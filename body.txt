@@ -1,0 +1,6 @@
+xpauli00 100 %
+xmikul45 100 %
+xgajdo13 100 %
+Vedoucím projektu je Miroslav Paulík (xpauli00) pracoval na připojení k db, administraci, resetování db, rezervacích ubytování a služeb.
+Tomáš Mikulica (xmikul45) pracoval na většině GUI aplikace - pro služby, obrázky, rezervace. Také pracoval na multimediální databázi.
+Pavel Gajdoš (xgajdo13) pracoval na modelech pro práci s DB (ne výhradně), na GUI pro práci s mapou areálu a na prostorové databázi.
