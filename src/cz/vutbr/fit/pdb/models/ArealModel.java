@@ -56,6 +56,13 @@ public class ArealModel extends BaseModel {
         }        
     }
     
+    /**
+     *
+     * @param name
+     * @param point
+     * @throws SQLException
+     * @throws Exception
+     */
     public void savePoint(String name, Point2D point) throws SQLException, Exception {
     
         OracleDataSource ods = ServiceLocator.getConnection();
