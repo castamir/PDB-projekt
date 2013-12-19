@@ -158,7 +158,7 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
 
         g2D.setPaint(background);
         
-        if ((shape instanceof Rectangle2D) || (shape instanceof GeneralPath) || (shape instanceof Ellipse2D)) {
+        if ((shape instanceof Rectangle2D) || (shape instanceof GeneralPath) || (shape instanceof Ellipse2D) || (shape instanceof Polygon)) {
             g2D.fill(shape);
         }
         
@@ -428,7 +428,7 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
             repaint();
         }
         else if (objectTypeRectangle.isSelected() && newRectangle != null) {
-            int w, h, r;
+            int w, h;
             int x, y, x1, x2, y1, y2;
 
             x1 = (int) newRectangle.getX();
@@ -438,14 +438,12 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
 
             w = x2 - x1;
             h = y2 - y1;
-
-            r = (w > h) ? w : h;
-
-            if (r < 0) {
+            
+            if (w == 0 || h == 0) {
                 return;
             }
 
-            newRectangle.setFrame(x1, y1, r, r);
+            newRectangle.setFrame(x1, y1, w, h);
 
             repaint();
         }
