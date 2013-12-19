@@ -53,9 +53,7 @@ DELETE FROM rezervace
 VALIDTIME ['2013-12-24' - '2013-12-26']
 -- SQL - jako procedura
 CREATE OR REPLACE PROCEDURE rezervace_smaz_v_obdobi (
-  datum_od DATE,
-  datum_do DATE
-) IS
+  datum_od DATE, datum_do DATE ) IS
 new_end DATE;
 new_start DATE;
 tmp_zakaznik NUMBER;
@@ -69,63 +67,42 @@ CURSOR cursor1 IS
 CURSOR cursor2 IS
 	SELECT id, zakaznik, pokoj, od, do
 	FROM rezervace WHERE od < datum_do AND do > datum_od;
-
 BEGIN
     IF datum_od<=datum_do THEN
         new_end := datum_od - 1;
         new_start := datum_do + 1;
-    
         DELETE FROM rezervace WHERE od >= datum_od AND do <= datum_do;
-        UPDATE rezervace
-            SET do = new_end
+        UPDATE rezervace SET do = new_end
             WHERE od < datum_od AND (do BETWEEN datum_od AND datum_do);
-        UPDATE rezervace
-            SET od = new_start
+        UPDATE rezervace SET od = new_start
             WHERE do > datum_do AND (od BETWEEN datum_od AND datum_do);
-
         OPEN cursor1;
         LOOP
-            FETCH cursor1	
-                INTO tmp_id, tmp_zakaznik, tmp_pokoj, tmp_od, tmp_do;
-
+            FETCH cursor1	INTO tmp_id, tmp_zakaznik, tmp_pokoj, tmp_od, tmp_do;
             EXIT WHEN cursor1%NOTFOUND;
-
             INSERT INTO rezervace (zakaznik, pokoj, od, do)
                 VALUES(tmp_zakaznik, tmp_pokoj, new_start, tmp_do);
-
             UPDATE rezervace
-                SET do = new_end
-                WHERE id = tmp_id;
+                SET do = new_end WHERE id = tmp_id;
         END LOOP;
         CLOSE cursor1;
     ELSE
         new_end := datum_do - 1;
-        new_start := datum_od + 1;
-        
+        new_start := datum_od + 1;        
         DELETE FROM rezervace WHERE od >= datum_do AND do <= datum_od;
-        UPDATE rezervace
-            SET do = new_end
+        UPDATE rezervace SET do = new_end
             WHERE od < datum_do AND (do BETWEEN datum_do AND datum_od);
-        UPDATE rezervace
-            SET od = new_start
+        UPDATE rezervace SET od = new_start
             WHERE do > datum_od AND (od BETWEEN datum_do AND datum_od);
-
         OPEN cursor2;
         LOOP
-            FETCH cursor2	
-                INTO tmp_id, tmp_zakaznik, tmp_pokoj, tmp_od, tmp_do;
-
+            FETCH cursor2	 INTO tmp_id, tmp_zakaznik, tmp_pokoj, tmp_od, tmp_do;
             EXIT WHEN cursor2%NOTFOUND;
-
             INSERT INTO rezervace (zakaznik, pokoj, od, do)
                 VALUES(tmp_zakaznik, tmp_pokoj, new_start, tmp_do);
-
-            UPDATE rezervace
-                SET do = new_end
-                WHERE id = tmp_id;
+            UPDATE rezervace SET do = new_end WHERE id = tmp_id;
         END LOOP;
         CLOSE cursor2;
     END IF;
-    COMMIT;
 END;
 /
