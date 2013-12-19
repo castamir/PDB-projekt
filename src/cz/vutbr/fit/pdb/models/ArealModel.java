@@ -13,6 +13,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -135,6 +136,7 @@ public class ArealModel extends BaseModel {
         int polygon = 1;
         int circle = 2;
         int line = 3;
+        int rectangle = 4;
         
         int etype = 1003;
         int gtype = 2003;
@@ -145,6 +147,11 @@ public class ArealModel extends BaseModel {
             System.out.println("elipsa");
             shapeType = circle;
             shapeTypeToDB = 4;
+        }
+        else if (shape instanceof Rectangle2D) {
+            System.out.println("rectangle");
+            shapeType = rectangle;
+            shapeTypeToDB = 3;
         }
         else if (shape instanceof Polygon) {
             System.out.println("polygon");
@@ -165,43 +172,54 @@ public class ArealModel extends BaseModel {
         if (shapeType == 0) 
             return null;
 
-        
         List<Double> points = new ArrayList<>();
-        double[] coords = new double[6];
+        
+        if (shapeType != rectangle) {
+            
+            double[] coords = new double[6];
 
-        int ellipse_SEG_CUBICTO_Counter = 0;
+            int ellipse_SEG_CUBICTO_Counter = 0;
 
-        for (PathIterator pi = shape.getPathIterator(null); !pi.isDone(); pi.next()) {
+            for (PathIterator pi = shape.getPathIterator(null); !pi.isDone(); pi.next()) {
 
-            for (int j=0;j<6;j++) {
-                coords[j] = 0.0;
-            }
-
-            int type = pi.currentSegment(coords);
-            System.out.println(type+":"+coords[0]+","+coords[1]+","+coords[2]+","+coords[3]+","+coords[4]+","+coords[5]);
-
-            if (shapeType == polygon || shapeType == line) {
-                
-                if (type != PathIterator.SEG_LINETO && type != PathIterator.SEG_MOVETO) {
-                    continue;
-                }
-                
-                points.add(coords[0]);
-                points.add(coords[1]);
-            }
-            else if (shapeType == circle) {
-                if (type != PathIterator.SEG_CUBICTO) {
-                    continue;
+                for (int j=0;j<6;j++) {
+                    coords[j] = 0.0;
                 }
 
-                if (ellipse_SEG_CUBICTO_Counter < 3) {
+                int type = pi.currentSegment(coords);
+                System.out.println(type+":"+coords[0]+","+coords[1]+","+coords[2]+","+coords[3]+","+coords[4]+","+coords[5]);
 
-                    points.add(coords[4]);
-                    points.add(coords[5]);
+                if (shapeType == polygon || shapeType == line) {
 
-                    ellipse_SEG_CUBICTO_Counter++;
+                    if (type != PathIterator.SEG_LINETO && type != PathIterator.SEG_MOVETO) {
+                        continue;
+                    }
+
+                    points.add(coords[0]);
+                    points.add(coords[1]);
+                }
+                else if (shapeType == circle) {
+                    if (type != PathIterator.SEG_CUBICTO) {
+                        continue;
+                    }
+
+                    if (ellipse_SEG_CUBICTO_Counter < 3) {
+
+                        points.add(coords[4]);
+                        points.add(coords[5]);
+
+                        ellipse_SEG_CUBICTO_Counter++;
+                    }
                 }
             }
+        }
+        else {
+        
+            Rectangle2D rec = shape.getBounds2D();
+            points.add(rec.getMinX());
+            points.add(rec.getMinY());
+            points.add(rec.getMaxX());
+            points.add(rec.getMaxY());
         }
         
         if (shapeType == polygon) {
