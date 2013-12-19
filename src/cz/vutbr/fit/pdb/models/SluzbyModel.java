@@ -20,7 +20,7 @@ import java.text.SimpleDateFormat;
 import oracle.jdbc.pool.OracleDataSource;
 
 /**
- *
+ * Model pro práci s tabulkou 'sluzby' a 'sluzby_rezervace'
  * @author Paulík Miroslav
  * @author Mikulica Tomáš
  * @author Gajdoš Pavel
@@ -37,9 +37,9 @@ public class SluzbyModel extends BaseModel {
     }
 
     /**
-     *
+     * Vrátí informace o zvolené službě
      * @param jmeno
-     * @return
+     * @return Klíč je atribut služby, hodnota je typu Object, konkrétní typ hodnoty je nutné testovat nebo vypisovat pomocí metody .toString()
      * @throws SQLException
      * @throws Exception
      */
@@ -68,10 +68,10 @@ public class SluzbyModel extends BaseModel {
     }
 
     /**
-     *
+     * Vrátí reezrvace služby pro zvolené datum
      * @param sluzba
      * @param datum
-     * @return
+     * @return Seznam pro každou hodinu v dostupném časovém období pro službu. Hodnoty jsou mapu, kdy klíč je hodina a hodnota je informace o rezervaci.
      * @throws SQLException
      * @throws Exception
      */
@@ -117,7 +117,7 @@ public class SluzbyModel extends BaseModel {
     }
 
     /**
-     *
+     * Vytvoří novo rezervaci služby
      * @param zakaznik
      * @param sluzba
      * @param datum
@@ -145,7 +145,7 @@ public class SluzbyModel extends BaseModel {
     }
 
     /**
-     *
+     * Upraví rezervaci služby
      * @param id
      * @param zakaznik
      * @param sluzba
@@ -176,7 +176,7 @@ public class SluzbyModel extends BaseModel {
     }
 
     /**
-     *
+     * Smaže rezervaci služby
      * @param id
      * @return
      * @throws SQLException
@@ -190,6 +190,11 @@ public class SluzbyModel extends BaseModel {
         }
     }
 
+    /**
+     * Vrátí průměrný počet rezervací na zákazníka do dnešního dne
+     * @return Pruměrný počet rezervací
+     * @throws SQLException 
+     */
     public float prumernyPocetRezervaci() throws SQLException {
         float prumer = 0;
 
