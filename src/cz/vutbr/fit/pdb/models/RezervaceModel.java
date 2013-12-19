@@ -185,7 +185,6 @@ public class RezervaceModel extends BaseModel {
             stmt.setDate(2, d_do);
             stmt.setDate(3, d_od);
             stmt.setDate(4, d_do);
-
             stmt.setDate(5, d_od);
             stmt.setDate(6, d_do);
 
@@ -274,5 +273,67 @@ public class RezervaceModel extends BaseModel {
         }
 
         return rekordman;
+    }
+
+    public int getVolnyPokojVObdobi(java.util.Date datum_od, java.util.Date datum_do) throws SQLException {
+        int pokoj = 0;
+        String query = "SELECT * FROM pokoje "
+                + "WHERE id NOT IN ("
+                + "  SELECT pokoj FROM rezervace WHERE ("
+                + "    (od BETWEEN ? AND ?) OR"
+                + "    (do BETWEEN ? AND ?) OR"
+                + "    (? BETWEEN od AND do) OR"
+                + "    (? BETWEEN od AND do)"
+                + "  )"
+                + ") AND ROWNUM = 1";
+
+        OracleDataSource ods = ServiceLocator.getConnection();
+        try (Connection conn = ods.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(query);) {
+            Date d_od = new Date(datum_od.getTime());
+            Date d_do = new Date(datum_do.getTime());
+
+            stmt.setDate(1, d_od);
+            stmt.setDate(2, d_do);
+            stmt.setDate(3, d_od);
+            stmt.setDate(4, d_do);
+            stmt.setDate(5, d_od);
+            stmt.setDate(6, d_do);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+
+                while (rs.next()) {
+                    pokoj = rs.getInt("id");
+                }
+            }
+        }
+        return pokoj;
+    }
+
+    public void zmenCisloPokoje(int pokoj, java.util.Date datum_od, java.util.Date datum_do) throws SQLException, Exception {
+        int new_pokoj = getVolnyPokojVObdobi(datum_od, datum_do);
+        if (new_pokoj == 0) {
+            throw new Exception("Změnu pokoje nelze provést, protože nebyl nalezen žádný volný pokoj");
+        }
+
+        String query = "UPDATE rezervace"
+                + "  SET pokoj = ?"
+                + "  WHERE pokoj = ? AND"
+                + "  od = ? AND"
+                + "  do = ?";
+
+        OracleDataSource ods = ServiceLocator.getConnection();
+        try (Connection conn = ods.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(query);) {
+            Date d_od = new Date(datum_od.getTime());
+            Date d_do = new Date(datum_do.getTime());
+
+            stmt.setInt(1, new_pokoj);
+            stmt.setInt(2, pokoj);
+            stmt.setDate(3, d_od);
+            stmt.setDate(4, d_do);
+
+            stmt.executeUpdate();
+        }
     }
 }

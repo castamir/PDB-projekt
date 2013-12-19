@@ -61,9 +61,8 @@ public class PrehledRezervaci extends javax.swing.JPanel {
      *
      */
     /*public void initTable() {
-        updateTable();
-    }*/
-
+     updateTable();
+     }*/
     /**
      *
      */
@@ -73,6 +72,7 @@ public class PrehledRezervaci extends javax.swing.JPanel {
 
         try {
             table_data = new LinkedHashMap<>();
+            pokoj_data = new LinkedHashMap<>();
             String cislo_pokoje = (String) pokoje_combobox.getSelectedItem();
             Map<Integer, Map<String, Object>> data;
             if (cislo_pokoje.equals(VSECHNY_PKOKOJE)) {
@@ -94,6 +94,7 @@ public class PrehledRezervaci extends javax.swing.JPanel {
                 model.addRow(row);
 
                 table_data.put(index, entry.getKey());
+                pokoj_data.put(index, new Object[]{Integer.parseInt(pokoj), rezervovano_od, rezervovano_do});
                 index++;
             }
 
@@ -105,7 +106,7 @@ public class PrehledRezervaci extends javax.swing.JPanel {
         model.fireTableDataChanged();
         updateRekordman();
     }
-    
+
     private void updateRekordman() {
         try {
             rekordman.setText(modelRezervace.nalezniRekordmanaVDelceUbytovani());
@@ -141,6 +142,7 @@ public class PrehledRezervaci extends javax.swing.JPanel {
         kalendar_do = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         rekordman = new javax.swing.JLabel();
+        zmenit_pokoj = new javax.swing.JButton();
 
         novaRezervace_button.setText("Vložit novou rezervaci");
         novaRezervace_button.addActionListener(new java.awt.event.ActionListener() {
@@ -226,6 +228,9 @@ public class PrehledRezervaci extends javax.swing.JPanel {
         );
 
         jButton1.setText("Zrušit rezervaci");
+        jButton1.setMaximumSize(new java.awt.Dimension(137, 23));
+        jButton1.setMinimumSize(new java.awt.Dimension(137, 23));
+        jButton1.setPreferredSize(new java.awt.Dimension(137, 23));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -234,6 +239,9 @@ public class PrehledRezervaci extends javax.swing.JPanel {
 
         jButton2.setText("Vyhlásit karanténu");
         jButton2.setToolTipText("Při vyhlášení karantény budou smazány všechny rezervace v následujícím týdnu počínaje dneškem.");
+        jButton2.setMaximumSize(new java.awt.Dimension(137, 23));
+        jButton2.setMinimumSize(new java.awt.Dimension(137, 23));
+        jButton2.setPreferredSize(new java.awt.Dimension(137, 23));
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -315,6 +323,16 @@ public class PrehledRezervaci extends javax.swing.JPanel {
 
         rekordman.setText("jLabel2");
 
+        zmenit_pokoj.setText("Změnit pokoj");
+        zmenit_pokoj.setMaximumSize(new java.awt.Dimension(137, 23));
+        zmenit_pokoj.setMinimumSize(new java.awt.Dimension(137, 23));
+        zmenit_pokoj.setPreferredSize(new java.awt.Dimension(137, 23));
+        zmenit_pokoj.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                zmenit_pokojActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout prehledRezervaci_kontejnerLayout = new javax.swing.GroupLayout(prehledRezervaci_kontejner);
         prehledRezervaci_kontejner.setLayout(prehledRezervaci_kontejnerLayout);
         prehledRezervaci_kontejnerLayout.setHorizontalGroup(
@@ -324,10 +342,11 @@ public class PrehledRezervaci extends javax.swing.JPanel {
                 .addGroup(prehledRezervaci_kontejnerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(prehledRezervaci_kontejnerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jButton2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE)
+                        .addComponent(zmenit_pokoj, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(novaRezervace_button, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
                 .addGroup(prehledRezervaci_kontejnerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(prehledRezervaci_kontejnerLayout.createSequentialGroup()
@@ -351,9 +370,11 @@ public class PrehledRezervaci extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(novaRezervace_button)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2)))
+                        .addComponent(zmenit_pokoj, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26)
@@ -464,9 +485,34 @@ public class PrehledRezervaci extends javax.swing.JPanel {
 
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void zmenit_pokojActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zmenit_pokojActionPerformed
+        model = (DefaultTableModel) pokoje_table.getModel();
+        int rows[] = pokoje_table.getSelectedRows();
+        try {
+            Date datum_od;
+            Date datum_do;
+            for (int i : rows) {
+                datum_od = DateTime.toDate(pokoj_data.get(i)[1].toString());
+                datum_do = DateTime.toDate(pokoj_data.get(i)[2].toString());
+                try {
+                    modelRezervace.zmenCisloPokoje((int) pokoj_data.get(i)[0], datum_od, datum_do);
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(getParent(), "Nepodařilo se změnit pokoj u rezervace.", "Chyba při práci s databází", JOptionPane.ERROR_MESSAGE);
+                    Logger.getLogger(PrehledRezervaci.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(getParent(), ex.getMessage(), "Upozornění", JOptionPane.ERROR_MESSAGE);
+                    Logger.getLogger(PrehledRezervaci.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        } catch (ParseException ex) {
+            Logger.getLogger(PrehledRezervaci.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        updateTable();
+    }//GEN-LAST:event_zmenit_pokojActionPerformed
     private DefaultTableModel model;
     private RezervaceModel modelRezervace;
     private Map<Integer, Integer> table_data;
+    private Map<Integer, Object[]> pokoj_data;
     private DefaultTableCellRenderer cellRenderer;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -487,5 +533,6 @@ public class PrehledRezervaci extends javax.swing.JPanel {
     private javax.swing.JLabel rekordman;
     private cz.vutbr.fit.pdb.utils.ObservingTextField rezervaceDo_field;
     private cz.vutbr.fit.pdb.utils.ObservingTextField rezervaceOd_field;
+    private javax.swing.JButton zmenit_pokoj;
     // End of variables declaration//GEN-END:variables
 }

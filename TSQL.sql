@@ -8,12 +8,19 @@ VALIDTIME ['2013-12-24' - '2013-12-26']
 SELECT * FROM pokoje 
 WHERE id NOT IN (
   SELECT pokoj FROM rezervace WHERE (
-    (od BETWEEN '2013-12-24' AND '2013-12-26') OR
-    (do BETWEEN '2013-12-24' AND '2013-12-26') OR
-    ('2013-12-24' BETWEEN od AND do) OR
-    ('2013-12-26' BETWEEN od AND do)
+    (od BETWEEN 
+        TO_DATE('2013-12-24', 'yyyy-mm-dd') AND
+        TO_DATE('2013-12-26', 'yyyy-mm-dd'))
+    OR
+    (do BETWEEN
+        TO_DATE('2013-12-24', 'yyyy-mm-dd') AND
+        TO_DATE('2013-12-26', 'yyyy-mm-dd')
+    )
+    OR
+    (TO_DATE('2013-12-24', 'yyyy-mm-dd') BETWEEN od AND do) OR
+    (TO_DATE('2013-12-26', 'yyyy-mm-dd') BETWEEN od AND do)
   )
-)
+);
 /***********************************************/
 SELECT
 -- ziskani prumerneho poctu objednanych sluzeb
