@@ -1,8 +1,10 @@
 package cz.vutbr.fit.pdb.security;
 
 /**
- *
- * @author castamir
+ * Rozhraní pro identitu
+ * @author Paulík Miroslav
+ * @author Mikulica Tomáš
+ * @author Gajdoš Pavel
  */
 public interface IIdentity {
 

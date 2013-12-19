@@ -1,7 +1,7 @@
 package cz.vutbr.fit.pdb.security;
 
 /**
- *
+ * Třída implementující rozhraní IIDentity.
  * @author Paulík Miroslav
  * @author Mikulica Tomáš
  * @author Gajdoš Pavel
