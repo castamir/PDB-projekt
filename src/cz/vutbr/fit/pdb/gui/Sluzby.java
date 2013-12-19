@@ -52,7 +52,7 @@ public class Sluzby extends javax.swing.JPanel {
             Logger.getLogger(Sluzby.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     /**
      *
      */
@@ -110,6 +110,13 @@ public class Sluzby extends javax.swing.JPanel {
         renderer.setToolTipText("Vyberte jméno");
         tc.setCellRenderer(renderer);
         refTableData = new ArrayList<>();
+
+        try {
+            avg.setText(String.format("%.2f", modelSluzby.prumernyPocetRezervaci()));
+        } catch (SQLException ex) {
+            Logger.getLogger(Sluzby.class.getName()).log(Level.SEVERE, null, ex);
+            avg.setText("");
+        }
     }
 
     public void initComboBoxItems() {
@@ -208,6 +215,12 @@ public class Sluzby extends javax.swing.JPanel {
             Logger.getLogger(Sluzby.class.getName()).log(Level.SEVERE, null, ex);
         }
         model.fireTableDataChanged();
+        try {
+            avg.setText(String.format("%.2f", modelSluzby.prumernyPocetRezervaci()));
+        } catch (SQLException ex) {
+            Logger.getLogger(Sluzby.class.getName()).log(Level.SEVERE, null, ex);
+            avg.setText("");
+        }
     }
 
     private boolean checkChangesInTable() {
@@ -293,6 +306,8 @@ public class Sluzby extends javax.swing.JPanel {
         date_field = new cz.vutbr.fit.pdb.utils.ObservingTextField();
         kalendar = new javax.swing.JLabel();
         ulozitZmena_button = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        avg = new javax.swing.JLabel();
 
         setMaximumSize(new java.awt.Dimension(911, 665));
 
@@ -381,6 +396,10 @@ public class Sluzby extends javax.swing.JPanel {
             }
         });
 
+        jLabel1.setText("Průměrný počet rezervací služeb na zákazníka");
+
+        avg.setText("jLabel2");
+
         javax.swing.GroupLayout wrapperLayout = new javax.swing.GroupLayout(wrapper);
         wrapper.setLayout(wrapperLayout);
         wrapperLayout.setHorizontalGroup(
@@ -398,7 +417,11 @@ public class Sluzby extends javax.swing.JPanel {
                                 .addGap(18, 18, 18)
                                 .addComponent(kalendar))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(ulozitZmena_button))
+                            .addComponent(ulozitZmena_button)
+                            .addGroup(wrapperLayout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(avg, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -417,6 +440,10 @@ public class Sluzby extends javax.swing.JPanel {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(ulozitZmena_button)
+                .addGap(48, 48, 48)
+                .addGroup(wrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(avg))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -475,10 +502,12 @@ public class Sluzby extends javax.swing.JPanel {
     private DefaultTableModel model;
     private Object[][] defaultValue;
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel avg;
     private cz.vutbr.fit.pdb.utils.ObservingTextField date_field;
     private javax.swing.JLabel den_label;
     private javax.swing.JTable detail_dne_table;
     private cz.vutbr.fit.pdb.gui.HotelCompoundPanel hotelCompoundPanel1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel kalendar;
     private javax.swing.JLabel nazev_sluzby;
