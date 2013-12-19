@@ -12,6 +12,7 @@ import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.PathIterator;
+import java.awt.geom.Point2D;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -55,15 +56,33 @@ public class ArealModel extends BaseModel {
         }        
     }
     
+    public void savePoint(String name, Point2D point) throws SQLException, Exception {
+    
+        OracleDataSource ods = ServiceLocator.getConnection();
+        try (Connection conn = ods.getConnection(); 
+             PreparedStatement stmt = conn.prepareStatement("INSERT INTO areal (nazev, geometrie) VALUES (?, ?)");
+             )
+        {
+            stmt.setString(1, name);
+            
+            JGeometry jgeomPoint = JGeometry.createPoint(new double[]{point.getX(), point.getY()}, 2, 0);
+            
+            STRUCT obj = JGeometry.store(conn, jgeomPoint);
+            stmt.setObject(2, obj);
+            
+            stmt.execute();
+        }        
+    }
+    
     /**
      *
      * @return
      * @throws SQLException
      * @throws Exception
      */
-    public Map<String, Shape> loadShapes() throws SQLException, Exception {
+    public Map<String, Object> loadShapes() throws SQLException, Exception {
     
-        Map<String, Shape> shapes = new HashMap<String, Shape>();
+        Map<String, Object> shapes = new HashMap<>();
         
         OracleDataSource ods = ServiceLocator.getConnection();
         try (Connection conn = ods.getConnection(); Statement stmt = conn.createStatement(); ResultSet resultSet = stmt.executeQuery("select nazev, geometrie from areal")) {
@@ -71,7 +90,7 @@ public class ArealModel extends BaseModel {
                 byte[] image = resultSet.getBytes("geometrie");
                 JGeometry jGeometry = JGeometry.load(image);
                 
-                Shape shape = jGeometry2Shape(jGeometry);
+                Object shape = jGeometry2Shape(jGeometry);
                 if (shape != null) {
                     shapes.put(resultSet.getString("nazev"), shape);
                 }
@@ -81,20 +100,9 @@ public class ArealModel extends BaseModel {
         return shapes;
     }
     
-    private Shape jGeometry2Shape(JGeometry jGeometry) {
-        Shape shape;
-        
-        int[] elemInfo = jGeometry.getElemInfo();
-        
-        boolean isLine = false;
-        
-        if (elemInfo.length >= 3) {
-            if (elemInfo[1] == 2) { // if etype = 2
-                isLine = true;
-                System.out.println("mela by byt line");
-            }
-        }
-        
+    private Object jGeometry2Shape(JGeometry jGeometry) {
+        Object shape;
+            
         switch (jGeometry.getType()) {
             case JGeometry.GTYPE_POLYGON:
                 shape = jGeometry.createShape();
@@ -102,14 +110,13 @@ public class ArealModel extends BaseModel {
             case JGeometry.GTYPE_CURVE:
             case JGeometry.GTYPE_MULTICURVE:
                 shape = new Path2D.Float(jGeometry.createShape());
+                break;  
+            case JGeometry.GTYPE_POINT:
+                shape = jGeometry.getJavaPoint();
                 break;
             default:
                 System.out.println("TYPE:"+jGeometry.getType());
                 return null; // TODO: throw exception
-        }
-        
-        if (isLine) {
-           // shape = new Path2D.Float(shape);
         }
         
         return shape;
