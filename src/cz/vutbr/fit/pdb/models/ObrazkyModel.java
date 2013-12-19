@@ -221,7 +221,7 @@ public class ObrazkyModel extends BaseModel {
      * @throws SQLException
      */
     public Map<Integer, myIcon> getTheMostSimilar(Integer id, double weightAC, double weightCH, double weightPC, double weightTX) throws SQLException {
-        Map<Integer, myIcon> result = new HashMap<>();
+        Map<Integer, myIcon> result = new LinkedHashMap<>();
         OracleDataSource ods = ServiceLocator.getConnection();
          try (Connection conn = ods.getConnection();
                OraclePreparedStatement pstmt = (OraclePreparedStatement)conn.prepareStatement("SELECT dst.id, dst.img, SI_ScoreByFtrList("
@@ -254,43 +254,5 @@ public class ObrazkyModel extends BaseModel {
         }
         
         return result;
-        /*String simVyrobce = null;
-        String simModel = null;
-        // najdeme zaznam podobneho fota
-        PreparedStatement pstmtSelect = connection.prepareStatement(
-                "SELECT dst.vyrobce, dst.model, SI_ScoreByFtrList("
-                + "new SI_FeatureList(src.foto_ac,?,src.foto_ch,?,src.foto_pc,?,src.foto_tx,?),dst.foto_si)"
-                + " as similarity FROM vozidlo src, vozidlo dst "
-                + "WHERE (src.vyrobce <> dst.vyrobce OR src.model <> dst.model) "
-                + "AND src.vyrobce = ? and src.model = ? ORDER BY similarity ASC");
-        try {
-            pstmtSelect.setDouble(1, weightAC);
-            pstmtSelect.setDouble(2, weightCH);
-            pstmtSelect.setDouble(3, weightPC);
-            pstmtSelect.setDouble(4, weightTX);
-            pstmtSelect.setString(5, this.vyrobce);
-            pstmtSelect.setString(6, this.model);
-            ResultSet rset = pstmtSelect.executeQuery();
-            try {
-                if (rset.next()) {
-                    simVyrobce = rset.getString(1);
-                    simModel = rset.getString(2);
-                }
-            } finally {
-                rset.close();
-            }
-        } finally {
-            pstmtSelect.close();
-        }
-        // nalezneme ziskane vozidlo v katalogu (tam je "jeho" objekt)
-        for (Iterator<Vozidlo> i = katalog.getVozidloIterator(); i.hasNext();) {
-            Vozidlo v = i.next();
-            if (v.vyrobce.equals(simVyrobce) && v.model.equals(simModel)) {
-                return v;
-            }
-        }
-        // pokud nenalezneme, tak null
-        return null;*/
-        //return null;
     }
 }
