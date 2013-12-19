@@ -8,8 +8,11 @@ import java.util.Observer;
 import javax.swing.JTextField;
 
 /**
- *
- * @author castamir
+ * @author originál z http://thehow2tutorial.blogspot.cz/p/downloads.html
+ * Upravy:
+ * @author Paulík Miroslav
+ * @author Mikulica Tomáš
+ * @author Gajdoš Pavel
  */
 public class ObservingTextField extends JTextField implements Observer {
 
