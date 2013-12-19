@@ -63,8 +63,8 @@ public class Sluzby extends javax.swing.JPanel {
     }
 
     /**
-     *
-     * @return
+     * Vrati dnesni datum ve formatu yyyy-mm-dd
+     * @return datum
      */
     public static String now() {
         Calendar cal = Calendar.getInstance();
@@ -77,7 +77,7 @@ public class Sluzby extends javax.swing.JPanel {
     }
 
     /**
-     *
+     * Inicializace
      * @throws Exception
      */
     public void initTable() throws Exception {
