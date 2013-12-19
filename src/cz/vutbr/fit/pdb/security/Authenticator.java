@@ -6,7 +6,7 @@ import cz.vutbr.fit.pdb.models.ReloadDatabaseModel;
 import java.util.Properties;
 
 /**
- *
+ * Třída pro ověření identity uživatele DB
  * @author Paulík Miroslav
  * @author Mikulica Tomáš
  * @author Gajdoš Pavel

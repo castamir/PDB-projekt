@@ -1,7 +1,7 @@
 package cz.vutbr.fit.pdb.gui;
 
 /**
- *
+ * Výjimka pro špatný interval datumů
  * @author Paulík Miroslav
  * @author Mikulica Tomáš
  * @author Gajdoš Pavel

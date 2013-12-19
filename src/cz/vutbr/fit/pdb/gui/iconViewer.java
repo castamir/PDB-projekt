@@ -21,7 +21,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 
 /**
- *
+ * Třída pro zobrazování ikon
  * @author Paulík Miroslav
  * @author Mikulica Tomáš
  * @author Gajdoš Pavel

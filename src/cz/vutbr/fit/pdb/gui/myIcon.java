@@ -7,7 +7,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 /**
- *
+ * Třída pro custom zobrazení obrázků
  * @author Paulík Miroslav
  * @author Mikulica Tomáš
  * @author Gajdoš Pavel

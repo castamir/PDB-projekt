@@ -45,8 +45,11 @@ import javax.swing.border.Border;
 import javax.swing.event.MouseInputListener;
 
 /**
- *
- * @author castamir
+ * @author originál z http://thehow2tutorial.blogspot.cz/p/downloads.html
+ * Upravy:
+ * @author Paulík Miroslav
+ * @author Mikulica Tomáš
+ * @author Gajdoš Pavel
  */
 public final class DatePicker extends Observable implements Runnable, WindowFocusListener {
 

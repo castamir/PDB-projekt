@@ -1,7 +1,7 @@
 package cz.vutbr.fit.pdb.security;
 
 /**
- *
+ * Třída pro identitu, údaje bere z konfguračního souboru
  * @author Paulík Miroslav
  * @author Mikulica Tomáš
  * @author Gajdoš Pavel
