@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package cz.vutbr.fit.pdb.models;
 
@@ -25,7 +20,7 @@ import oracle.jdbc.pool.OracleDataSource;
 import oracle.ord.im.OrdImage;
 
 /**
- *
+ * Model pro práci s tabukou 'obrazky'
  * @author Paulík Miroslav
  * @author Mikulica Tomáš
  * @author Gajdoš Pavel
@@ -33,10 +28,10 @@ import oracle.ord.im.OrdImage;
 public class ObrazkyModel extends BaseModel {
     
     /**
-     *
+     * Vloží obrázek se zadanou cestou 'path' k zákazníkovi 'zakaznik'
      * @param path
      * @param zakaznik
-     * @return
+     * @return ID vloženého obrázku.
      * @throws SQLException
      */
     public Integer insertImage(String path, int zakaznik) throws SQLException {
@@ -108,9 +103,9 @@ public class ObrazkyModel extends BaseModel {
     }
     
     /**
-     *
+     * Vyhledá obrázky uživatele customer.
      * @param customer
-     * @return
+     * @return Obrázky uživatele - klíč je ID obrázku v DB, hodnota je objekt typu myIcon.
      * @throws SQLException
      */
     public Map<Integer, myIcon> getImagesOfCustomer(int customer) throws SQLException {
@@ -142,9 +137,9 @@ public class ObrazkyModel extends BaseModel {
     }
     
     /**
-     *
+     * Vrací obrázek se zadaným ID.
      * @param id
-     * @return
+     * @return Obrázek reprezentovaný polem typu byte.
      * @throws SQLException
      */
     public byte[] getImage(Integer id) throws SQLException {
@@ -178,9 +173,9 @@ public class ObrazkyModel extends BaseModel {
     }
     
     /**
-     *
+     * Smaže obrázek se zadaným ID.
      * @param id
-     * @return
+     * @return 
      * @throws SQLException
      */
     public boolean delete(Integer id) throws SQLException {
@@ -195,7 +190,7 @@ public class ObrazkyModel extends BaseModel {
     }
     
     /**
-     *
+     * Otočí obrázek se zadaným ID zavoláním procedury, která provede otočení o 90
      * @param id
      * @throws SQLException
      */
@@ -212,13 +207,13 @@ public class ObrazkyModel extends BaseModel {
     }
     
     /**
-     *
+     * Vyhledá nejpodobnější obrázky na základě zadaného obrázku pomocí ID.
      * @param id
      * @param weightAC
      * @param weightCH
      * @param weightPC
      * @param weightTX
-     * @return
+     * @return Podobné obrázky - klíč je ID obrázku, hodnota jeobjekt typu myIcon. Obrázky jsou seřazeny podle podobnosti.
      * @throws SQLException
      */
     public Map<Integer, myIcon> getTheMostSimilar(Integer id, double weightAC, double weightCH, double weightPC, double weightTX) throws SQLException {

@@ -27,7 +27,7 @@ import oracle.jdbc.pool.OracleDataSource;
 import oracle.spatial.geometry.JGeometry;
 
 /**
- *
+ * Model pro práci s tabulkou 'areal'
  * @author Paulík Miroslav
  * @author Mikulica Tomáš
  * @author Gajdoš Pavel
@@ -35,7 +35,7 @@ import oracle.spatial.geometry.JGeometry;
 public class ArealModel extends BaseModel {
     
     /**
-     *
+     * Ukládá objekt type Shape do databáze.
      * @param name
      * @param shape
      * @throws SQLException
@@ -58,7 +58,7 @@ public class ArealModel extends BaseModel {
     }
     
     /**
-     *
+     * Ukládá objekt typu Point2D do databáze.
      * @param name
      * @param point
      * @throws SQLException
@@ -83,8 +83,8 @@ public class ArealModel extends BaseModel {
     }
     
     /**
-     *
-     * @return
+     * Načte všechny tvary z databáze.
+     * @return Všechny tvary v databázi. Klíč je název objektu, hodnota je objekt typu Shape nebo Pojnt2D.
      * @throws SQLException
      * @throws Exception
      */
@@ -245,10 +245,10 @@ public class ArealModel extends BaseModel {
     
     
     /**
-     *
+     * Vyhledá objekt/budovu na daných souřadnicích v databázi.
      * @param x
      * @param y
-     * @return
+     * @return Název objektu/budovy.
      * @throws SQLException
      * @throws Exception
      */
@@ -276,7 +276,7 @@ public class ArealModel extends BaseModel {
     }
     
     /**
-     *
+     * Smaže objekt/budovu se zadaným názvem.
      * @param name
      * @throws SQLException
      */
@@ -295,7 +295,7 @@ public class ArealModel extends BaseModel {
     
     
     /**
-     *
+     * Vypočítá plochu objektu/budovy.
      * @param name
      * @return
      * @throws SQLException
@@ -318,7 +318,7 @@ public class ArealModel extends BaseModel {
     }
     
     /**
-     *
+     * Vypočítá obvod/délku budovy.
      * @param name
      * @return
      * @throws SQLException
@@ -341,9 +341,9 @@ public class ArealModel extends BaseModel {
     }
     
     /**
-     *
+     * Vypočítá vzdálenosti od budovy/objektu k ostatním budovám/objektům.
      * @param name
-     * @return
+     * @return Vzdálenosti. Klíč je název budovy a hodnota je vzdálenost k dané budově od zkoumané budovy.
      * @throws SQLException
      */
     public Map<String, Float> getDistancesFromBuilding(String name) throws SQLException {
@@ -367,10 +367,10 @@ public class ArealModel extends BaseModel {
     }
     
     /**
-     *
-     * @param nam
+     * Vyhledá n nejbližších sousedů budovy.
+     * @param name
      * @param n neighbours to be returned
-     * @return
+     * @return Klíč je název budovy a hodnota vzdálenost k tét budově od zkoumané budovy.
      * @throws SQLException
      */
     public Map<String, Float> getNNearestNeighboursFromBuilding(String name, int n) throws SQLException {
@@ -395,7 +395,7 @@ public class ArealModel extends BaseModel {
     }
     
     /**
-     *
+     * Spojí překrývající se budovy/objekty pomocí operace SDO_GEOM_SDO_UNION.
      * @return
      * @throws SQLException
      */
