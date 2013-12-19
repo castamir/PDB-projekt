@@ -33,8 +33,10 @@ import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileFilter;
 
 /**
- *
- * @author Doma
+ * Panel pro novou registraci 
+ * @author Paulík Miroslav
+ * @author Mikulica Tomáš
+ * @author Gajdoš Pavel
  */
 public class Rezervace extends javax.swing.JPanel {
 
@@ -200,6 +202,8 @@ public class Rezervace extends javax.swing.JPanel {
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Kontaktní údaje"));
 
         jLabel1.setText("Jméno");
+
+        jmeno_field.setText("Pepa");
 
         jLabel2.setText("Přijmení");
 
