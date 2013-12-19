@@ -67,7 +67,6 @@ public class vyhledaniVysledky extends javax.swing.JPanel {
                 vysl_kontejner.add(value);
             }
         } else if(result.size() <= 0){
-            System.out.println("EMPTY");
             JLabel warn = new JLabel("Žádné podobné obrázky! V databázi se nachází pravděpodobně jediný obrázek");
             String path = "/icons/Info.png";
             ImageIcon i = new ImageIcon(getClass().getResource(path));

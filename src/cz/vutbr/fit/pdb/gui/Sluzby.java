@@ -30,8 +30,10 @@ import java.util.Calendar;
 import java.text.SimpleDateFormat;
 
 /**
- *
- * @author Doma
+ * Zobrazi sluzby v arealu
+ * @author Paulík Miroslav
+ * @author Mikulica Tomáš
+ * @author Gajdoš Pavel
  */
 public class Sluzby extends javax.swing.JPanel {
 
@@ -88,6 +90,10 @@ public class Sluzby extends javax.swing.JPanel {
         return new DefaultComboBoxModel(toUpdate);
     }
 
+    /**
+     *
+     * @throws Exception
+     */
     public void initTable() throws Exception {
 
         TableColumn tc = this.detail_dne_table.getColumnModel().getColumn(2);
@@ -119,6 +125,9 @@ public class Sluzby extends javax.swing.JPanel {
         }
     }
 
+    /**
+     *
+     */
     public void initComboBoxItems() {
         customer_databaseIdToComboBoxId = new HashMap<>();
 
