@@ -29,22 +29,35 @@ SELECT nvl(avg(nvl2(sluzby_rezervace.id, 1, 0)),0) as prumer
 SELECT
 -- ziskani nejdele doposud ubytovaneho zakaznika
 -- TSQL2
-SELECT jmeno
-	FROM zakaznik(jmeno) AS L
-	WHERE CAST(VALID(L) AS INTERVAL DAY) > ALL (SELECT CAST(VALID(L2) AS INTERVAL DAY)
-	FROM zakaznik(jmeno) L2
-	WHERE L.jmeno != L2.jmeno) AND VALID(zakaznik) PRECEDES DATE NOW
+SELECT zakaznik(jmeno), zakaznik(prijmeni), CAST(VALID(L) AS INTERVAL DAY) AS pocet_dnu
+	FROM rezervace JOIN zakaznik AS L ON (rezervace(zakaznik) = zakaznik(id))
+	WHERE CAST(VALID(L) AS INTERVAL DAY) > ALL (
+    SELECT CAST(VALID(L2) AS INTERVAL DAY)
+	  FROM zakaznik(jmeno) L2 WHERE L.jmeno != L2.jmeno
+  ) AND VALID(zakaznik) PRECEDES DATE NOW
 -- SQL
-select * from rezervace WHERE trunc (do - od) in (select max (pocet) as maximum from (select x.*, trunc (do - od) as pocet from rezervace x) r);
+SELECT zakaznik.jmeno, zakaznik.prijmeni, trunc (do - od) AS pocet_dnu
+  FROM rezervace JOIN zakaznik ON (rezervace.zakaznik = zakaznik.id)
+  WHERE trunc (do - od) IN (
+  SELECT MAX (pocet) AS maximum FROM (
+    SELECT x.*, trunc (do - od) AS pocet 
+    FROM rezervace x
+  ) r
+);
 /***********************************************/
 UPDATE
 -- zmena pokoje na jiny volny pokoj
 -- TSQL2
-UPDATE rezervace WHERE id = 125
+UPDATE rezervace
   SET pokoj = 9
+  WHERE pokoj = 1
 VALID TIME ['2013-12-24' - '2013-12-26']
 -- SQL
-
+UPDATE rezervace
+  SET pokoj = 9
+  WHERE pokoj = 1 AND
+  od = TO_DATE('2013-12-24', 'yyyy-mm-dd') AND
+  do TO_DATE('2013-12-26', 'yyyy-mm-dd')
 /***********************************************/
 DELETE
 -- smazani vsech zaznamu v danem obdobi

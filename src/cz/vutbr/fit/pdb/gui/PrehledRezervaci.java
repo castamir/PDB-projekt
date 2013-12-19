@@ -86,7 +86,7 @@ public class PrehledRezervaci extends javax.swing.JPanel {
                 Map<String, Object> value = entry.getValue();
 
                 String zakaznik = value.get("zakaznik").toString();
-                String pokoj = "Pokoj " + value.get("pokoj").toString();
+                String pokoj = value.get("pokoj").toString();
                 String rezervovano_od = value.get("od").toString();
                 String rezervovano_do = value.get("do").toString();
 
@@ -103,6 +103,16 @@ public class PrehledRezervaci extends javax.swing.JPanel {
             Logger.getLogger(Sluzby.class.getName()).log(Level.SEVERE, null, ex);
         }
         model.fireTableDataChanged();
+        updateRekordman();
+    }
+    
+    private void updateRekordman() {
+        try {
+            rekordman.setText(modelRezervace.nalezniRekordmanaVDelceUbytovani());
+        } catch (SQLException ex) {
+            rekordman.setText("zatím zde nebyl rezervován žádný klient");
+            Logger.getLogger(PrehledRezervaci.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -129,6 +139,8 @@ public class PrehledRezervaci extends javax.swing.JPanel {
         jLabel12 = new javax.swing.JLabel();
         rezervaceDo_field = new cz.vutbr.fit.pdb.utils.ObservingTextField();
         kalendar_do = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        rekordman = new javax.swing.JLabel();
 
         novaRezervace_button.setText("Vložit novou rezervaci");
         novaRezervace_button.addActionListener(new java.awt.event.ActionListener() {
@@ -171,7 +183,7 @@ public class PrehledRezervaci extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Host", "Pokoj", "Od", "Do"
+                "Host", "Pokoj č.", "Od", "Do"
             }
         ) {
             Class[] types = new Class [] {
@@ -299,6 +311,10 @@ public class PrehledRezervaci extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jLabel1.setText("Nejdéle ubytovaný klient:");
+
+        rekordman.setText("jLabel2");
+
         javax.swing.GroupLayout prehledRezervaci_kontejnerLayout = new javax.swing.GroupLayout(prehledRezervaci_kontejner);
         prehledRezervaci_kontejner.setLayout(prehledRezervaci_kontejnerLayout);
         prehledRezervaci_kontejnerLayout.setHorizontalGroup(
@@ -315,7 +331,12 @@ public class PrehledRezervaci extends javax.swing.JPanel {
                 .addGroup(prehledRezervaci_kontejnerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(prehledRezervaci_kontejnerLayout.createSequentialGroup()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(prehledRezervaci_kontejnerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(prehledRezervaci_kontejnerLayout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(rekordman))
+                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -335,7 +356,11 @@ public class PrehledRezervaci extends javax.swing.JPanel {
                         .addComponent(jButton2)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(294, Short.MAX_VALUE))
+                .addGap(26, 26, 26)
+                .addGroup(prehledRezervaci_kontejnerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(rekordman))
+                .addContainerGap(254, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -446,6 +471,7 @@ public class PrehledRezervaci extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JPanel jPanel2;
@@ -458,6 +484,7 @@ public class PrehledRezervaci extends javax.swing.JPanel {
     private javax.swing.JComboBox pokoje_combobox;
     private javax.swing.JTable pokoje_table;
     private javax.swing.JPanel prehledRezervaci_kontejner;
+    private javax.swing.JLabel rekordman;
     private cz.vutbr.fit.pdb.utils.ObservingTextField rezervaceDo_field;
     private cz.vutbr.fit.pdb.utils.ObservingTextField rezervaceOd_field;
     // End of variables declaration//GEN-END:variables

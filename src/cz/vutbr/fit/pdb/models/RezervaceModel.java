@@ -238,4 +238,41 @@ public class RezervaceModel extends BaseModel {
             return stmt.execute();
         }
     }
+
+    /**
+     *
+     * @return @throws SQLException
+     */
+    public String nalezniRekordmanaVDelceUbytovani() throws SQLException {
+        String rekordman = "";
+        String query = "SELECT zakaznik.jmeno, zakaznik.prijmeni, trunc (do - od) AS pocet_dnu FROM rezervace JOIN zakaznik ON (rezervace.zakaznik = zakaznik.id) WHERE trunc (do - od) IN ( SELECT MAX (pocet) AS maximum FROM ( SELECT x.*, trunc (do - od) AS pocet FROM rezervace x ) r)";
+        OracleDataSource ods = ServiceLocator.getConnection();
+        try (Connection conn = ods.getConnection();
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(query)) {
+            while (rs.next()) {
+                String jmeno = rs.getString("jmeno");
+                String prijmeni = rs.getString("prijmeni");
+                int pocetDnu = rs.getInt("pocet_dnu");
+
+                String den;
+                switch (pocetDnu) {
+                    case 1:
+                        den = "den";
+                        break;
+                    case 2:
+                    case 3:
+                    case 4:
+                        den = "dny";
+                        break;
+                    default:
+                        den = "dnů";
+                        break;
+                }
+                rekordman = jmeno + " " + prijmeni + " (" + pocetDnu + " " + den + ")";
+            }
+        }
+
+        return rekordman;
+    }
 }
