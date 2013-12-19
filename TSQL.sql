@@ -18,14 +18,14 @@ WHERE id NOT IN (
 SELECT
 -- ziskani prumerneho poctu objednanych sluzeb
 -- TSQL2
-SELECT avg(pocet) FROM (
+SELECT nvl(avg(pocet),0) FROM (
   SELECT zakaznik.id, count(*) as pocet 
   FROM zakaznik LEFT JOIN rezervace_sluzeb ON rezervace_sluzeb.zakaznik = zakaznik.id
   WHERE VALID(rezervace_sluzeb) PRECEDES DATE NOW
   GROUP BY zakaznik.id
 )
 -- SQL
-SELECT avg(nvl2(hodina, 1, 0)) as prumer
+SELECT nvl(avg(nvl2(hodina, 1, 0)),0) as prumer
   FROM zakaznik LEFT JOIN sluzby_rezervace ON sluzby_rezervace.zakaznik = zakaznik.id
   WHERE sluzby_rezervace.den <= trunc(sysdate) OR sluzby_rezervace.den IS NULL
 /***********************************************/
