@@ -17,8 +17,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
- *
- * @author castamir
+ * Třída pro záložka administrace
+ * @author Paulík Miroslav
+ * @author Mikulica Tomáš
+ * @author Gajdoš Pavel
  */
 public class Administrace extends javax.swing.JPanel {
 
