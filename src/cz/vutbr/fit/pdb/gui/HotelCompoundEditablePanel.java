@@ -33,8 +33,9 @@ import javax.swing.JOptionPane;
  */
 public class HotelCompoundEditablePanel extends javax.swing.JPanel implements MouseListener, MouseMotionListener, KeyListener {
 
-    private Map<String, Shape> shapes;
-    private Map<String, Shape> newShapes;
+    private Map<String, Object> shapes;
+    private Map<String, Object> newShapes;
+    
     private List<String> buildingsToDelete;
     private String selectedBuilding;
     private boolean drawing = false;
@@ -45,6 +46,7 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
     private String currentPolygonName;
     private Polygon newPolygon;
     private Path2D newPath;
+    private Point2D newPoint;
     private Ellipse2D newCircle;
     private final String tmpLineKey = "tmpLinePDB";
     private final int verticalOffset = 30;
@@ -80,15 +82,22 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
 
         // ulozeni novych
 
-        for (Map.Entry<String, Shape> entry : newShapes.entrySet()) {
+        for (Map.Entry<String, Object> entry : newShapes.entrySet()) {
             try {
-                arealModel.saveShape(entry.getKey(), entry.getValue());
+                if (entry.getValue() instanceof Shape) {
+                    arealModel.saveShape(entry.getKey(), (Shape)entry.getValue());
+                }
+                else { // point
+                    arealModel.savePoint(entry.getKey(), (Point2D)entry.getValue());
+                }
             } catch (SQLException ex) {
                 Logger.getLogger(HotelCompoundEditablePanel.class.getName()).log(Level.SEVERE, null, ex);
             } catch (Exception ex) {
                 Logger.getLogger(HotelCompoundEditablePanel.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        
+        //for (Map.Entry<String, Shape>)
 
         reloadShapes();
         repaint();
@@ -109,21 +118,40 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
 
         loadShapes();
 
-        for (Map.Entry<String, Shape> entry : shapes.entrySet()) {
-            drawShape(g2D, entry, false);
+        for (Map.Entry<String, Object> entry : shapes.entrySet()) {
+            if (entry.getValue() instanceof Shape) {
+                drawShape(g2D, entry.getKey(), (Shape)entry.getValue(), false);
+            }
+            else {
+                drawPoint(g2D, entry.getKey(), (Point2D)entry.getValue(), false);
+            }
         }
 
-        for (Map.Entry<String, Shape> entry : newShapes.entrySet()) {
-            drawShape(g2D, entry, true);
+        for (Map.Entry<String, Object> entry : newShapes.entrySet()) {
+            if (entry.getValue() instanceof Shape) {
+                drawShape(g2D, entry.getKey(), (Shape)entry.getValue(), true);
+            }
+            else {
+                drawPoint(g2D, entry.getKey(), (Point2D)entry.getValue(), true);
+            }
         }
     }
+    
+    private void drawPoint(Graphics2D g2D, String name, Point2D point, boolean newShape) {
+    
+        float r = (float)2;
+        
+        Ellipse2D tmp = new Ellipse2D.Float((float)point.getX()-r, (float)point.getY()-r, 2*r, 2*r);
+        
+        drawShape(g2D, name, tmp, newShape);
+    }
 
-    private void drawShape(Graphics2D g2D, Map.Entry<String, Shape> entry, boolean newShape) {
+    private void drawShape(Graphics2D g2D, String name, Shape shape, boolean newShape) {
         Color background = Color.darkGray;
         Color fontColor = Color.lightGray;
         Color borderColor = Color.black;
-
-        if (selectedBuilding != null && selectedBuilding.equals(entry.getKey())) {
+        
+        if (selectedBuilding != null && selectedBuilding.equals(name)) {
             background = Color.green;
             fontColor = Color.darkGray;
         } else if (newShape) {
@@ -132,19 +160,21 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
 
         g2D.setPaint(background);
         
-        if ((entry.getValue() instanceof Rectangle2D) || (entry.getValue() instanceof GeneralPath) || (entry.getValue() instanceof Ellipse2D)) {
-            g2D.fill(entry.getValue());
+        if ((shape instanceof Rectangle2D) || (shape instanceof GeneralPath) || (shape instanceof Ellipse2D)) {
+            g2D.fill(shape);
         }
         
-        System.out.println(entry.getKey()+" je trida: "+ entry.getValue().getClass().toString());
+        System.out.println(shape+" je trida: "+ shape.getClass().toString());
         
         g2D.setPaint(borderColor);
-        g2D.draw(entry.getValue());
+        g2D.draw(shape);
         g2D.setColor(fontColor);
         g2D.setFont(new Font("Verdana", Font.BOLD, 11));
+        
+        
 
-        if (!entry.getKey().equals(tmpLineKey)) {
-            g2D.drawString(entry.getKey(), (int) entry.getValue().getBounds2D().getMinX() + 5, (int) entry.getValue().getBounds2D().getMaxY() - 5);
+        if (!name.equals(tmpLineKey)) {
+            g2D.drawString(name, (int) shape.getBounds2D().getMinX() + 5, (int) shape.getBounds2D().getMaxY() - 5);
         }
     }
 
@@ -164,13 +194,15 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
 
         selectedBuilding = null;
 
-        for (Map.Entry<String, Shape> entry : newShapes.entrySet()) {
+        for (Map.Entry<String, Object> entry : newShapes.entrySet()) {
 
-            Shape obj = entry.getValue();
+            if (entry.getValue() instanceof Shape) {
+                Shape obj = (Shape)entry.getValue();
 
-            if (obj.contains(e.getX() - horizontalOffset, e.getY() - verticalOffset)) {
-                selectedBuilding = entry.getKey();
-                break;
+                if (obj.contains(e.getX() - horizontalOffset, e.getY() - verticalOffset)) {
+                    selectedBuilding = entry.getKey();
+                    break;
+                }
             }
         }
 
@@ -254,6 +286,15 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
             else {
                 newPath.lineTo(e.getX() - horizontalOffset, e.getY() - verticalOffset);
             }
+        }
+        else if (objectTypePoint.isSelected()) {
+            
+            newPoint = new Point2D.Float(e.getX() - horizontalOffset, e.getY() - verticalOffset);
+            
+            newShapes.put(currentPolygonName, newPoint);
+            
+            newPoint = null;
+            drawing = false;
         }
 
         repaint();
