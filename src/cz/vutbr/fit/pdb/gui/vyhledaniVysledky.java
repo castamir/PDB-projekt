@@ -1,11 +1,14 @@
 package cz.vutbr.fit.pdb.gui;
 
 import cz.vutbr.fit.pdb.models.ObrazkyModel;
+import java.awt.Color;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 /**
  * Zobrazi vysledky vyhledani
@@ -53,7 +56,7 @@ public class vyhledaniVysledky extends javax.swing.JPanel {
         } catch (SQLException ex) {
             Logger.getLogger(vyhledaniVysledky.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if (result != null) {
+        if (result != null && result.size() > 0) {
             for (Map.Entry<Integer, myIcon> entry : result.entrySet()) {
                 myIcon value = entry.getValue();
                 //JLabel tm = new JLabel(value.getMyIcon());
@@ -63,6 +66,14 @@ public class vyhledaniVysledky extends javax.swing.JPanel {
                 value.setToolTipText("Čím menší skóre, tím podobnější obrázek");
                 vysl_kontejner.add(value);
             }
+        } else if(result.size() <= 0){
+            System.out.println("EMPTY");
+            JLabel warn = new JLabel("Žádné podobné obrázky! V databázi se nachází pravděpodobně jediný obrázek");
+            String path = "/icons/Info.png";
+            ImageIcon i = new ImageIcon(getClass().getResource(path));
+            warn.setIcon(i);
+            warn.setBackground(Color.LIGHT_GRAY);
+            vysl_kontejner.add(warn);
         }
     }
 
