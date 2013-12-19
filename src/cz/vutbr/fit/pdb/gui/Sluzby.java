@@ -38,7 +38,7 @@ import java.text.SimpleDateFormat;
 public class Sluzby extends javax.swing.JPanel {
 
     /**
-     * Creates new form Sluzby
+     * Konstruktor
      */
     public Sluzby() {
         initComponents();
@@ -72,20 +72,6 @@ public class Sluzby extends javax.swing.JPanel {
         return sdf.format(cal.getTime());
     }
 
-    /**
-     * TODO smazat?
-     *
-     * @param evt
-     */
-    private void comboBoxAction(ActionEvent evt) {
-        JComboBox cb = (JComboBox) evt.getSource();
-        item = (String) cb.getSelectedItem();
-        int tmp = (int) cb.getSelectedIndex();
-        //if(item != null ||tmp != -1) {
-        //System.out.println(item);
-        //}
-    }
-
     private ComboBoxModel getComboBoxItems(String[] toUpdate) {
         return new DefaultComboBoxModel(toUpdate);
     }
@@ -102,12 +88,7 @@ public class Sluzby extends javax.swing.JPanel {
 
         comboBox = new JComboBox();
         comboBox.setModel(getComboBoxItems(comboBoxItems));
-        comboBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                comboBoxAction(ae);
-            }
-        });
+
         tc.setCellEditor(new DefaultCellEditor(comboBox));
 
         //Popisky
@@ -147,18 +128,6 @@ public class Sluzby extends javax.swing.JPanel {
         } catch (SQLException e) {
             comboBoxItems = new String[]{"chyba při načítání.."};
         }
-    }
-
-    private void updateTable(Object o) {
-        model = (DefaultTableModel) detail_dne_table.getModel();
-        //Odstraníme všechny řádky
-        model.getDataVector().removeAllElements();
-        //Updatneme kombobox
-        comboBox.setModel(getComboBoxItems(tmp));
-        //Pridame zaznam do tabulky
-        //model.addRow(new Object[]{"ads","asd",(String)comboBox.getItemAt(2),date_field.getText()});
-        //Překreslíme tabulku
-        model.fireTableDataChanged();
     }
 
     private Locale getLocale(String loc) {
