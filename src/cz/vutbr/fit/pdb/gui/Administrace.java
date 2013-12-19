@@ -12,6 +12,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
  *
@@ -112,6 +115,7 @@ public class Administrace extends javax.swing.JPanel {
         logout_button = new javax.swing.JButton();
         reset_database_button = new javax.swing.JButton();
         reset_database_spinner = new javax.swing.JLabel();
+        helpBtn = new javax.swing.JButton();
 
         setMaximumSize(new java.awt.Dimension(923, 665));
         setPreferredSize(new java.awt.Dimension(923, 665));
@@ -162,6 +166,13 @@ public class Administrace extends javax.swing.JPanel {
         reset_database_spinner.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/throbber.gif"))); // NOI18N
         reset_database_spinner.setText("probíhá reset databáze...");
 
+        helpBtn.setText("Nápověda");
+        helpBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                helpBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -173,7 +184,8 @@ public class Administrace extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(username_label)
                             .addComponent(password_label)
-                            .addComponent(jLabel3))
+                            .addComponent(jLabel3)
+                            .addComponent(helpBtn))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(username_input, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -210,7 +222,9 @@ public class Administrace extends javax.swing.JPanel {
                     .addComponent(identity_label))
                 .addGap(18, 18, 18)
                 .addComponent(reset_database_button)
-                .addGap(115, 115, 115)
+                .addGap(63, 63, 63)
+                .addComponent(helpBtn)
+                .addGap(23, 23, 23)
                 .addComponent(reset_database_spinner, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(304, Short.MAX_VALUE))
         );
@@ -274,7 +288,22 @@ public class Administrace extends javax.swing.JPanel {
     private void password_inputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_password_inputFocusGained
         password_input.setText("");
     }//GEN-LAST:event_password_inputFocusGained
+
+    private void helpBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpBtnActionPerformed
+        
+        try {
+            String path = new File("").getCanonicalPath().toString();
+            path = path.concat("/doku/pdb.pdf");
+            System.out.println(path);
+            java.awt.Desktop.getDesktop().open(new File(path));
+        }
+        catch (Exception e) {
+            JOptionPane.showMessageDialog(getParent(), "Soubor s nápovědou s nepodařilo otevřít.");
+        }
+    }//GEN-LAST:event_helpBtnActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton helpBtn;
     private javax.swing.JLabel identity_label;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JButton login_button;
