@@ -292,10 +292,7 @@ public class Administrace extends javax.swing.JPanel {
     private void helpBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpBtnActionPerformed
         
         try {
-            String path = new File("").getCanonicalPath().toString();
-            path = path.concat("/doku/pdb.pdf");
-            System.out.println(path);
-            java.awt.Desktop.getDesktop().open(new File(path));
+            java.awt.Desktop.getDesktop().open(new File("./doku/pdb.pdf"));
         }
         catch (Exception e) {
             JOptionPane.showMessageDialog(getParent(), "Soubor s nápovědou s nepodařilo otevřít.");
