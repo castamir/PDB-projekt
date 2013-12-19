@@ -28,8 +28,10 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
- *
- * @author Pavel
+ * Třída, která umožňuje editaci areálu interaktivní formou.
+ * @author Paulík Miroslav
+ * @author Mikulica Tomáš
+ * @author Gajdoš Pavel
  */
 public class HotelCompoundEditablePanel extends javax.swing.JPanel implements MouseListener, MouseMotionListener, KeyListener {
 
@@ -102,7 +104,7 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
     }
 
     /**
-     *
+     * Vykreslí data
      * @param g
      */
     @Override
@@ -178,7 +180,7 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
 
     // <editor-fold defaultstate="collapsed" desc="Mouse listener methods">   
     /**
-     *
+     * Vybírání objektů v mapě.
      * @param e
      */
     @Override
@@ -238,7 +240,7 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
     }
 
     /**
-     *
+     * Počátek kreslení objektů
      * @param e
      */
     @Override
@@ -313,7 +315,7 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
     }
 
     /**
-     *
+     * Ukončení kreslení některých objektů.
      * @param e
      */
     @Override
@@ -399,7 +401,7 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
     }
 
     /**
-     *
+     * Tažením myši lze vytvářet kruh nebo čtverec/obdélník.
      * @param e
      */
     @Override
@@ -453,7 +455,7 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
     
     // <editor-fold defaultstate="collapsed" desc="Key listener methods">   
     /**
-     *
+     * Zmáčknutím příslušných tlačítek dojde ke zrušení vytváření nebo k potvrzení nového objektu.
      * @param e
      */
     @Override
@@ -513,9 +515,10 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
     }
 
     // </editor-fold>
+    
     /* dialog pro ziskani nazvu kresleneho objektu */
     /**
-     *
+     * Vytvoří nové okno, kde lze zadat název nového objektu.
      */
     public void newObjectNameDialog() {
 
