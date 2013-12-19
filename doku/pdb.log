@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2011.11.26)  19 DEC 2013 20:16
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2011.11.26)  19 DEC 2013 20:39
 entering extended mode
 **pdb
 (d:\SKOLA\PDB-projekt\doku\pdb.tex
@@ -688,28 +688,28 @@ File: omsptm.fd
 )
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10.95> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 64.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 88.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 91.
  [2]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 88.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 91.
  (d:\SKOLA\PDB-projekt\doku\pdb.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 88.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 88.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 91.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 91.
 Package rerunfilecheck Info: File `pdb.out' has not changed.
 (rerunfilecheck)             Checksum: 3392D9EE8E099EC87E0F79E58E09D3E6;402.
  ) 
 Here is how much of TeX's memory you used:
  8119 strings out of 494045
  115587 string characters out of 3155643
- 220145 words of memory out of 3000000
+ 221145 words of memory out of 3000000
  11282 multiletter control sequences out of 15000+200000
  27678 words of font info for 62 fonts, out of 3000000 for 9000
  715 hyphenation exceptions out of 8191
- 38i,8n,38p,452b,381s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 38i,8n,38p,618b,381s stack positions out of 5000i,500n,10000p,200000b,50000s
 {D:/MiKTeX/fonts/enc/dvips/fontname/8r.enc}<D:/MiKTeX/fonts/type1/public/amsf
 onts/cm/cmsy10.pfb><D:/MiKTeX/fonts/type1/urw/courier/ucrr8a.pfb><D:/MiKTeX/fon
 ts/type1/urw/times/utmb8a.pfb><D:/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><D:/M
 iKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on pdb.pdf (3 pages, 79294 bytes).
+Output written on pdb.pdf (3 pages, 83062 bytes).
 PDF statistics:
  80 PDF objects out of 1000 (max. 8388607)
  14 named destinations out of 1000 (max. 500000)

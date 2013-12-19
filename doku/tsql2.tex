@@ -1,4 +1,4 @@
-\documentclass[11pt,a4paper]{article}
+\documentclass[8pt,a4paper]{article}
 \usepackage[czech]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{times}
@@ -46,6 +46,44 @@ WHERE id NOT IN (
 )
 \end{boxedverbatim}
 \end{center}
+
+Dotaz v TSQL2:
+\begin{center}
+\begin{boxedverbatim}
+SELECT nvl(avg(pocet),0) FROM (
+  SELECT zakaznik.id, count(*) as pocet 
+  FROM zakaznik LEFT JOIN rezervace_sluzeb ON rezervace_sluzeb.zakaznik = zakaznik.id
+  WHERE VALID(rezervace_sluzeb) PRECEDES DATE NOW
+  GROUP BY zakaznik.id
+)
+\end{boxedverbatim}
+\end{center}
+Dotaz v SQL:
+\begin{center}
+\begin{boxedverbatim}
+SELECT nvl(avg(nvl2(hodina, 1, 0)),0) as prumer
+  FROM zakaznik LEFT JOIN sluzby_rezervace ON sluzby_rezervace.zakaznik = zakaznik.id
+  WHERE sluzby_rezervace.den <= trunc(sysdate) OR sluzby_rezervace.den IS NULL
+\end{boxedverbatim}
+\end{center}
+
+Dotaz v TSQL2:
+\begin{center}
+\begin{boxedverbatim}
+SELECT jmeno
+	FROM zakaznik(jmeno) AS L
+	WHERE CAST(VALID(L) AS INTERVAL DAY) > ALL (SELECT CAST(VALID(L2) AS INTERVAL DAY)
+	FROM zakaznik(jmeno) L2
+	WHERE L.jmeno != L2.jmeno) AND VALID(pacienti) PRECEDES DATE NOW
+\end{boxedverbatim}
+\end{center}
+Dotaz v SQL:
+\begin{center}
+\begin{boxedverbatim}
+select * from rezervace WHERE trunc (do - od) in (select max (pocet) as maximum from (select x.*, trunc (do - od) as pocet from rezervace x) r);
+\end{boxedverbatim}
+\end{center}
+
 
 \begin{center}
 \begin{boxedverbatim}
