@@ -204,6 +204,15 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
                     break;
                 }
             }
+            else {
+                
+                Point2D point = (Point2D)entry.getValue();
+                
+                if (point.distance(e.getX() - horizontalOffset, e.getY() - verticalOffset) <= 4) {
+                    selectedBuilding = entry.getKey();
+                    break;
+                }
+            }
         }
 
         if (selectedBuilding == null) {
@@ -295,6 +304,7 @@ public class HotelCompoundEditablePanel extends javax.swing.JPanel implements Mo
             
             newPoint = null;
             drawing = false;
+            selectedBuilding = null;
         }
 
         repaint();
