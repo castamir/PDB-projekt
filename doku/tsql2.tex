@@ -9,6 +9,7 @@
 \usepackage{graphicx}
 \usepackage[bf]{caption}
 \usepackage{moreverb}
+\usepackage{verbatim}
 
 \usepackage[hyperindex,
   plainpages=false,
@@ -20,73 +21,148 @@
 \pdfcompresslevel=9
 
 \newcommand\mycomment[1]{}
+\setlength{\parindent}{0pt} % Default is 15pt.
 
 
 \begin{document} %\sloppy
 \section{Dokumentace temporálních dotazů}
-Dotaz v TSQL2:
+\subsection{SELECT}
+
+Nalezení volných pokojů v daném období.\\
+
+\textbf{TSQL2}:
 \begin{center}
-\begin{boxedverbatim}
+\begin{verbatim}
 SELECT * FROM pokoje
 WHERE id NOT IN (SELECT pokoj FROM rezervace)
 VALIDTIME ['2013-12-24' - '2013-12-26']
-\end{boxedverbatim}
+\end{verbatim}
 \end{center}
-Dotaz v SQL:
+
+\textbf{SQL}:
 \begin{center}
-\begin{boxedverbatim}
+\begin{verbatim}
 SELECT * FROM pokoje 
 WHERE id NOT IN (
   SELECT pokoj FROM rezervace WHERE (
-    (od BETWEEN '2013-12-24' AND '2013-12-26') OR
-    (do BETWEEN '2013-12-24' AND '2013-12-26') OR
-    ('2013-12-24' BETWEEN od AND do) OR
-    ('2013-12-26' BETWEEN od AND do)
+    (od BETWEEN 
+        TO_DATE('2013-12-24', 'yyyy-mm-dd') AND
+        TO_DATE('2013-12-26', 'yyyy-mm-dd'))
+    OR
+    (do BETWEEN
+        TO_DATE('2013-12-24', 'yyyy-mm-dd') AND
+        TO_DATE('2013-12-26', 'yyyy-mm-dd')
+    )
+    OR
+    (TO_DATE('2013-12-24', 'yyyy-mm-dd') BETWEEN od AND do) OR
+    (TO_DATE('2013-12-26', 'yyyy-mm-dd') BETWEEN od AND do)
   )
-)
-\end{boxedverbatim}
+);
+\end{verbatim}
 \end{center}
 
-Dotaz v TSQL2:
+%--------------------------------------------------
+
+Zjištění průměrného počtu doposud využitých služeb na každého zákazníka, který byl kdy ubytován ubytován.\\
+
+\textbf{TSQL2}:
 \begin{center}
-\begin{boxedverbatim}
-SELECT nvl(avg(pocet),0) FROM (
-  SELECT zakaznik.id, count(*) as pocet 
-  FROM zakaznik LEFT JOIN rezervace_sluzeb ON rezervace_sluzeb.zakaznik = zakaznik.id
+\begin{verbatim}
+SELECT nvl(avg(nvl2(sluzby_rezervace.id, 1, 0)),0) as prumer
+  FROM zakaznik LEFT JOIN sluzby_rezervace 
+  ON sluzby_rezervace.zakaznik = zakaznik.id
   WHERE VALID(rezervace_sluzeb) PRECEDES DATE NOW
-  GROUP BY zakaznik.id
-)
-\end{boxedverbatim}
-\end{center}
-Dotaz v SQL:
-\begin{center}
-\begin{boxedverbatim}
-SELECT nvl(avg(nvl2(hodina, 1, 0)),0) as prumer
-  FROM zakaznik LEFT JOIN sluzby_rezervace ON sluzby_rezervace.zakaznik = zakaznik.id
-  WHERE sluzby_rezervace.den <= trunc(sysdate) OR sluzby_rezervace.den IS NULL
-\end{boxedverbatim}
+\end{verbatim}
 \end{center}
 
-Dotaz v TSQL2:
+\textbf{SQL}:
 \begin{center}
-\begin{boxedverbatim}
-SELECT jmeno
-	FROM zakaznik(jmeno) AS L
-	WHERE CAST(VALID(L) AS INTERVAL DAY) > ALL (SELECT CAST(VALID(L2) AS INTERVAL DAY)
-	FROM zakaznik(jmeno) L2
-	WHERE L.jmeno != L2.jmeno) AND VALID(pacienti) PRECEDES DATE NOW
-\end{boxedverbatim}
+\begin{verbatim}
+SELECT nvl(avg(nvl2(sluzby_rezervace.id, 1, 0)),0) as prumer
+  FROM zakaznik LEFT JOIN sluzby_rezervace 
+    ON sluzby_rezervace.zakaznik = zakaznik.id
+  WHERE sluzby_rezervace.den <= trunc(sysdate) OR
+  sluzby_rezervace.den IS NULL
+\end{verbatim}
 \end{center}
-Dotaz v SQL:
+
+%--------------------------------------------------
+
+Nalezení zákazníka s doposud nejdelším pobytem v hotelu.\\
+
+\textbf{TSQL2}:
 \begin{center}
-\begin{boxedverbatim}
-select * from rezervace WHERE trunc (do - od) in (select max (pocet) as maximum from (select x.*, trunc (do - od) as pocet from rezervace x) r);
-\end{boxedverbatim}
+\begin{verbatim}
+SELECT zakaznik(jmeno), zakaznik(prijmeni), CAST(VALID(L) AS INTERVAL DAY) AS pocet_dnu
+	FROM rezervace JOIN zakaznik AS L ON (rezervace(zakaznik) = zakaznik(id))
+	WHERE CAST(VALID(L) AS INTERVAL DAY) > ALL (
+    SELECT CAST(VALID(L2) AS INTERVAL DAY)
+	  FROM zakaznik(jmeno) L2 WHERE L.jmeno != L2.jmeno
+  ) AND VALID(zakaznik) PRECEDES DATE NOW
+\end{verbatim}
+\end{center}
+
+\textbf{SQL}:
+\begin{center}
+\begin{verbatim}
+SELECT zakaznik.jmeno, zakaznik.prijmeni, trunc (do - od) AS pocet_dnu
+  FROM rezervace JOIN zakaznik ON (rezervace.zakaznik = zakaznik.id)
+  WHERE trunc (do - od) IN (
+  SELECT MAX (pocet) AS maximum FROM (
+    SELECT x.*, trunc (do - od) AS pocet 
+    FROM rezervace x
+  ) r
+);
+\end{verbatim}
 \end{center}
 
 
+%--------------------------------------------------
+\newpage
+
+\subsection{UPDATE}
+
+Změna pokoje na jiný volný pokoj.\\
+
+\textbf{TSQL2}:
 \begin{center}
-\begin{boxedverbatim}
+\begin{verbatim}
+UPDATE rezervace
+  SET pokoj = 9
+  WHERE pokoj = 1
+VALID TIME ['2013-12-24' - '2013-12-26']
+\end{verbatim}
+\end{center}
+
+\textbf{SQL}:
+\begin{center}
+\begin{verbatim}
+UPDATE rezervace
+  SET pokoj = 9
+  WHERE pokoj = 1 AND
+  od = TO_DATE('2013-12-24', 'yyyy-mm-dd') AND
+  do TO_DATE('2013-12-26', 'yyyy-mm-dd')
+\end{verbatim}
+\end{center}
+
+
+%--------------------------------------------------
+\newpage
+\subsection{DELETE}
+
+Smazání všech rezervací v daném období (v aplikaci při vyhlášení karantény).\\
+
+\textbf{TSQL2}:
+\begin{center}
+\begin{verbatim}
+DELETE FROM rezervace
+VALIDTIME ['2013-12-24' - '2013-12-26']
+\end{verbatim}
+\end{center}
+
+\textbf{SQL}:
+\begin{center}
+\begin{verbatim}
 CREATE OR REPLACE PROCEDURE rezervace_smaz_v_obdobi (
   datum_od DATE, datum_do DATE ) IS
 new_end DATE;
@@ -141,6 +217,6 @@ ELSE
 END IF;
 END;
 /
-\end{boxedverbatim}
+\end{verbatim}
 \end{center}
 \end{document}
