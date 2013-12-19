@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2011.11.26)  19 DEC 2013 19:37
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2011.11.26)  19 DEC 2013 20:07
 entering extended mode
 **tsql2
 (d:\SKOLA\PDB-projekt\doku\tsql2.tex
@@ -562,32 +562,44 @@ LaTeX Info: Redefining \nameref on input line 25.
 
 (d:\SKOLA\PDB-projekt\doku\tsql2.out) (d:\SKOLA\PDB-projekt\doku\tsql2.out)
 \@outlinefile=\write3
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 27.
+LaTeX Font Info:    Try loading font information for OT1+pcr on input line 27.
+
+(D:\MiKTeX\tex\latex\psnfss\ot1pcr.fd
+File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
+)
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 83.
+
+Overfull \hbox (136.62753pt too wide) in paragraph at lines 82--83
+[][] 
+ []
 
 [1
 
 {C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map}]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 27.
+Overfull \vbox (77.04672pt too high) has occurred while \output is active []
 
-(d:\SKOLA\PDB-projekt\doku\tsql2.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 27.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 27.
+
+[2]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 83.
+ (d:\SKOLA\PDB-projekt\doku\tsql2.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 83.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 83.
 Package rerunfilecheck Info: File `tsql2.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 7362 strings out of 494045
- 107082 string characters out of 3155643
- 197369 words of memory out of 3000000
- 10596 multiletter control sequences out of 15000+200000
- 5525 words of font info for 17 fonts, out of 3000000 for 9000
+ 7398 strings out of 494045
+ 107550 string characters out of 3155643
+ 212369 words of memory out of 3000000
+ 10626 multiletter control sequences out of 15000+200000
+ 6040 words of font info for 19 fonts, out of 3000000 for 9000
  715 hyphenation exceptions out of 8191
- 36i,5n,38p,203b,319s stack positions out of 5000i,500n,10000p,200000b,50000s
-{D:/MiKTeX/fonts/enc/dvips/fontname/8r.enc}<D:/MiKTeX/fonts/type1/urw/times/u
-tmr8a.pfb>
-Output written on tsql2.pdf (1 page, 8115 bytes).
+ 36i,6n,38p,203b,327s stack positions out of 5000i,500n,10000p,200000b,50000s
+{D:/MiKTeX/fonts/enc/dvips/fontname/8r.enc}<D:/MiKTeX/fonts/type1/urw/courier
+/ucrr8a.pfb><D:/MiKTeX/fonts/type1/urw/times/utmr8a.pfb>
+Output written on tsql2.pdf (2 pages, 21400 bytes).
 PDF statistics:
- 16 PDF objects out of 1000 (max. 8388607)
- 2 named destinations out of 1000 (max. 500000)
+ 24 PDF objects out of 1000 (max. 8388607)
+ 3 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
