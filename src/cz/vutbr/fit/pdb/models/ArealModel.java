@@ -237,7 +237,7 @@ public class ArealModel extends BaseModel {
     public String getBuildingAtPoint(int x, int y) throws SQLException, Exception {
     
         int x1,x2,x3,y1,y2,y3;
-        int r = 2;
+        int r = 4;
         
         x1 = x3 = x;
         y1 = y - r;
